@@ -2177,9 +2177,9 @@ TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
         {
           unsigned int errorId =
                              this->getErrorLog()->getError(n)->getErrorId();
-          if ( errorId == TsbmlDocumentAllowedCoreAttributes
-            || errorId == TsbmlDocumentLevelMustBeNonNegativeInteger
-            || errorId == TsbmlDocumentVersionMustBeNonNegativeInteger
+          if ( errorId == TsbDocumentAllowedCoreAttributes
+            || errorId == TsbDocumentLevelMustBeNonNegativeInteger
+            || errorId == TsbDocumentVersionMustBeNonNegativeInteger
             || errorId == InvalidNamespaceOnTSB)
           {
             errorLoggedAlready = true;

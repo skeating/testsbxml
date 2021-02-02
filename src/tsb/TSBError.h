@@ -76,12 +76,20 @@ typedef enum
 , InvalidNamespaceOnTSB      = 20101
 , AllowedAttributes      = 20102
 , TSBEmptyListElement      = 20103
-, TsbCommentAllowedCoreAttributes      = 20201
-, TsbCommentAllowedCoreElements      = 20202
-, TsbCommentAllowedAttributes      = 20203
-, TsbCommentContributorMustBeString      = 20204
-, TsbCommentNumberMustBeDouble      = 20205
-, TsbCommentPointMustBeString      = 20206
+, TsbDocumentAllowedCoreAttributes      = 20201
+, TsbDocumentAllowedCoreElements      = 20202
+, TsbDocumentAllowedAttributes      = 20203
+, TsbDocumentAllowedElements      = 20204
+, TsbDocumentLevelMustBeNonNegativeInteger      = 20205
+, TsbDocumentVersionMustBeNonNegativeInteger      = 20206
+, TsbDocumentLOCommentsAllowedCoreElements      = 20207
+, TsbDocumentLOCommentsAllowedCoreAttributes      = 20208
+, TsbCommentAllowedCoreAttributes      = 20301
+, TsbCommentAllowedCoreElements      = 20302
+, TsbCommentAllowedAttributes      = 20303
+, TsbCommentContributorMustBeString      = 20304
+, TsbCommentNumberMustBeDouble      = 20305
+, TsbCommentPointMustBeString      = 20306
 , TSBUnknownCoreAttribute                  = 99994 /*!< Encountered an unknown attribute in the TSB Core namespace. */
 , TSBCodesUpperBound                   = 99999 /*!< Upper boundary of libTSB-specific diagnostic codes. */
 } TSBErrorCode_t;

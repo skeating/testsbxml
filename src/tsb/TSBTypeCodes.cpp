@@ -46,6 +46,7 @@ static
 const char* TSB_TYPE_CODE_STRINGS[] =
 {
     "(Unknown TSB Type)"
+  , "TSBDocument"
   , "Comment"
   , "TSBListOf"
 };

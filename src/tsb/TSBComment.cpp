@@ -699,8 +699,8 @@ TSBComment::readAttributes(
       {
         const std::string details = log->getError(n)->getMessage();
         log->remove(TSBUnknownCoreAttribute);
-        log->logError(TSBUnknown, level, version, details, getLine(),
-          getColumn());
+        log->logError(TsbDocumentLOCommentsAllowedCoreAttributes, level,
+          version, details, getLine(), getColumn());
       }
     }
   }

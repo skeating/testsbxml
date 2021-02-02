@@ -329,6 +329,100 @@ static const tsbErrorTableEntry tsbErrorTable[] =
   },
 
   // 20201
+  { TsbDocumentAllowedCoreAttributes,
+    "Core attributes allowed on <document>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "A <document> object may have the optional SBML Level 3 Core attributes "
+    "'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core "
+    "namespaces are permitted on a <document>.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20202
+  { TsbDocumentAllowedCoreElements,
+    "Core elements allowed on <document>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "A <document> object may have the optional SBML Level 3 Core subobjects for "
+    "notes and annotations. No other elements from the SBML Level 3 Core "
+    "namespaces are permitted on a <document>.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20203
+  { TsbDocumentAllowedAttributes,
+    "Attributes allowed on <document>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "A <document> object must have the required attributes 'tsb:level' and "
+    "'tsb:version'. No other attributes from the SBML Level 3 Test SB XML "
+    "Library namespaces are permitted on a <document> object. ",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20204
+  { TsbDocumentAllowedElements,
+    "Elements allowed on <document>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "A <document> object may contain one and only one instance of the "
+    "<listOfComments> element. No other elements from the SBML Level 3 Test SB "
+    "XML Library namespaces are permitted on a <document> object. ",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20205
+  { TsbDocumentLevelMustBeNonNegativeInteger,
+    "The 'level' attribute must be NonNegativeInteger.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "The attribute 'tsb:level' on a <document> must have a value of data type "
+    "'integer', and must be non negative.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20206
+  { TsbDocumentVersionMustBeNonNegativeInteger,
+    "The 'version' attribute must be NonNegativeInteger.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "The attribute 'tsb:version' on a <document> must have a value of data type "
+    "'integer', and must be non negative.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20207
+  { TsbDocumentLOCommentsAllowedCoreElements,
+    "Core elements allowed on <listOfComments>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "Apart from the general notes and annotations subobjects permitted on all "
+    "SBML objects, a <listOfComments> container object may only contain "
+    "<comment> objects.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20208
+  { TsbDocumentLOCommentsAllowedCoreAttributes,
+    "Core attributes allowed on <listOfComments>.",
+    LIBTSB_CAT_GENERAL_CONSISTENCY,
+    LIBTSB_SEV_ERROR,
+    "A <listOfComments> object may have the optional SBML Level 3 Core "
+    "attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level "
+    "3 Core namespaces are permitted on a <listOfComments> object.",
+    { "L3V1 Tsb V1 Section"
+    }
+  },
+
+  // 20301
   { TsbCommentAllowedCoreAttributes,
     "Core attributes allowed on <comment>.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,
@@ -340,7 +434,7 @@ static const tsbErrorTableEntry tsbErrorTable[] =
     }
   },
 
-  // 20202
+  // 20302
   { TsbCommentAllowedCoreElements,
     "Core elements allowed on <comment>.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,
@@ -352,7 +446,7 @@ static const tsbErrorTableEntry tsbErrorTable[] =
     }
   },
 
-  // 20203
+  // 20303
   { TsbCommentAllowedAttributes,
     "Attributes allowed on <comment>.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,
@@ -365,7 +459,7 @@ static const tsbErrorTableEntry tsbErrorTable[] =
     }
   },
 
-  // 20204
+  // 20304
   { TsbCommentContributorMustBeString,
     "The 'contributor' attribute must be String.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,
@@ -376,7 +470,7 @@ static const tsbErrorTableEntry tsbErrorTable[] =
     }
   },
 
-  // 20205
+  // 20305
   { TsbCommentNumberMustBeDouble,
     "The 'number' attribute must be Double.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,
@@ -387,7 +481,7 @@ static const tsbErrorTableEntry tsbErrorTable[] =
     }
   },
 
-  // 20206
+  // 20306
   { TsbCommentPointMustBeString,
     "The 'point' attribute must be String.",
     LIBTSB_CAT_GENERAL_CONSISTENCY,

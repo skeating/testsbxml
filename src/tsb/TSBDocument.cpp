@@ -1162,9 +1162,9 @@ TSBDocument::writeXMLNS(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
   {
     const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* thisxmlns =
       getNamespaces();
-    if (thisxmlns && thisxmlns->hasURI(TSB_XMLNS_L0V1))
+    if (thisxmlns && thisxmlns->hasURI(TSB_XMLNS_L1V1))
     {
-      xmlns.add(TSB_XMLNS_L0V1, prefix);
+      xmlns.add(TSB_XMLNS_L1V1, prefix);
     }
   }
 

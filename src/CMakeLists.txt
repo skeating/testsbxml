@@ -126,11 +126,11 @@ install(FILES ${additional_common} DESTINATION include/tsb/common)
 # specify include directories
 #
 
+include_directories(${LIBSBML_INCLUDE_DIR})
 include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src/tsb)
-include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/src)
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/src/tsb)
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/tsb)
 if (EXTRA_INCLUDE_DIRS) 
  include_directories(${EXTRA_INCLUDE_DIRS})
 endif(EXTRA_INCLUDE_DIRS)
@@ -227,6 +227,7 @@ if (NOT LIBTSB_SKIP_SHARED_LIBRARY)
 add_library (${LIBTSB_LIBRARY} SHARED ${LIBTSB_SOURCES} )
 
 if (LIBTSB_SHARED_VERSION)
+  set_target_properties(${LIBTSB_LIBRARY} PROPERTIES COMPILE_DEFINITIONS "LIBTSB_EXPORTS=1")
   SET_TARGET_PROPERTIES(${LIBTSB_LIBRARY} PROPERTIES
                         SOVERSION ${LIBTSB_VERSION_MAJOR}
                         VERSION ${LIBTSB_VERSION_MAJOR}.${LIBTSB_VERSION_MINOR}.${LIBTSB_VERSION_PATCH})
@@ -257,11 +258,6 @@ INSTALL(TARGETS ${LIBTSB_LIBRARY}-static
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-##############################################################################
-#
-# add native tests
-#
-add_subdirectory(tsb)
 
 ##############################################################################
 #

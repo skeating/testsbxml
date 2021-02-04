@@ -44,8 +44,15 @@ foreach(example
 
 )
     add_executable(example_cpp_${example} ${example}.cpp)
+
+    if (WIN32 AND NOT CYGWIN)
+    # don't decorate static library 
+    set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLAX_STATIC=1;LIBTSB_STATIC=1")
+    endif(WIN32 AND NOT CYGWIN)
+
+
     set_target_properties(example_cpp_${example} PROPERTIES  OUTPUT_NAME ${example})
-    target_link_libraries(example_cpp_${example} ${TSB_LIBRARY}-static)
+    target_link_libraries(example_cpp_${example} ${LIBTSB_LIBRARY}-static)
 
 
     if (WITH_ZLIB)

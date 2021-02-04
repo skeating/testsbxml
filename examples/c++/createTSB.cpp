@@ -17,9 +17,10 @@ int main(int argc,char** argv)
 
   TSBComment* model=document->createComment();
 
+  // TODO: document has no printerrors function ... it should
   //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)
   //  document->printErrors();
-
-  //writeSBML(document,"dyn_example1.xml");
-  //delete document;
+  
+  writeTSBToFile(document,"tsb_example1.xml");
+  delete document;
 }

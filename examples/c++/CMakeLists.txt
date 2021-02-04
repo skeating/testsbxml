@@ -41,6 +41,7 @@ endif(EXTRA_INCLUDE_DIRS)
 foreach(example
 
 	createTSB
+  echoTSB
 
 )
     add_executable(example_cpp_${example} ${example}.cpp)

@@ -43,7 +43,7 @@
 #define TSBNamespaces_h
 
 #include <sbml/xml/XMLNamespaces.h>
-#include <sbml/util/List.h>
+#include <tsb/util/List.h>
 
 #include <tsb/common/common.h>
 #include <tsb/common/tsbfwd.h>

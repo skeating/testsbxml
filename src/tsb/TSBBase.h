@@ -50,7 +50,6 @@
 #include <tsb/TSBTypeCodes.h>
 #include <tsb/TSBNamespaces.h>
 #include <tsb/TSBConstructorException.h>
-#include <sbml/util/List.h>
 #include <sbml/SyntaxChecker.h>
 #include <sbml/ExpectedAttributes.h>
 #include <sbml/xml/XMLNode.h>

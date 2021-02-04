@@ -228,6 +228,8 @@ find_library(LIBSBML_LIBRARY
     DOC "The file name of the sbml library."
 )
 
+set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBSBML_LIBRARY})
+
 find_path(LIBSBML_INCLUDE_DIR
     NAMES sbml/SBase.h
     PATHS 
@@ -311,6 +313,8 @@ if(WITH_ZLIB)
     if(NOT EXISTS "${LIBZ_INCLUDE_DIR}/zlib.h")
         message(FATAL_ERROR "The zlib include directory does not appear to be valid. It should contain the file zlib.h, but it does not.")
     endif()
+
+    set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBZ_LIBRARY})
 
 endif(WITH_ZLIB)
 
@@ -659,16 +663,7 @@ endif()
 #
 # create library
 # 
-add_subdirectory(src/tsb)
-
-##############################################################################
-#
-# create language bindings
-# 
-add_subdirectory(src/bindings)
-
-
-
+add_subdirectory(src)
 
 ###############################################################################
 #

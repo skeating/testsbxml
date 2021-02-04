@@ -46,6 +46,7 @@
 #include <tsb/TSBBase.h>
 #include <tsb/TSBListOf.h>
 
+#include <tsb/TSBDocument.h>
 #include <tsb/TSBComment.h>
 
 #include <tsb/TSBReader.h>

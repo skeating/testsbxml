@@ -1683,7 +1683,9 @@ TSBBase::unsetTestAnnotation ()
 unsigned int
 TSBBase::getLevel () const
 {
-  if (mTSBNamespaces != NULL)
+  if (mTSB != NULL)
+    return mTSB->getLevel();
+  else if (mTSBNamespaces != NULL)
     return mTSBNamespaces->getLevel();
   else
     return TSB_DEFAULT_LEVEL;
@@ -1696,7 +1698,9 @@ TSBBase::getLevel () const
 unsigned int
 TSBBase::getVersion () const
 {
-  if (mTSBNamespaces != NULL)
+  if (mTSB != NULL)
+    return mTSB->getVersion();
+  else if (mTSBNamespaces != NULL)
     return mTSBNamespaces->getVersion();
   else
     return TSB_DEFAULT_VERSION;
@@ -2173,7 +2177,9 @@ TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
         {
           unsigned int errorId =
                              this->getErrorLog()->getError(n)->getErrorId();
-          if ( errorId == TsbmlDocumentAllowedCoreAttributes
+          if ( errorId == TsbDocumentAllowedCoreAttributes
+            || errorId == TsbDocumentLevelMustBeNonNegativeInteger
+            || errorId == TsbDocumentVersionMustBeNonNegativeInteger
             || errorId == InvalidNamespaceOnTSB)
           {
             errorLoggedAlready = true;

@@ -61,6 +61,7 @@
 LIBTSB_CPP_NAMESPACE_BEGIN
 
 
+typedef CLASS_OR_STRUCT TSBDocument   TSBDocument_t;
 typedef CLASS_OR_STRUCT TSBComment    TSBComment_t;
 typedef CLASS_OR_STRUCT TSBBase       TSBBase_t;
 typedef CLASS_OR_STRUCT TSBListOf     TSBListOf_t;

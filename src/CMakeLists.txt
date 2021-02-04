@@ -68,7 +68,6 @@ endif()
 # so we encode these values here
 if (MSVC)
   set(HAVE_ERRNO_H TRUE)
-  set(HAVE_IEEEFP_H TRUE)
   set(STDC_HEADERS TRUE)
   set(HAVE_MATH_H TRUE)
   set(HAVE_SYS_TYPES_H TRUE)
@@ -101,7 +100,7 @@ configure_file (
 # mark header files for installation
 #
 
-foreach(dir annotation common compress conversion extension units util validator xml  )
+foreach(dir common  )
 
     file(GLOB header_files "${CMAKE_CURRENT_SOURCE_DIR}/tsb/${dir}/*.h")
     install(FILES ${header_files} DESTINATION include/tsb/${dir})
@@ -127,11 +126,11 @@ install(FILES ${additional_common} DESTINATION include/tsb/common)
 # specify include directories
 #
 
+include_directories(${LIBSBML_INCLUDE_DIR})
 include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src/tsb)
-include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/src)
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/src/tsb)
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/tsb)
 if (EXTRA_INCLUDE_DIRS) 
  include_directories(${EXTRA_INCLUDE_DIRS})
 endif(EXTRA_INCLUDE_DIRS)
@@ -155,7 +154,10 @@ macro(ADD_FUNCTION directory)
             ${prefix}${directory}/*.cpp
             ${prefix}${directory}/*.cxx
             ${prefix}${directory}/*.c
-            ${prefix}${directory}/*.h)
+            ${prefix}${directory}/*.h
+            ${CMAKE_CURRENT_BINARY_DIR}/src/${prefix}${directory}/*.h
+            )
+
 
     # Set the constraint files to be 'headers' as they don't have to be compiled
     # since they don't contain symbols but rather are included directly.  Could
@@ -225,6 +227,7 @@ if (NOT LIBTSB_SKIP_SHARED_LIBRARY)
 add_library (${LIBTSB_LIBRARY} SHARED ${LIBTSB_SOURCES} )
 
 if (LIBTSB_SHARED_VERSION)
+  set_target_properties(${LIBTSB_LIBRARY} PROPERTIES COMPILE_DEFINITIONS "LIBTSB_EXPORTS=1")
   SET_TARGET_PROPERTIES(${LIBTSB_LIBRARY} PROPERTIES
                         SOVERSION ${LIBTSB_VERSION_MAJOR}
                         VERSION ${LIBTSB_VERSION_MAJOR}.${LIBTSB_VERSION_MINOR}.${LIBTSB_VERSION_PATCH})
@@ -255,11 +258,6 @@ INSTALL(TARGETS ${LIBTSB_LIBRARY}-static
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-##############################################################################
-#
-# add native tests
-#
-add_subdirectory(tsb)
 
 ##############################################################################
 #

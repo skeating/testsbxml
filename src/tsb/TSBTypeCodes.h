@@ -63,6 +63,7 @@ BEGIN_C_DECLS
 typedef enum
 {
     TSB_UNKNOWN                    =  0
+  , TSB_DOCUMENT
   , TSB_COMMENT
   , TSB_LIST_OF
 } TSBTypeCode_t;

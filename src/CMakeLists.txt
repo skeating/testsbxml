@@ -68,7 +68,6 @@ endif()
 # so we encode these values here
 if (MSVC)
   set(HAVE_ERRNO_H TRUE)
-  set(HAVE_IEEEFP_H TRUE)
   set(STDC_HEADERS TRUE)
   set(HAVE_MATH_H TRUE)
   set(HAVE_SYS_TYPES_H TRUE)
@@ -101,7 +100,7 @@ configure_file (
 # mark header files for installation
 #
 
-foreach(dir annotation common compress conversion extension units util validator xml  )
+foreach(dir common  )
 
     file(GLOB header_files "${CMAKE_CURRENT_SOURCE_DIR}/tsb/${dir}/*.h")
     install(FILES ${header_files} DESTINATION include/tsb/${dir})

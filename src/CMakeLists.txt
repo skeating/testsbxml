@@ -154,7 +154,10 @@ macro(ADD_FUNCTION directory)
             ${prefix}${directory}/*.cpp
             ${prefix}${directory}/*.cxx
             ${prefix}${directory}/*.c
-            ${prefix}${directory}/*.h)
+            ${prefix}${directory}/*.h
+            ${CMAKE_CURRENT_BINARY_DIR}/src/${prefix}${directory}/*.h
+            )
+
 
     # Set the constraint files to be 'headers' as they don't have to be compiled
     # since they don't contain symbols but rather are included directly.  Could

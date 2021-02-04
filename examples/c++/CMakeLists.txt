@@ -30,10 +30,9 @@
 ## ------------------------------------------------------------------------ -->
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(BEFORE ${LIBSBML_ROOT_SOURCE_DIR}/src)
-include_directories(${LIBSBML_ROOT_SOURCE_DIR}/include)
-include_directories(BEFORE ${LIBSBML_ROOT_BINARY_DIR}/src)
-
+include_directories(${LIBSBML_INCLUDE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/../../src)
 
 if (EXTRA_INCLUDE_DIRS)
 include_directories(${EXTRA_INCLUDE_DIRS})

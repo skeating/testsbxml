@@ -8,6 +8,7 @@
 include(CheckLibraryExists)
 check_library_exists(m sqrt "" HAVE_LIBM)
 
+
 # generate configuration for this system
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/common/libtsb-config-common.h.cmake
@@ -77,7 +78,9 @@ foreach (directory common tsb )
   file(GLOB temp
       ${dir}/*.cpp
       ${dir}/*.c
-      ${dir}/*.h)
+      ${dir}/*.h
+      ${CMAKE_CURRENT_BINARY_DIR}/${dir}/*.h
+      )
 
   # create source group for IDEs
   source_group(${directory} FILES ${temp})

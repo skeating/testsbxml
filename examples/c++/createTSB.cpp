@@ -15,12 +15,18 @@ int main(int argc,char** argv)
 
   // create a Comment
 
-  TSBComment* model=document->createComment();
+  TSBComment* comment = document->createComment();
+
+  // add attributes to comment
+
+  comment->setContributor("Joe Bloggs");
+  comment->setNumber(1.34);
+  comment->setPoint("This is irrelevant");
 
   // TODO: document has no printerrors function ... it should
   //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)
   //  document->printErrors();
-  
+
   writeTSBToFile(document,"tsb_example1.xml");
   delete document;
 }

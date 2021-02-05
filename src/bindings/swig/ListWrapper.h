@@ -42,7 +42,7 @@
 #ifndef ListWrapper_h
 #define ListWrapper_h
 
-#include <sbml/util/List.h>
+#include <tsb/util/List.h>
 #include <tsb/common/extern.h>
 
 LIBTSB_CPP_NAMESPACE_USE

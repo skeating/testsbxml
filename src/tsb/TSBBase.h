@@ -45,13 +45,11 @@
 
 #include <tsb/common/extern.h>
 #include <tsb/common/libtsb-namespace.h>
-#include <sbml/common/libsbml-namespace.h>
 #include <tsb/common/tsbfwd.h>
 #include <tsb/TSBTypeCodes.h>
 #include <tsb/TSBNamespaces.h>
 #include <tsb/TSBConstructorException.h>
-#include <sbml/SyntaxChecker.h>
-#include <sbml/ExpectedAttributes.h>
+#include <tsb/util/ExpectedAttributes.h>
 #include <sbml/xml/XMLNode.h>
 
 #ifdef __cplusplus

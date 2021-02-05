@@ -340,7 +340,7 @@ LIBTSB_CPP_NAMESPACE_END
 #ifndef SWIG
 /*BEGIN_C_DECLS */
 
-#include <sbml/common/sbmlfwd.h>
+#include <tsb/common/tsbfwd.h>
 
 /* END_C_DECLS */
 

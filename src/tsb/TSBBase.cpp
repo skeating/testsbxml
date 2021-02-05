@@ -632,10 +632,6 @@ TSBBase::setMetaId (const std::string& metaid)
     mMetaId.erase();
     return LIBTSB_OPERATION_SUCCESS;
   }
-  else if (!(SyntaxChecker::isValidXMLID(metaid)))
-  {
-    return LIBTSB_INVALID_ATTRIBUTE_VALUE;
-  }
   else
   {
     mMetaId = metaid;
@@ -653,10 +649,6 @@ TSBBase::setId (const std::string& sid)
   {
     mId.erase();
     return LIBTSB_OPERATION_SUCCESS;
-  }
-  else if (!(SyntaxChecker::isValidXMLID(sid)))
-  {
-    return LIBTSB_INVALID_ATTRIBUTE_VALUE;
   }
   else
   {
@@ -1031,13 +1023,6 @@ TSBBase::setNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
     }
   }
 
-    if (!SyntaxChecker::hasExpectedXHTMLSyntax(mNotes, NULL))
-    {
-      delete mNotes;
-      mNotes = NULL;
-      return LIBTSB_INVALID_OBJECT;
-    }
-
   return LIBTSB_OPERATION_SUCCESS;
 
 }
@@ -1266,12 +1251,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
     {
       tmpNotes.addChild(addedNotes);
     }
-
-    if (!SyntaxChecker::hasExpectedXHTMLSyntax(&tmpNotes, NULL))
-    {
-      return LIBTSB_INVALID_OBJECT;
-    }
-  }
+ }
 
 
   if ( mNotes != NULL )
@@ -2631,15 +2611,6 @@ TSBBase::readAttributes (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes& at
       logEmptyString("metaid", level, version,
                      TSBTypeCode_toString(getTypeCode()));
     }
-
-    if (isSetMetaId())
-    {
-      if (!SyntaxChecker::isValidXMLID(mMetaId))
-      {
-        logError(TSBInvalidMetaidSyntax, getLevel(), getVersion(), "The metaid '" + mMetaId + "' does not conform to the syntax.");
-      }
-  }
-
 }
 
 
@@ -3029,60 +3000,6 @@ TSBBase::checkXHTML(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode * xhtml)
     }
   }
 
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* toplevelNS = (mTSB) ? mTSB->getNamespaces() : NULL;
-
-  /*
-  * namespace declaration is variable
-  * if a whole html tag has been used
-  * or a whole body tag then namespace can be implicitly declared
-  */
-  unsigned int children = xhtml->getNumChildren();
-
-  if (children > 1)
-  {
-    for (i=0; i < children; i++)
-    {
-      if (SyntaxChecker::isAllowedElement(xhtml->getChild(i)))
-      {
-        if (!SyntaxChecker::hasDeclaredNS(xhtml->getChild(i),
-                                                  toplevelNS))
-        {
-          logError(errorNS);
-        }
-      }
-      else
-      {
-        logError(errorELEM);
-      }
-    }
-  }
-  else
-  {
-    /* only one element which can be html or body with either implicit/explicit
-    * namespace declaration
-    * OR could be one of the listed elements.
-    */
-
-    const string& top_name = xhtml->getChild(0).getName();
-
-    if (top_name != "html" && top_name != "body"
-      && !SyntaxChecker::isAllowedElement(xhtml->getChild(0)))
-    {
-      logError(errorELEM);
-    }
-    else
-    {
-      if (!SyntaxChecker::hasDeclaredNS(xhtml->getChild(0), toplevelNS))
-      {
-        logError(errorNS);
-      }
-      if (top_name == "html"
-        && !SyntaxChecker::isCorrectHTMLNode(xhtml->getChild(0)))
-      {
-        logError(errorELEM);
-      }
-    }
-  }
 }
 /** @endcond */
 /** @cond doxygenLibtsbInternal */

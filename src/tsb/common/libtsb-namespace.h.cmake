@@ -7,12 +7,6 @@
 #ifndef LIBTSB_NAMESPACE_H
 #define LIBTSB_NAMESPACE_H 1
 
-#ifndef SWIG
-#include <tsb/common/libtsb-namespace.h>
-
-LIBTSB_CPP_NAMESPACE_USE
-
-#endif
 /*
  *
  * The idea of the following marcors are borrowed from 

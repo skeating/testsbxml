@@ -333,7 +333,7 @@ TSBComment::hasRequiredAttributes() const
  * Write any contained elements
  */
 void
-TSBComment::writeElements(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+TSBComment::writeElements( XMLOutputStream&
   stream) const
 {
   TSBBase::writeElements(stream);
@@ -655,7 +655,7 @@ TSBComment::unsetAttribute(const std::string& attributeName)
  * Adds the expected attributes for this element
  */
 void
-TSBComment::addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
+TSBComment::addExpectedAttributes(
   ExpectedAttributes& attributes)
 {
   TSBBase::addExpectedAttributes(attributes);
@@ -678,9 +678,9 @@ TSBComment::addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
  */
 void
 TSBComment::readAttributes(
-                           const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes&
+                           const  XMLAttributes&
                              attributes,
-                           const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                           const 
                              ExpectedAttributes& expectedAttributes)
 {
   unsigned int level = getLevel();
@@ -799,7 +799,7 @@ TSBComment::readAttributes(
  * Writes the attributes to the stream
  */
 void
-TSBComment::writeAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+TSBComment::writeAttributes( XMLOutputStream&
   stream) const
 {
   TSBBase::writeAttributes(stream);

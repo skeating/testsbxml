@@ -241,7 +241,7 @@ public:
    * @see unsetNotes()
    * @see SyntaxChecker::hasExpectedXHTMLSyntax(@if java XMLNode@endif)
    */
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* getNotes();
+   XMLNode* getNotes();
 
 
   /**
@@ -267,7 +267,7 @@ public:
    * @see unsetNotes()
    * @see SyntaxChecker::hasExpectedXHTMLSyntax(@if java XMLNode@endif)
    */
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* getNotes() const;
+  const  XMLNode* getNotes() const;
 
 
   /**
@@ -338,7 +338,7 @@ public:
    * @see appendTestAnnotation(const std::string& annotation)
    * @see unsetTestAnnotation()
    */
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* getTestAnnotation ();
+   XMLNode* getTestAnnotation ();
 
 
   /**
@@ -361,7 +361,7 @@ public:
    * @see appendTestAnnotation(const std::string& annotation)
    * @see unsetTestAnnotation()
    */
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* getTestAnnotation () const;
+  const  XMLNode* getTestAnnotation () const;
 
 
   /**
@@ -418,7 +418,7 @@ public:
    * @see getLevel()
    * @see getVersion()
    */
-  virtual const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* getNamespaces() const ;
+  virtual const  XMLNamespaces* getNamespaces() const ;
 
 
   /**
@@ -435,7 +435,7 @@ public:
    * @see getLevel()
    * @see getVersion()
    */
-  virtual LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* getNamespaces();
+  virtual  XMLNamespaces* getNamespaces();
 
 
   /**
@@ -792,7 +792,7 @@ public:
    * @see appendTestAnnotation(const std::string& annotation)
    * @see unsetTestAnnotation()
    */
-  virtual int setTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation);
+  virtual int setTestAnnotation ( XMLNode* annotation);
 
 
   /**
@@ -880,7 +880,7 @@ public:
    * @see appendTestAnnotation(const std::string& annotation)
    * @see unsetTestAnnotation()
    */
-  virtual int appendTestAnnotation (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation);
+  virtual int appendTestAnnotation (const  XMLNode* annotation);
 
 
   /**
@@ -981,7 +981,7 @@ public:
    * @see removeTopLevelTestAnnotationElement(const std::string elementName, const std::string elementURI)
    * @see replaceTopLevelTestAnnotationElement(const std::string&)
    */
-  int replaceTopLevelTestAnnotationElement(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation);
+  int replaceTopLevelTestAnnotationElement(const  XMLNode* annotation);
 
 
   /**
@@ -1055,7 +1055,7 @@ public:
    * @see unsetNotes()
    * @see SyntaxChecker::hasExpectedXHTMLSyntax(@if java XMLNode@endif)
    */
-  int setNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes);
+  int setNotes(const  XMLNode* notes);
 
 
   /**
@@ -1152,7 +1152,7 @@ public:
    * @see unsetNotes()
    * @see SyntaxChecker::hasExpectedXHTMLSyntax(@if java XMLNode@endif)
    */
-  int appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes);
+  int appendNotes(const  XMLNode* notes);
 
 
   /**
@@ -1263,7 +1263,7 @@ public:
    * @copydetails doc_returns_success_code
    * @li @tsbconstant{LIBTSB_OPERATION_SUCCESS, OperationReturnValues_t}
    */
-  int setNamespaces(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns);
+  int setNamespaces( XMLNamespaces* xmlns);
 
 
   /**
@@ -1562,7 +1562,7 @@ public:
   /**
    * Reads (initializes) this TSB object by reading from XMLInputStream.
    */
-  void read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream);
+  void read ( XMLInputStream& stream);
   /** @endcond */
 
 
@@ -1570,7 +1570,7 @@ public:
   /**
    * Writes (serializes) this TSB object by writing it to XMLOutputStream.
    */
-  virtual void write (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const;
+  virtual void write ( XMLOutputStream& stream) const;
   /** @endcond */
 
 
@@ -1586,7 +1586,7 @@ public:
    *   ...
    * </pre>@endif@~
    */
-  virtual void writeElements (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const;
+  virtual void writeElements ( XMLOutputStream& stream) const;
   /** @endcond */
 
 
@@ -1804,7 +1804,7 @@ protected:
    * @return the TSB object corresponding to next XMLToken in the
    * XMLInputStream or @c NULL if the token was not recognized.
    */
-  virtual TSBBase* createObject (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream);
+  virtual TSBBase* createObject ( XMLInputStream& stream);
 
 
   /**
@@ -1821,7 +1821,7 @@ protected:
    * @return @c true if the level, version and namespace values of this 
    * TSB object correspond to a valid set of values, @c false otherwise.
    */
-  bool hasValidLevelVersionNamespaceCombination(int typecode, LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces *xmlns);
+  bool hasValidLevelVersionNamespaceCombination(int typecode,  XMLNamespaces *xmlns);
 
 
   /**
@@ -1830,7 +1830,7 @@ protected:
    *
    * @return true if the subclass read from the stream, false otherwise.
    */
-  virtual bool readOtherXML (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream);
+  virtual bool readOtherXML ( XMLInputStream& stream);
 
 
   /**
@@ -1900,8 +1900,8 @@ protected:
    * XMLAttributes set into their specific fields.  Be sure to call your
    * parents implementation of this method as well.
    */
-  virtual void readAttributes (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes& attributes, 
-                               const LIBSBML_CPP_NAMESPACE_QUALIFIER ExpectedAttributes& expectedAttributes);
+  virtual void readAttributes (const  XMLAttributes& attributes, 
+                               const  ExpectedAttributes& expectedAttributes);
 
 
   /**
@@ -1918,7 +1918,7 @@ protected:
    * Be sure to implement wirteXMLNS() function to write xmlns attributes.
    *
    */
-  virtual void writeAttributes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const;
+  virtual void writeAttributes ( XMLOutputStream& stream) const;
 
 
   /**
@@ -1927,7 +1927,7 @@ protected:
    * (if any) to the XMLOutputStream. 
    *
    */
-  virtual void writeXMLNS (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const;
+  virtual void writeXMLNS ( XMLOutputStream& stream) const;
 
 
   /**
@@ -1941,7 +1941,7 @@ protected:
    * Checks that the given default namespace in the given element is valid.
    * If the given default namespace is not valid, an error is logged.
    */
-  void checkDefaultNamespace(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns, 
+  void checkDefaultNamespace(const  XMLNamespaces* xmlns, 
     const std::string& elementName, const std::string& prefix = "");
 
   /**
@@ -1956,13 +1956,13 @@ protected:
    * If the xhtml does not conform to the specification of valid xhtml within
    * an tsb document, an error is logged.
    */
-  void checkXHTML(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode *);
+  void checkXHTML(const  XMLNode *);
 
 
   /**
    * Checks that the math ml ns has been declared
    */
-  const std::string checkMathMLNamespace(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken elem);
+  const std::string checkMathMLNamespace(const  XMLToken elem);
 
    /**
    * Sets the XML namespace to which this element belongs to.
@@ -2016,8 +2016,8 @@ protected:
 
   std::string     mMetaId;
   std::string     mId;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*        mNotes;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*        mTestAnnotation;
+   XMLNode*        mNotes;
+   XMLNode*        mTestAnnotation;
   TSBDocument*   mTSB;
   TSBNamespaces* mTSBNamespaces;
   void*           mUserData;
@@ -2058,7 +2058,7 @@ private:
    * Stores the location (line and column) and any XML namespaces (for
    * roundtripping) declared on this TSB (XML) element.
    */
-  void setTSBBaseFields (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken& element);
+  void setTSBBaseFields (const  XMLToken& element);
 
 
   /**
@@ -2066,7 +2066,7 @@ private:
    *
    * @return true if read an <annotation> element from the stream
    */
-  bool readTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream);
+  bool readTestAnnotation ( XMLInputStream& stream);
 
 
   /**
@@ -2074,7 +2074,7 @@ private:
    *
    * @return true if read a <notes> element from the stream
    */
-  bool readNotes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream);
+  bool readNotes ( XMLInputStream& stream);
 
 
   /** @endcond */

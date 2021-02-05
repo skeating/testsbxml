@@ -367,7 +367,7 @@ protected:
   /**
    * Creates a new TSBComment in this TSBListOfComments
    */
-  virtual TSBBase* createObject(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream&
+  virtual TSBBase* createObject( XMLInputStream&
     stream);
 
   /** @endcond */

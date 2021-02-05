@@ -300,7 +300,7 @@ TSBListOfComments::getItemTypeCode() const
  * Creates a new TSBComment in this TSBListOfComments
  */
 TSBBase*
-TSBListOfComments::createObject(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream&
+TSBListOfComments::createObject( XMLInputStream&
   stream)
 {
   const std::string& name = stream.peek().getName();

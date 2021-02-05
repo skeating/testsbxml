@@ -45,7 +45,6 @@
 
 #include <tsb/common/extern.h>
 #include <tsb/common/tsbfwd.h>
-#include <sbml/util/util.h>
 
 #ifdef __cplusplus
 

@@ -8,9 +8,9 @@
 #define LIBTSB_NAMESPACE_H 1
 
 #ifndef SWIG
-#include <sbml/common/libsbml-namespace.h>
+#include <tsb/common/libtsb-namespace.h>
 
-LIBSBML_CPP_NAMESPACE_USE
+LIBTSB_CPP_NAMESPACE_USE
 
 #endif
 /*

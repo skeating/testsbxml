@@ -46,8 +46,6 @@
 #include <sbml/xml/XMLToken.h>
 #include <sbml/xml/XMLNode.h>
 
-#include <sbml/util/util.h>
-
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBDocument.h>

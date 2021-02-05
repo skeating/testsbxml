@@ -100,7 +100,7 @@ configure_file (
 # mark header files for installation
 #
 
-foreach(dir common  )
+foreach(dir common util )
 
     file(GLOB header_files "${CMAKE_CURRENT_SOURCE_DIR}/tsb/${dir}/*.h")
     install(FILES ${header_files} DESTINATION include/tsb/${dir})
@@ -189,7 +189,7 @@ macro(ADD_FUNCTION directory)
 
 endmacro(ADD_FUNCTION)
 
-foreach (directory common tsb)
+foreach (directory common tsb util)
 
 	ADD_FUNCTION(${directory})
 				       

@@ -116,8 +116,7 @@ static const int TSB_INT_MIN = -2147483647 - 1;
 
 
 #include <tsb/common/extern.h>
-#include <sbml/util/memory.h>
-#include <sbml/util/util.h>
+#include <tsb/util/util.h>
 #include <tsb/common/TSBOperationReturnValues.h>
 
 #endif  /* LIBTSB_COMMON_H */

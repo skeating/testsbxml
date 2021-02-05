@@ -1,68 +1,16 @@
 /**
  * @file    List.h
  * @brief   Simple, generic list utility class.
- * @author  Ben Bornstein
- * 
- * <!--------------------------------------------------------------------------
- * This file is part of libSBML.  Please visit http://sbml.org for more
- * information about SBML, and the latest version of libSBML.
- *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
- * Copyright (C) 2019 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *
- * Copyright (C) 2013-2018 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *     3. University of Heidelberg, Heidelberg, Germany
- *
- * Copyright (C) 2009-2013 jointly by the following organizations: 
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *  
- * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA 
- *  
- * Copyright (C) 2002-2005 jointly by the following organizations: 
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. Japan Science and Technology Agency, Japan
- * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation.  A copy of the license agreement is provided
- * in the file named "LICENSE.txt" included with this software distribution and
- * also available online as http://sbml.org/software/libsbml/license.html
- * ------------------------------------------------------------------------ -->
- *
- * @class List
- * @sbmlbrief{core} Simple, plain, generic lists.
- *
- * @htmlinclude not-sbml-warning.html
- *
- * This class implements basic vanilla lists for libSBML.  It was developed
- * in the time before libSBML was converted to C++ and used C++ STL library
- * classes more extensively.  At some point in the future, this List class
- * may be removed in favor of using standard C++ classes.
- *
- * This class is distinct from ListOf because the latter is derived from
- * the SBML SBase class, whereas this List class is not.  ListOf can only
- * be used when a list is actually intended to implement an SBML ListOfX
- * class.  This is why libSBML has both a List and a ListOf.
  */
 
 #ifndef List_h
 #define List_h
 
 
-#include <sbml/common/extern.h>
+#include <tsb/common/extern.h>
 #include <string.h>
 
-LIBSBML_CPP_NAMESPACE_BEGIN
+LIBTSB_CPP_NAMESPACE_BEGIN
 
 /**
  * A @sbmlconstant{ListItemComparator,} is a typedef for a pointer to a function that compares two list
@@ -127,7 +75,7 @@ class ListIterator;
  * This class implements the children of the List class, storing the 
  * item itself, and a pointer to the next item in the list.
  */
-class LIBSBML_EXTERN ListNode
+class LIBTSB_EXTERN ListNode
 {
 public:
   ListNode (void* x): item(x), next(NULL) { }
@@ -142,7 +90,7 @@ public:
   void * getItem() { return item;} ;
 };
 
-class LIBSBML_EXTERN ListIterator
+class LIBTSB_EXTERN ListIterator
 {
 	/* Helper class to provide pointer like facilities around a node */
 	friend class List;
@@ -170,7 +118,7 @@ public:
 #endif  /* !SWIG */
 
 
-class LIBSBML_EXTERN List
+class LIBTSB_EXTERN List
 {
 public:
 
@@ -386,7 +334,7 @@ protected:
   while (size--) free_item( (type *) List_remove(list, 0) ); \
 }
 
-LIBSBML_CPP_NAMESPACE_END
+LIBTSB_CPP_NAMESPACE_END
 
 
 #ifndef SWIG
@@ -397,7 +345,7 @@ LIBSBML_CPP_NAMESPACE_END
 /* END_C_DECLS */
 
 
-LIBSBML_CPP_NAMESPACE_BEGIN
+LIBTSB_CPP_NAMESPACE_BEGIN
 BEGIN_C_DECLS
 
 
@@ -411,7 +359,7 @@ BEGIN_C_DECLS
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 List_t *
 List_create (void);
 
@@ -430,7 +378,7 @@ List_create (void);
  * @memberof ListNode_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 ListNode_t *
 ListNode_create (void *item);
 /** @endcond */
@@ -452,7 +400,7 @@ ListNode_create (void *item);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_free (List_t *lst);
 
@@ -466,7 +414,7 @@ List_free (List_t *lst);
  *
  * @memberof ListNode_t
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 ListNode_free (ListNode_t *node);
 /** @endcond */
@@ -481,7 +429,7 @@ ListNode_free (ListNode_t *node);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_add (List_t *lst, void *item);
 
@@ -504,7 +452,7 @@ List_add (List_t *lst, void *item);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 unsigned int
 List_countIf (const List_t *lst, ListItemPredicate predicate);
 
@@ -539,7 +487,7 @@ List_countIf (const List_t *lst, ListItemPredicate predicate);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_find ( const List_t       *lst,
             const void         *item1,
@@ -563,7 +511,7 @@ List_find ( const List_t       *lst,
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 List_t *
 List_findIf (const List_t *lst, ListItemPredicate predicate);
 
@@ -578,7 +526,7 @@ List_findIf (const List_t *lst, ListItemPredicate predicate);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_get (const List_t *lst, unsigned int n);
 
@@ -593,7 +541,7 @@ List_get (const List_t *lst, unsigned int n);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_prepend (List_t *lst, void *item);
 
@@ -614,7 +562,7 @@ List_prepend (List_t *lst, void *item);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_remove (List_t *lst, unsigned int n);
 
@@ -630,13 +578,13 @@ List_remove (List_t *lst, unsigned int n);
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 unsigned int
 List_size (const List_t *lst);
 
 
 END_C_DECLS
-LIBSBML_CPP_NAMESPACE_END
+LIBTSB_CPP_NAMESPACE_END
 
 #endif  /* !SWIG  */
 #endif  /* List_h */

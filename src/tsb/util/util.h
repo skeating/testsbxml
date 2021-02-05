@@ -1,42 +1,6 @@
 /**
  * @file    util.h
  * @brief   Utility functions
- * @author  Ben Bornstein
- * 
- * <!--------------------------------------------------------------------------
- * This file is part of libSBML.  Please visit http://sbml.org for more
- * information about SBML, and the latest version of libSBML.
- *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
- * Copyright (C) 2019 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *
- * Copyright (C) 2013-2018 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *     3. University of Heidelberg, Heidelberg, Germany
- *
- * Copyright (C) 2009-2013 jointly by the following organizations: 
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
- *  
- * Copyright (C) 2006-2008 by the California Institute of Technology,
- *     Pasadena, CA, USA 
- *  
- * Copyright (C) 2002-2005 jointly by the following organizations: 
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. Japan Science and Technology Agency, Japan
- * 
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation.  A copy of the license agreement is provided
- * in the file named "LICENSE.txt" included with this software distribution and
- * also available online as http://sbml.org/software/libsbml/license.html
  * ---------------------------------------------------------------------- -->*/
 
 #ifndef util_h
@@ -45,7 +9,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include <sbml/common/extern.h>
+#include <tsb/common/extern.h>
 
 /** @cond doxygenLibsbmlInternal */
 
@@ -53,7 +17,7 @@
 
 #include <string>
 
-LIBSBML_CPP_NAMESPACE_BEGIN
+LIBTSB_CPP_NAMESPACE_BEGIN
 
 /**
  * Utility function that replaces all occurences of 'from' to 'to' 
@@ -68,19 +32,19 @@ LIBSBML_CPP_NAMESPACE_BEGIN
  std::string& replaceAllSubStrings(std::string& str, 
               const std::string& from, const std::string& to);
 
-LIBSBML_CPP_NAMESPACE_END
+LIBTSB_CPP_NAMESPACE_END
 
 
 #endif // __cplusplus
 
-LIBSBML_CPP_NAMESPACE_BEGIN
+LIBTSB_CPP_NAMESPACE_BEGIN
 
 BEGIN_C_DECLS
 
 /**
  * Easier-to-read and NULL-friendly string comparison.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 unsigned int
 streq (const char *s, const char *t);
 
@@ -117,7 +81,7 @@ c_locale_strtod (const char *nptr, char **endptr);
  * to it.  If the filename could not be opened, prints an error message and
  * exits.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 FILE *
 safe_fopen (const char *filename, const char *mode);
 
@@ -129,7 +93,7 @@ safe_fopen (const char *filename, const char *mode);
  *
  * NOTE: This strcat behaves differently than standard library strcat().
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 char *
 safe_strcat (const char *str1, const char *str2);
 
@@ -139,7 +103,7 @@ safe_strcat (const char *str1, const char *str2);
  * Memory for the string is obtained with safe_malloc() and can be freed
  * with safe_free().
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 char *
 safe_strdup (const char* s);
 
@@ -150,7 +114,7 @@ safe_strdup (const char* s);
  * @return an integer less than, equal to, or greater than zero if s1 is
  * found, respectively, to be less than, to match, or be greater than s2.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 strcmp_insensitive (const char *s1, const char *s2);
 
@@ -165,7 +129,7 @@ strcmp_insensitive (const char *s1, const char *s2);
  * @return the index of s in strings, if s was found, or stop + 1
  * otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_bsearchStringsI (const char **strings, const char *s, int lo, int hi);
 
@@ -173,7 +137,7 @@ util_bsearchStringsI (const char **strings, const char *s, int lo, int hi);
 /**
  * @returns @c 1 (true) if filename exists, @c 0 (false) otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_file_exists (const char *filename);
 
@@ -186,7 +150,7 @@ util_file_exists (const char *filename);
  *
  * Whitespace is determined by isspace().
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 char *
 util_trim (const char *s);
 
@@ -200,7 +164,7 @@ util_trim (const char *s);
  *
  * Whitespace is determined by isspace().
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 char *
 util_trim_in_place (char *s);
 /** @endcond */
@@ -211,7 +175,7 @@ util_trim_in_place (char *s);
  * 
  * @return a (quiet) NaN.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 double
 util_NaN (void);
 
@@ -221,7 +185,7 @@ util_NaN (void);
  * 
  * @return IEEE-754 Negative Infinity.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 double
 util_NegInf (void);
 
@@ -231,7 +195,7 @@ util_NegInf (void);
  * 
  * @return IEEE-754 Positive Infinity
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 double
 util_PosInf (void);
 
@@ -241,7 +205,7 @@ util_PosInf (void);
  * 
  * @return IEEE-754 Negative Zero.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 double
 util_NegZero (void);
 
@@ -254,21 +218,21 @@ util_NegZero (void);
  * @return @c -1 (for false) if @p d represents negative infinity, @c 1 (true) if
  * @p d represents positive infinity, and @c 0 (false) otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_isInf (double d);
 
 /**
  * @return 1 if the number is NaN and 0 otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_isNaN (double d);
 
 /**
  * @return 1 if the number is finite and 0 otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_isFinite (double d);
 
@@ -281,7 +245,7 @@ util_isFinite (double d);
  * @return @c 1 (true) if @p d is an IEEE-754 negative zero,
  * @c 0 (false) otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int
 util_isNegZero (double d);
 
@@ -307,7 +271,7 @@ util_isNegZero (double d);
  * @note This function is only necessary when using a version of libSBML
  * compiled and linked against a static MSVC runtime library.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 util_free (void * element);
 
@@ -334,24 +298,24 @@ util_free (void * element);
  * @note This function is only necessary when using a version of libSBML
  * compiled and linked against a static MSVC runtime library.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 util_freeArray (void ** objects, int length);
 
 /**
  * @return the machine epsilon
  */
-LIBSBML_EXTERN 
+LIBTSB_EXTERN 
 double util_epsilon();
 
 /**
  * @return 1 if the number are equal up to the machine epsilon and 0 otherwise.
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 int util_isEqual(double a, double b);
 
 END_C_DECLS
-LIBSBML_CPP_NAMESPACE_END
+LIBTSB_CPP_NAMESPACE_END
 
 
 #endif  /** util_h **/

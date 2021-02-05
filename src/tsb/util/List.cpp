@@ -42,7 +42,7 @@
 #include <stdio.h>
 #include <tsb/util/List.h>
 
-LIBSBML_CPP_NAMESPACE_BEGIN
+LIBTSB_CPP_NAMESPACE_BEGIN
 #ifdef __cplusplus
 
 /*
@@ -415,7 +415,7 @@ List::deleteListAndChildrenWith(List* list, ListDeleteItemFunc delteFunc)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 List_t *
 List_create (void)
 {
@@ -424,7 +424,7 @@ List_create (void)
 
 
 /** @cond doxygenLibsbmlInternal */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 ListNode_t *
 ListNode_create (void *item)
 {
@@ -438,7 +438,7 @@ ListNode_create (void *item)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_free (List_t *lst)
 {
@@ -461,7 +461,7 @@ ListNode_free (ListNode_t *node)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_add (List_t *lst, void *item)
 {
@@ -475,7 +475,7 @@ List_add (List_t *lst, void *item)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 unsigned int
 List_countIf (const List_t *lst, ListItemPredicate predicate)
 {
@@ -489,7 +489,7 @@ List_countIf (const List_t *lst, ListItemPredicate predicate)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_find ( const List_t *lst,
             const void   *item1,
@@ -505,7 +505,7 @@ List_find ( const List_t *lst,
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 List_t *
 List_findIf (const List_t *lst, ListItemPredicate predicate)
 {
@@ -519,7 +519,7 @@ List_findIf (const List_t *lst, ListItemPredicate predicate)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_get (const List_t *lst, unsigned int n)
 {
@@ -533,7 +533,7 @@ List_get (const List_t *lst, unsigned int n)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void
 List_prepend (List_t *lst, void *item)
 {
@@ -547,7 +547,7 @@ List_prepend (List_t *lst, void *item)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 void *
 List_remove (List_t *lst, unsigned int n)
 {
@@ -561,7 +561,7 @@ List_remove (List_t *lst, unsigned int n)
  * @memberof List_t
  * @endif
  */
-LIBSBML_EXTERN
+LIBTSB_EXTERN
 unsigned int
 List_size (const List_t *lst)
 {
@@ -569,6 +569,6 @@ List_size (const List_t *lst)
   return static_cast<const List*>(lst)->getSize();
 }
 
-LIBSBML_CPP_NAMESPACE_END
+LIBTSB_CPP_NAMESPACE_END
 /** @endcond */
 

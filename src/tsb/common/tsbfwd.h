@@ -71,6 +71,7 @@ typedef CLASS_OR_STRUCT TSBNamespaces TSBNamespaces_t;
 typedef CLASS_OR_STRUCT TSBError      TSBError_t;
 typedef CLASS_OR_STRUCT List                      List_t;
 typedef CLASS_OR_STRUCT ListNode                  ListNode_t;
+typedef CLASS_OR_STRUCT ExpectedAttributes    ExpectedAttributes_t;
 
 
 

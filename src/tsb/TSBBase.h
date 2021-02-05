@@ -49,8 +49,7 @@
 #include <tsb/TSBTypeCodes.h>
 #include <tsb/TSBNamespaces.h>
 #include <tsb/TSBConstructorException.h>
-#include <sbml/SyntaxChecker.h>
-#include <sbml/ExpectedAttributes.h>
+#include <tsb/util/ExpectedAttributes.h>
 #include <sbml/xml/XMLNode.h>
 
 #ifdef __cplusplus

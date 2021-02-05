@@ -44,7 +44,6 @@
 
 #include "ListWrapper.h"
 
-#include <sbml/SyntaxChecker.h>
 #include <sbml/ExpectedAttributes.h>
 #include <sbml/SBase.h>
 

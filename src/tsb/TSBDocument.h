@@ -420,7 +420,7 @@ public:
   /**
    * Write any contained elements
    */
-  virtual void writeElements(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+  virtual void writeElements( XMLOutputStream&
     stream) const;
 
   /** @endcond */
@@ -803,9 +803,9 @@ public:
    * Returns the value of the "Namespaces" element of this TSBDocument.
    *
    * @return the value of the "Namespaces" element of this TSBDocument as a
-   * LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*.
+   *  XMLNamespaces*.
    */
-  virtual const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* getNamespaces()
+  virtual const  XMLNamespaces* getNamespaces()
     const;
 
 
@@ -813,9 +813,9 @@ public:
    * Returns the value of the "Namespaces" element of this TSBDocument.
    *
    * @return the value of the "Namespaces" element of this TSBDocument as a
-   * LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*.
+   *  XMLNamespaces*.
    */
-  virtual LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* getNamespaces();
+  virtual  XMLNamespaces* getNamespaces();
 
 
   /**
@@ -899,7 +899,7 @@ protected:
   /**
    * Creates a new object from the next XMLToken on the XMLInputStream
    */
-  virtual TSBBase* createObject(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream&
+  virtual TSBBase* createObject( XMLInputStream&
     stream);
 
   /** @endcond */
@@ -911,7 +911,7 @@ protected:
   /**
    * Adds the expected attributes for this element
    */
-  virtual void addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
+  virtual void addExpectedAttributes(
     ExpectedAttributes& attributes);
 
   /** @endcond */
@@ -924,9 +924,9 @@ protected:
    * Reads the expected attributes into the member data variables
    */
   virtual void readAttributes(
-                              const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                              const 
                                 XMLAttributes& attributes,
-                              const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                              const 
                                 ExpectedAttributes& expectedAttributes);
 
   /** @endcond */
@@ -938,7 +938,7 @@ protected:
   /**
    * Writes the attributes to the stream
    */
-  virtual void writeAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+  virtual void writeAttributes( XMLOutputStream&
     stream) const;
 
   /** @endcond */
@@ -950,7 +950,7 @@ protected:
   /**
    * Writes the namespace for the Tsb package
    */
-  virtual void writeXMLNS(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+  virtual void writeXMLNS( XMLOutputStream&
     stream) const;
 
   /** @endcond */

@@ -301,7 +301,7 @@ public:
   /**
    * Write any contained elements
    */
-  virtual void writeElements(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+  virtual void writeElements( XMLOutputStream&
     stream) const;
 
   /** @endcond */
@@ -577,7 +577,7 @@ protected:
   /**
    * Adds the expected attributes for this element
    */
-  virtual void addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
+  virtual void addExpectedAttributes(
     ExpectedAttributes& attributes);
 
   /** @endcond */
@@ -590,9 +590,9 @@ protected:
    * Reads the expected attributes into the member data variables
    */
   virtual void readAttributes(
-                              const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                              const 
                                 XMLAttributes& attributes,
-                              const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                              const 
                                 ExpectedAttributes& expectedAttributes);
 
   /** @endcond */
@@ -604,7 +604,7 @@ protected:
   /**
    * Writes the attributes to the stream
    */
-  virtual void writeAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+  virtual void writeAttributes( XMLOutputStream&
     stream) const;
 
   /** @endcond */

@@ -183,12 +183,12 @@ TSBBase::TSBBase(const TSBBase& orig)
   , mURI(orig.mURI)
 {
   if(orig.mNotes != NULL)
-    this->mNotes = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(*const_cast<TSBBase&>(orig).getNotes());
+    this->mNotes = new  XMLNode(*const_cast<TSBBase&>(orig).getNotes());
   else
     this->mNotes = NULL;
 
   if(orig.mTestAnnotation != NULL)
-    this->mTestAnnotation = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(*const_cast<TSBBase&>(orig).mTestAnnotation);
+    this->mTestAnnotation = new  XMLNode(*const_cast<TSBBase&>(orig).mTestAnnotation);
   else
     this->mTestAnnotation = NULL;
 
@@ -226,14 +226,14 @@ TSBBase& TSBBase::operator=(const TSBBase& rhs)
     delete this->mNotes;
 
     if(rhs.mNotes != NULL)
-      this->mNotes = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(*const_cast<TSBBase&>(rhs).getNotes());
+      this->mNotes = new  XMLNode(*const_cast<TSBBase&>(rhs).getNotes());
     else
       this->mNotes = NULL;
 
     delete this->mTestAnnotation;
 
     if(rhs.mTestAnnotation != NULL)
-      this->mTestAnnotation = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(*const_cast<TSBBase&>(rhs).mTestAnnotation);
+      this->mTestAnnotation = new  XMLNode(*const_cast<TSBBase&>(rhs).mTestAnnotation);
     else
       this->mTestAnnotation = NULL;
 
@@ -289,14 +289,14 @@ TSBBase::getId() const
 /*
  * @return the notes of this TSB object.
  */
-LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*
+ XMLNode*
 TSBBase::getNotes()
 {
   return mNotes;
 }
 
 
-const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*
+const  XMLNode*
 TSBBase::getNotes() const
 {
   return mNotes;
@@ -309,28 +309,28 @@ TSBBase::getNotes() const
 std::string
 TSBBase::getNotesString()
 {
-  return LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertXMLNodeToString(mNotes);
+  return  XMLNode::convertXMLNodeToString(mNotes);
 }
 
 
 std::string
 TSBBase::getNotesString() const
 {
-  return LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertXMLNodeToString(mNotes);
+  return  XMLNode::convertXMLNodeToString(mNotes);
 }
 
 
 /*
  * @return the annotation of this TSB object.
  */
-LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*
+ XMLNode*
 TSBBase::getTestAnnotation ()
 {
   return mTestAnnotation;
 }
 
 
-const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*
+const  XMLNode*
 TSBBase::getTestAnnotation () const
 {
   return const_cast<TSBBase *>(this)->getTestAnnotation();
@@ -343,14 +343,14 @@ TSBBase::getTestAnnotation () const
 std::string
 TSBBase::getTestAnnotationString ()
 {
-  return LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertXMLNodeToString(getTestAnnotation());
+  return  XMLNode::convertXMLNodeToString(getTestAnnotation());
 }
 
 
 std::string
 TSBBase::getTestAnnotationString () const
 {
-  return LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertXMLNodeToString(getTestAnnotation());
+  return  XMLNode::convertXMLNodeToString(getTestAnnotation());
 }
 
 
@@ -428,7 +428,7 @@ TSBBase::unsetUserData()
 /*
  * @return the Namespaces associated with this TSB object
  */
-LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*
+ XMLNamespaces*
 TSBBase::getNamespaces()
 {
   if (mTSB != NULL)
@@ -438,7 +438,7 @@ TSBBase::getNamespaces()
 }
 
 
-const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*
+const  XMLNamespaces*
 TSBBase::getNamespaces() const
 {
   if (mTSB != NULL)
@@ -662,7 +662,7 @@ TSBBase::setId (const std::string& sid)
  * Sets the annotation of this TSB object to a copy of annotation.
  */
 int
-TSBBase::setTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation)
+TSBBase::setTestAnnotation ( XMLNode* annotation)
 {
   if (annotation == NULL)
   {
@@ -695,17 +695,17 @@ TSBBase::setTestAnnotation (const std::string& annotation)
     return LIBTSB_OPERATION_SUCCESS;
   }
   
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annt_xmln;
+   XMLNode* annt_xmln;
   
   // you might not have a document !!
   if (getTSBDocument() != NULL)
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation,xmlns);
+     XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation,xmlns);
   }
   else
   {
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation);
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation);
   }
   
   if(annt_xmln != NULL)
@@ -723,7 +723,7 @@ TSBBase::setTestAnnotation (const std::string& annotation)
  * adding additional information.
  */
 int
-TSBBase::appendTestAnnotation (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation)
+TSBBase::appendTestAnnotation (const  XMLNode* annotation)
 {
   int success = LIBTSB_OPERATION_FAILED;
   unsigned int duplicates = 0;
@@ -731,14 +731,14 @@ TSBBase::appendTestAnnotation (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* an
   if(annotation == NULL)
     return LIBTSB_OPERATION_SUCCESS;
 
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* new_annotation = NULL;
+   XMLNode* new_annotation = NULL;
   const string&  name = annotation->getName();
 
   // check for annotation tags and add if necessary
   if (name != "testAnnotation")
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken ann_t = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLTriple("testAnnotation", "", ""), LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes());
-    new_annotation = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(ann_t);
+     XMLToken ann_t =  XMLToken( XMLTriple("testAnnotation", "", ""),  XMLAttributes());
+    new_annotation = new  XMLNode(ann_t);
     new_annotation->addChild(*annotation);
   }
   else
@@ -787,7 +787,7 @@ TSBBase::appendTestAnnotation (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* an
     }
     else
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode *copy = mTestAnnotation->clone();
+       XMLNode *copy = mTestAnnotation->clone();
       success = setTestAnnotation(copy);
       delete copy;
     }
@@ -813,15 +813,15 @@ int
 TSBBase::appendTestAnnotation (const std::string& annotation)
 {
   int success = LIBTSB_OPERATION_FAILED;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annt_xmln;
+   XMLNode* annt_xmln;
   if (getTSBDocument() != NULL)
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation,xmlns);
+     XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation,xmlns);
   }
   else
   {
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation);
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation);
   }
 
   if(annt_xmln != NULL)
@@ -858,7 +858,7 @@ TSBBase::removeTopLevelTestAnnotationElement(const std::string elementName,
     // check uri matches
     if (elementURI.empty() == false)
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode child = mTestAnnotation->getChild(index);
+       XMLNode child = mTestAnnotation->getChild(index);
       std::string prefix = child.getPrefix();
 
       if (prefix.empty() == false
@@ -910,10 +910,10 @@ TSBBase::removeTopLevelTestAnnotationElement(const std::string elementName,
 
 
 int
-TSBBase::replaceTopLevelTestAnnotationElement(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annotation)
+TSBBase::replaceTopLevelTestAnnotationElement(const  XMLNode* annotation)
 {
   int success = LIBTSB_OPERATION_FAILED;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode * replacement = NULL;
+   XMLNode * replacement = NULL;
   if (annotation->getName() == "testAnnotation")
   {
     if (annotation->getNumChildren() != 1)
@@ -947,15 +947,15 @@ int
 TSBBase::replaceTopLevelTestAnnotationElement(const std::string& annotation)
 {
   int success = LIBTSB_OPERATION_FAILED;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* annt_xmln;
+   XMLNode* annt_xmln;
   if (getTSBDocument() != NULL)
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation,xmlns);
+     XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation,xmlns);
   }
   else
   {
-    annt_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(annotation);
+    annt_xmln =  XMLNode::convertStringToXMLNode(annotation);
   }
 
   if(annt_xmln != NULL)
@@ -973,7 +973,7 @@ TSBBase::replaceTopLevelTestAnnotationElement(const std::string& annotation)
  * Sets the notes of this TSB object to a copy of notes.
  */
 int
-TSBBase::setNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
+TSBBase::setNotes(const  XMLNode* notes)
 {
   if (mNotes == notes)
   {
@@ -993,13 +993,13 @@ TSBBase::setNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
 
   if (name == "notes")
   {
-    mNotes = static_cast<LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode*>( notes->clone() );
+    mNotes = static_cast< XMLNode*>( notes->clone() );
   }
   else
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken notes_t = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLTriple("notes", "", ""),
-                                LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes());
-    mNotes = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(notes_t);
+     XMLToken notes_t =  XMLToken( XMLTriple("notes", "", ""),
+                                 XMLAttributes());
+    mNotes = new  XMLNode(notes_t);
 
     // The root node of the given XMLNode tree can be an empty XMLNode
     // (i.e. neither start, end, nor text XMLNode) if the given notes was
@@ -1041,17 +1041,17 @@ TSBBase::setNotes(const std::string& notes, bool addXHTMLMarkup)
   }
   else
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes_xmln;
+     XMLNode* notes_xmln;
 
     // you might not have a document !!
     if (getTSBDocument() != NULL)
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
-      notes_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(notes,xmlns);
+       XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
+      notes_xmln =  XMLNode::convertStringToXMLNode(notes,xmlns);
     }
     else
     {
-      notes_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(notes);
+      notes_xmln =  XMLNode::convertStringToXMLNode(notes);
     }
 
     if (notes_xmln != NULL)
@@ -1064,11 +1064,11 @@ TSBBase::setNotes(const std::string& notes, bool addXHTMLMarkup)
             && notes_xmln->isText() == true)
         {
           //create a parent node of xhtml type p
-          LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes blank_att = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes();
-          LIBSBML_CPP_NAMESPACE_QUALIFIER XMLTriple triple = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLTriple("p", "http://www.w3.org/1999/xhtml", "");
-          LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces xmlns = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces();
+           XMLAttributes blank_att =  XMLAttributes();
+           XMLTriple triple =  XMLTriple("p", "http://www.w3.org/1999/xhtml", "");
+           XMLNamespaces xmlns =  XMLNamespaces();
           xmlns.add("http://www.w3.org/1999/xhtml", "");
-          LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode *xmlnode = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken(triple, blank_att, xmlns));
+           XMLNode *xmlnode = new  XMLNode( XMLToken(triple, blank_att, xmlns));
 
           // create a text node from the text given
           xmlnode->addChild(*notes_xmln);
@@ -1098,7 +1098,7 @@ TSBBase::setNotes(const std::string& notes, bool addXHTMLMarkup)
  * adding additional information.
  */
 int
-TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
+TSBBase::appendNotes(const  XMLNode* notes)
 {
   int success = LIBTSB_OPERATION_FAILED;
   if(notes == NULL)
@@ -1127,7 +1127,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
   typedef enum { _ANotesHTML, _ANotesBody, _ANotesAny } _NotesType;
 
   _NotesType addedNotesType = _ANotesAny;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode   addedNotes;
+   XMLNode   addedNotes;
 
   //------------------------------------------------------------
   //
@@ -1238,7 +1238,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
   if (getLevel() > 2
     || (getLevel() == 2 && getVersion() > 1))
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode tmpNotes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLTriple("notes","",""), LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes());
+     XMLNode tmpNotes( XMLTriple("notes","",""),  XMLAttributes());
 
     if (addedNotesType == _ANotesAny)
     {
@@ -1263,7 +1263,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
     //------------------------------------------------------------
 
     _NotesType curNotesType   = _ANotesAny;
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode&  curNotes = *mNotes;
+     XMLNode&  curNotes = *mNotes;
 
     // curNotes.getChild(0) must be "html", "body", or any XHTML
     // element that would be permitted within a "body" element .
@@ -1272,7 +1272,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
 
     if (cname == "html")
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& curHTML = curNotes.getChild(0);
+       XMLNode& curHTML = curNotes.getChild(0);
       //
       // checks the curHTML if the html tag contains "head" and "body" tags
       // which must be located in this order, otherwise nothing will be done.
@@ -1312,14 +1312,14 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
 
     if (curNotesType == _ANotesHTML)
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& curHTML = curNotes.getChild(0);
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& curBody = curHTML.getChild(1);
+       XMLNode& curHTML = curNotes.getChild(0);
+       XMLNode& curBody = curHTML.getChild(1);
 
       if (addedNotesType == _ANotesHTML)
       {
         // adds the given html tag to the current html tag
 
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& addedBody = addedNotes.getChild(1);
+         XMLNode& addedBody = addedNotes.getChild(1);
 
         for (i=0; i < addedBody.getNumChildren(); i++)
         {
@@ -1347,9 +1347,9 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
       {
         // adds the given html tag to the current body tag
 
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode  addedHTML(addedNotes);
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& addedBody = addedHTML.getChild(1);
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& curBody   = curNotes.getChild(0);
+         XMLNode  addedHTML(addedNotes);
+         XMLNode& addedBody = addedHTML.getChild(1);
+         XMLNode& curBody   = curNotes.getChild(0);
 
         for (i=0; i < curBody.getNumChildren(); i++)
         {
@@ -1365,7 +1365,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
         // adds the given body or other tag (permitted in the body) to the current
         // body tag
 
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& curBody = curNotes.getChild(0);
+         XMLNode& curBody = curNotes.getChild(0);
 
         for (i=0; i < addedNotes.getNumChildren(); i++)
         {
@@ -1381,8 +1381,8 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
       {
         // adds the given html tag to the current any tag permitted in the body.
 
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode  addedHTML(addedNotes);
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode& addedBody = addedHTML.getChild(1);
+         XMLNode  addedHTML(addedNotes);
+         XMLNode& addedBody = addedHTML.getChild(1);
 
         for (i=0; i < curNotes.getNumChildren(); i++)
         {
@@ -1397,7 +1397,7 @@ TSBBase::appendNotes(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes)
       {
         // adds the given body tag to the current any tag permitted in the body.
 
-        LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode addedBody(addedNotes);
+         XMLNode addedBody(addedNotes);
 
         for (i=0; i < curNotes.getNumChildren(); i++)
         {
@@ -1445,16 +1445,16 @@ TSBBase::appendNotes(const std::string& notes)
     return LIBTSB_OPERATION_SUCCESS;
   }
 
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* notes_xmln;
+   XMLNode* notes_xmln;
   // you might not have a document !!
   if (getTSBDocument() != NULL)
   {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
-      notes_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(notes,xmlns);
+       XMLNamespaces* xmlns = getTSBDocument()->getNamespaces();
+      notes_xmln =  XMLNode::convertStringToXMLNode(notes,xmlns);
   }
   else
   {
-      notes_xmln = LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode::convertStringToXMLNode(notes);
+      notes_xmln =  XMLNode::convertStringToXMLNode(notes);
   }
 
   if(notes_xmln != NULL)
@@ -1578,7 +1578,7 @@ TSBBase::getAncestorOfType(int type) const
  * @param xmlns the namespaces to set
  */
 int
-TSBBase::setNamespaces(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns)
+TSBBase::setNamespaces( XMLNamespaces* xmlns)
 {
   if (xmlns == NULL)
   {
@@ -1650,7 +1650,7 @@ TSBBase::unsetNotes ()
 int
 TSBBase::unsetTestAnnotation ()
 {
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode* empty = NULL;
+   XMLNode* empty = NULL;
   return setTestAnnotation(empty);
 }
 
@@ -1708,7 +1708,7 @@ bool
 TSBBase::hasValidLevelVersionNamespaceCombination()
 {
   int typecode = getTypeCode();
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces *xmlns = getNamespaces();
+   XMLNamespaces *xmlns = getNamespaces();
 
   return hasValidLevelVersionNamespaceCombination(typecode, xmlns);
 }
@@ -1806,7 +1806,7 @@ TSBBase::matchesCoreTSBNamespace(const TSBBase * sb) const
 
 
 bool
-TSBBase::hasValidLevelVersionNamespaceCombination(int typecode, LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces *xmlns)
+TSBBase::hasValidLevelVersionNamespaceCombination(int typecode,  XMLNamespaces *xmlns)
 {
 
 
@@ -1900,7 +1900,7 @@ char*
 TSBBase::toTSB ()
 {
   ostringstream    os;
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream  stream(os, "UTF-8", false);
+   XMLOutputStream  stream(os, "UTF-8", false);
 
   write(stream);
 
@@ -2104,11 +2104,11 @@ TSBBase::getObject(const std::string& objectName, unsigned int index)
  * Reads (initializes) this TSB object by reading from XMLInputStream.
  */
 void
-TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
+TSBBase::read ( XMLInputStream& stream)
 {
   if ( !stream.peek().isStart() ) return;
 
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken  element  = stream.next();
+  const  XMLToken  element  = stream.next();
   int             position =  0;
 
   setTSBBaseFields( element );
@@ -2128,7 +2128,7 @@ TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
     // need to check that any prefix on the tsbns also occurs on element
     // remembering the horrible situation where the tsbns might be declared
     // with more than one prefix
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces * xmlns = this->getTSBNamespaces()->getNamespaces();
+     XMLNamespaces * xmlns = this->getTSBNamespaces()->getNamespaces();
     if (xmlns != NULL)
     {
       int i = xmlns->getIndexByPrefix(element.getPrefix());
@@ -2188,7 +2188,7 @@ TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
     checkDefaultNamespace(mTSBNamespaces->getNamespaces(), element.getName());
     if (!element.getPrefix().empty())
     {
-      LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces * prefixedNS = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces();
+       XMLNamespaces * prefixedNS = new  XMLNamespaces();
       prefixedNS->add(element.getURI(), element.getPrefix());
       checkDefaultNamespace(prefixedNS, element.getName(), element.getPrefix());
       delete prefixedNS;
@@ -2209,7 +2209,7 @@ TSBBase::read (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
     }
     setElementText(text);
 
-    const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken& next = stream.peek();
+    const  XMLToken& next = stream.peek();
 
     // Re-check stream.isGood() because stream.peek() could hit something.
     if ( !stream.isGood() ) break;
@@ -2264,7 +2264,7 @@ TSBBase::setElementText(const std::string &text)
  * Writes (serializes) this TSB object by writing it to XMLOutputStream.
  */
 void
-TSBBase::write (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const
+TSBBase::write ( XMLOutputStream& stream) const
 {
   stream.startElement( getElementName(), getPrefix() );
 
@@ -2285,7 +2285,7 @@ TSBBase::write (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const
  * implementation of this method as well.
  */
 void
-TSBBase::writeElements (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const
+TSBBase::writeElements ( XMLOutputStream& stream) const
 {
   if ( mNotes != NULL ) stream << *mNotes;
 
@@ -2303,7 +2303,7 @@ TSBBase::writeElements (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream)
  * XMLInputStream or @c NULL if the token was not recognized.
  */
 TSBBase*
-TSBBase::createObject (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
+TSBBase::createObject ( XMLInputStream& stream)
 {
   return NULL;
 }
@@ -2320,7 +2320,7 @@ TSBBase::createObject (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
  * @return true if the subclass read from the stream, false otherwise.
  */
 bool
-TSBBase::readOtherXML (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
+TSBBase::readOtherXML ( XMLInputStream& stream)
 {
   bool read = false;
   return read;
@@ -2333,7 +2333,7 @@ TSBBase::readOtherXML (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
  * @return true if read an <annotation> element from the stream
  */
 bool
-TSBBase::readTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
+TSBBase::readTestAnnotation ( XMLInputStream& stream)
 {
   const string& name = stream.peek().getName();
 
@@ -2350,7 +2350,7 @@ TSBBase::readTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& str
     }
 
     delete mTestAnnotation;
-    mTestAnnotation = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(stream);
+    mTestAnnotation = new  XMLNode(stream);
     checkTestAnnotation();
     return true;
   }
@@ -2365,7 +2365,7 @@ TSBBase::readTestAnnotation (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& str
  * @return true if read a <notes> element from the stream
  */
 bool
-TSBBase::readNotes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
+TSBBase::readNotes ( XMLInputStream& stream)
 {
   const string& name = stream.peek().getName();
 
@@ -2381,13 +2381,13 @@ TSBBase::readNotes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream& stream)
     }
 
     delete mNotes;
-    mNotes = new LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode(stream);
+    mNotes = new  XMLNode(stream);
 
     //
     // checks if the given default namespace (if any) is a valid
     // TSB namespace
     //
-    const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces &xmlns = mNotes->getNamespaces();
+    const  XMLNamespaces &xmlns = mNotes->getNamespaces();
     checkDefaultNamespace(&xmlns,"notes");
 
     return true;
@@ -2556,10 +2556,10 @@ TSBBase::addExpectedAttributes(ExpectedAttributes& attributes)
  * parents implementation of this method as well.
  */
 void
-TSBBase::readAttributes (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes& attributes,
-                       const LIBSBML_CPP_NAMESPACE_QUALIFIER ExpectedAttributes& expectedAttributes)
+TSBBase::readAttributes (const  XMLAttributes& attributes,
+                       const  ExpectedAttributes& expectedAttributes)
 {
-  const_cast<LIBSBML_CPP_NAMESPACE_QUALIFIER XMLAttributes&>(attributes).setErrorLog(getErrorLog());
+  const_cast< XMLAttributes&>(attributes).setErrorLog(getErrorLog());
 
   const unsigned int level   = getLevel  ();
   const unsigned int version = getVersion();
@@ -2623,7 +2623,7 @@ TSBBase::getPrefix() const
 {
   std::string prefix = "";
 
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces *xmlns = getNamespaces();
+  const  XMLNamespaces *xmlns = getNamespaces();
   string uri = getURI();
   if(xmlns && mTSB)
   {
@@ -2642,7 +2642,7 @@ TSBBase::getTSBPrefix() const
 {
   std::string prefix = "";
 
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces *xmlns = getNamespaces();
+  const  XMLNamespaces *xmlns = getNamespaces();
   if (xmlns == NULL)
     return getPrefix();
 
@@ -2687,7 +2687,7 @@ TSBBase::getRootElement()
  * of this method as well.
  */
 void
-TSBBase::writeAttributes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const
+TSBBase::writeAttributes ( XMLOutputStream& stream) const
 {
   string tsbPrefix    = getTSBPrefix();
   if ( !mMetaId.empty() )
@@ -2706,7 +2706,7 @@ TSBBase::writeAttributes (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& strea
  *
  */
 void
-TSBBase::writeXMLNS (LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream& stream) const
+TSBBase::writeXMLNS ( XMLOutputStream& stream) const
 {
   // do nothing.
 }
@@ -2764,7 +2764,7 @@ int TSBBase::removeFromParentAndDelete()
 
 /** @cond doxygenLibtsbInternal */
 const std::string
-TSBBase::checkMathMLNamespace(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken elem)
+TSBBase::checkMathMLNamespace(const  XMLToken elem)
 {
   std::string prefix = "";
   unsigned int match = 0;
@@ -2810,7 +2810,7 @@ TSBBase::checkMathMLNamespace(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken ele
 
 /** @cond doxygenLibtsbInternal */
 void
-TSBBase::checkDefaultNamespace(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* xmlns,
+TSBBase::checkDefaultNamespace(const  XMLNamespaces* xmlns,
                              const std::string& elementName,
                              const std::string& prefix)
 {
@@ -2860,12 +2860,12 @@ TSBBase::checkTestAnnotation()
   // checks if the given default namespace (if any) is a valid
   // TSB namespace
   //
-  const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces &xmlns = mTestAnnotation->getNamespaces();
+  const  XMLNamespaces &xmlns = mTestAnnotation->getNamespaces();
   checkDefaultNamespace(&xmlns,"testAnnotation");
 
   while (nNodes < mTestAnnotation->getNumChildren())
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode topLevel = mTestAnnotation->getChild(nNodes);
+     XMLNode topLevel = mTestAnnotation->getChild(nNodes);
 
     // the top level must be an element (so it should be a start)
     if (topLevel.isStart() == false)
@@ -2961,7 +2961,7 @@ TSBBase::checkTestAnnotation()
  * an tsb document, an error is logged.
  */
 void
-TSBBase::checkXHTML(const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNode * xhtml)
+TSBBase::checkXHTML(const  XMLNode * xhtml)
 {
   if (xhtml == NULL) return;
 
@@ -3054,14 +3054,14 @@ TSBBase::checkCompatibility(const TSBBase * object) const
  * roundtripping) declared on this TSB (XML) element.
  */
 void
-TSBBase::setTSBBaseFields (const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLToken& element)
+TSBBase::setTSBBaseFields (const  XMLToken& element)
 {
   mLine   = element.getLine  ();
   mColumn = element.getColumn();
 
   if (element.getNamespaces().getLength() > 0)
   {
-    LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces tmpxmlns(element.getNamespaces());
+     XMLNamespaces tmpxmlns(element.getNamespaces());
     setNamespaces(&tmpxmlns);
   }
   else

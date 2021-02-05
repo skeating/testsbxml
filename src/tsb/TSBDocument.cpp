@@ -434,7 +434,7 @@ TSBDocument::hasRequiredAttributes() const
  * Write any contained elements
  */
 void
-TSBDocument::writeElements(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+TSBDocument::writeElements( XMLOutputStream&
   stream) const
 {
   TSBBase::writeElements(stream);
@@ -893,7 +893,7 @@ TSBDocument::getElementBySId(const std::string& id)
 /*
  * Returns the value of the "Namespaces" element of this TSBDocument.
  */
-const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*
+const  XMLNamespaces*
 TSBDocument::getNamespaces() const
 {
   return mTSBNamespaces->getNamespaces();
@@ -903,7 +903,7 @@ TSBDocument::getNamespaces() const
 /*
  * Returns the value of the "Namespaces" element of this TSBDocument.
  */
-LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces*
+ XMLNamespaces*
 TSBDocument::getNamespaces()
 {
   return mTSBNamespaces->getNamespaces();
@@ -978,7 +978,7 @@ TSBDocument::getNumErrors(unsigned int severity) const
  * Creates a new object from the next XMLToken on the XMLInputStream
  */
 TSBBase*
-TSBDocument::createObject(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream&
+TSBDocument::createObject( XMLInputStream&
   stream)
 {
   TSBBase* obj = NULL;
@@ -1011,7 +1011,7 @@ TSBDocument::createObject(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLInputStream&
  * Adds the expected attributes for this element
  */
 void
-TSBDocument::addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
+TSBDocument::addExpectedAttributes(
   ExpectedAttributes& attributes)
 {
   TSBBase::addExpectedAttributes(attributes);
@@ -1032,9 +1032,9 @@ TSBDocument::addExpectedAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER
  */
 void
 TSBDocument::readAttributes(
-                            const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                            const 
                               XMLAttributes& attributes,
-                            const LIBSBML_CPP_NAMESPACE_QUALIFIER
+                            const 
                               ExpectedAttributes& expectedAttributes)
 {
   unsigned int level = getLevel();
@@ -1126,7 +1126,7 @@ TSBDocument::readAttributes(
  * Writes the attributes to the stream
  */
 void
-TSBDocument::writeAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+TSBDocument::writeAttributes( XMLOutputStream&
   stream) const
 {
   TSBBase::writeAttributes(stream);
@@ -1152,15 +1152,15 @@ TSBDocument::writeAttributes(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
  * Writes the namespace for the Tsb package
  */
 void
-TSBDocument::writeXMLNS(LIBSBML_CPP_NAMESPACE_QUALIFIER XMLOutputStream&
+TSBDocument::writeXMLNS( XMLOutputStream&
   stream) const
 {
-  LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces xmlns;
+   XMLNamespaces xmlns;
   std::string prefix = getPrefix();
 
   if (prefix.empty())
   {
-    const LIBSBML_CPP_NAMESPACE_QUALIFIER XMLNamespaces* thisxmlns =
+    const  XMLNamespaces* thisxmlns =
       getNamespaces();
     if (thisxmlns && thisxmlns->hasURI(TSB_XMLNS_L1V1))
     {

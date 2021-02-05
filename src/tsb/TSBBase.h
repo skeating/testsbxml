@@ -45,7 +45,6 @@
 
 #include <tsb/common/extern.h>
 #include <tsb/common/libtsb-namespace.h>
-#include <sbml/common/libsbml-namespace.h>
 #include <tsb/common/tsbfwd.h>
 #include <tsb/TSBTypeCodes.h>
 #include <tsb/TSBNamespaces.h>

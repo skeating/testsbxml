@@ -56,7 +56,6 @@
 #include <tsb/TSBBase.h>
 #include <tsb/TSBListOfComments.h>
 #include <tsb/TSBErrorLog.h>
-#include <sbml/common/libsbml-namespace.h>
 
 
 LIBTSB_CPP_NAMESPACE_BEGIN

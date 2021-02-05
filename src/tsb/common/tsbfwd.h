@@ -69,23 +69,14 @@ typedef CLASS_OR_STRUCT TSBReader     TSBReader_t;
 typedef CLASS_OR_STRUCT TSBWriter     TSBWriter_t;
 typedef CLASS_OR_STRUCT TSBNamespaces TSBNamespaces_t;
 typedef CLASS_OR_STRUCT TSBError      TSBError_t;
+typedef CLASS_OR_STRUCT List                      List_t;
+typedef CLASS_OR_STRUCT ListNode                  ListNode_t;
+
 
 
 LIBTSB_CPP_NAMESPACE_END
 
 
-
-#include <sbml/common/libsbml-namespace.h>
-
-LIBSBML_CPP_NAMESPACE_BEGIN
-
-/**
- * @var typedef class XMLNode XMLNode_t
- * @copydoc XMLNode
- */
-typedef CLASS_OR_STRUCT XMLNode XMLNode_t;
-
-LIBSBML_CPP_NAMESPACE_END
 
 #undef CLASS_OR_STRUCT
 

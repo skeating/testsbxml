@@ -2555,20 +2555,6 @@ TSBBase_unsetTestAnnotation (TSBBase_t *sb);
 
 
 /**
- * Returns the Model_t structure in which the given instance is located.
- *
- * @param sb the TSBBase_t structure
- *
- * @return the parent Model_t strucdture of the given structure.
- *
- * @memberof TSBBase_t
- */
-LIBTSB_EXTERN
-const Model_t *
-TSBBase_getModel (const TSBBase_t *sb);
-
-
-/**
  * Returns the TSB Level of the overall TSB document.
  *
  * @param sb the TSBBase_t structure to query

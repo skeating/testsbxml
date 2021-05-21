@@ -36,7 +36,7 @@
  */
 #include <tsb/TSBComment.h>
 #include <tsb/TSBListOfComments.h>
-#include <sbml/xml/XMLInputStream.h>
+#include <liblx/xml/XMLInputStream.h>
 
 
 using namespace std;

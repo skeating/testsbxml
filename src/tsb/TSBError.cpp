@@ -42,7 +42,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include <sbml/xml/XMLError.h>
+#include <liblx/xml/XMLError.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorTable.h>

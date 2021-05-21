@@ -42,15 +42,15 @@
 #include <sstream>
 
 #include <tsb/common/common.h>
-#include <sbml/xml/XMLOutputStream.h>
+#include <liblx/xml/XMLOutputStream.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBDocument.h>
 #include <tsb/TSBWriter.h>
 
-#include <sbml/compress/CompressCommon.h>
-#include <sbml/compress/OutputCompressor.h>
+#include <liblx/xml/compress/CompressCommon.h>
+#include <liblx/xml/compress/OutputCompressor.h>
 
 /** @cond doxygenIgnored */
 

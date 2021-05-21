@@ -41,8 +41,8 @@
 #include <string>
 #include <list>
 
-#include <sbml/xml/XMLToken.h>
-#include <sbml/xml/XMLParser.h>
+#include <liblx/xml/XMLToken.h>
+#include <liblx/xml/XMLParser.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>

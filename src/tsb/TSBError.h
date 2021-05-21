@@ -40,7 +40,7 @@
 #define TSBError_h
 
 #include <tsb/common/extern.h>
-#include <sbml/xml/XMLError.h>
+#include <liblx/xml/XMLError.h>
 #include <tsb/TSBNamespaces.h>
 
 
@@ -108,9 +108,9 @@ typedef enum
  */
 typedef enum
 {
-    LIBTSB_CAT_INTERNAL = LIBSBML_CAT_INTERNAL,
-    LIBTSB_CAT_SYSTEM = LIBSBML_CAT_SYSTEM,
-    LIBTSB_CAT_XML = LIBSBML_CAT_XML,
+    LIBTSB_CAT_INTERNAL = LIBSBXML_CAT_INTERNAL,
+    LIBTSB_CAT_SYSTEM = LIBSBXML_CAT_SYSTEM,
+    LIBTSB_CAT_XML = LIBSBXML_CAT_XML,
 
     LIBTSB_CAT_TSB = (LIBTSB_CAT_XML + 1)
     /*!< General TSB error  not falling into another category below. */
@@ -157,9 +157,9 @@ typedef enum
    * we only report one of the 4 XMLError_Severity values.  Translation
    * of the codes is done in TSBError.cpp.
    */
-    LIBTSB_SEV_WARNING = LIBSBML_SEV_WARNING,
-    LIBTSB_SEV_ERROR = LIBSBML_SEV_ERROR,
-    LIBTSB_SEV_FATAL = LIBSBML_SEV_FATAL,
+    LIBTSB_SEV_WARNING = LIBLX_SEV_WARNING,
+    LIBTSB_SEV_ERROR = LIBLX_SEV_ERROR,
+    LIBTSB_SEV_FATAL = LIBLX_SEV_FATAL,
 
     LIBTSB_SEV_SCHEMA_ERROR    = (LIBTSB_SEV_FATAL + 1)
     /*!< The XML content does not conform to

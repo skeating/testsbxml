@@ -39,12 +39,12 @@
 #include <sstream>
 #include <vector>
 
-#include <sbml/xml/XMLError.h>
-#include <sbml/xml/XMLErrorLog.h>
-#include <sbml/xml/XMLOutputStream.h>
-#include <sbml/xml/XMLInputStream.h>
-#include <sbml/xml/XMLToken.h>
-#include <sbml/xml/XMLNode.h>
+#include <liblx/xml/XMLError.h>
+#include <liblx/xml/XMLErrorLog.h>
+#include <liblx/xml/XMLOutputStream.h>
+#include <liblx/xml/XMLInputStream.h>
+#include <liblx/xml/XMLToken.h>
+#include <liblx/xml/XMLNode.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>

@@ -35,7 +35,7 @@
  * ------------------------------------------------------------------------ -->
  */
 #include <tsb/TSBDocument.h>
-#include <sbml/xml/XMLInputStream.h>
+#include <liblx/xml/XMLInputStream.h>
 
 
 using namespace std;
@@ -787,7 +787,7 @@ TSBDocument::addChildObject(const std::string& elementName,
     return addComment((const TSBComment*)(element));
   }
 
-  return LIBSBML_OPERATION_FAILED;
+  return LIBLX_OPERATION_FAILED;
 }
 
 /** @endcond */

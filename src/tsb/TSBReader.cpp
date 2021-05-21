@@ -36,9 +36,9 @@
  */
 
 
-#include <sbml/xml/XMLError.h>
-#include <sbml/xml/XMLErrorLog.h>
-#include <sbml/xml/XMLInputStream.h>
+#include <liblx/xml/XMLError.h>
+#include <liblx/xml/XMLErrorLog.h>
+#include <liblx/xml/XMLInputStream.h>
 
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBVisitor.h>
@@ -46,8 +46,8 @@
 #include <tsb/TSBError.h>
 #include <tsb/TSBReader.h>
 
-#include <sbml/compress/CompressCommon.h>
-#include <sbml/compress/InputDecompressor.h>
+#include <liblx/xml/compress/CompressCommon.h>
+#include <liblx/xml/compress/InputDecompressor.h>
 
 /** @cond doxygenIgnored */
 

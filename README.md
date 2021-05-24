@@ -1,5 +1,8 @@
 # LibTSB
 
+## Note branch 'builds_with_libsbml' creates correct output from examples when linked to full libSBML 
+
+
 ## Dependencies
 This library requires libSBML to be present, as its XML parsing layer will be used. for that either expat, xerces-c or libXML2 needs to be available. 
 

@@ -218,13 +218,12 @@ endif(WITH_SWIG)
 
 ###############################################################################
 #
-# Locate libsbml
+# Locate liblx
 #
 find_library(LIBSBML_LIBRARY
-    #NAMES libsbml-static.lib sbml-static libsbml.lib sbml
-    NAMES liblx-static.a liblx.dylib
+    NAMES liblx-static.a liblx.dylib liblx
     PATHS ${LIBTSB_DEPENDENCY_DIR}/src
-    /usr/local/lib          
+    /usr/local/lib
           /usr/lib 
     DOC "The file name of the liblx library."
 )
@@ -232,12 +231,11 @@ find_library(LIBSBML_LIBRARY
 set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBSBML_LIBRARY})
 
 find_path(LIBSBML_INCLUDE_DIR
-    NAMES sbml/SBase.h
-    PATHS 
-          ${LIBTSB_DEPENDENCY_DIR}/liblx/xml
+    NAMES common/liblx-config.h
+    PATHS ${LIBTSB_DEPENDENCY_DIR}/liblx/xml
     /usr/local/include
           /usr/include 
-    DOC "The directory containing the sbml include files."
+    DOC "The directory containing the liblx include files."
 )
 
 set(LIBSBML_STATIC OFF CACHE BOOL "is libsbml statically compiled")
@@ -249,14 +247,9 @@ if (WIN32 AND NOT CYGWIN)
   endif()
 endif()
 
-#if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/sbml/SBase.h")
-#    message(FATAL_ERROR 
-#"The include directory specified for sbml appears to be invalid.  It should contain the 
-#file sbml/SBase.h, but it does not. Please specify the LIBSBML_INCLUDE_DIR variable."
-#)
-#endif()
-
-
+if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/liblx/xml/common/liblx-config.h")
+    message(FATAL_ERROR "The include directory specified for liblx appears to be invalid.  It should contain the file common/liblx-config.h, but it does not. Please specify the INCLUDE_DIR variable.")
+endif()
 
 
 ###############################################################################

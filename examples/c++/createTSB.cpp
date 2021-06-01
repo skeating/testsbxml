@@ -27,6 +27,6 @@ int main(int argc,char** argv)
   //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)
   //  document->printErrors();
 
-  writeTSBToFile(document,"tsb_example1.xml");
+  writeTSBToFile(document,"tsb_example.xml");
   delete document;
 }

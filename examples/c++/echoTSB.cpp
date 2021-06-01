@@ -14,7 +14,7 @@ int main(int argc,char** argv)
 {
   // read the document
 
-  TSBDocument *document = readTSBFromFile("tsb_sample.xml");
+  TSBDocument *document = readTSBFromFile("tsb_example.xml");
 
   // TODO: document has no printerrors function ... it should
   //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)

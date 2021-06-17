@@ -11,7 +11,7 @@
 
 #include <tsb/common/extern.h>
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 
 #ifdef __cplusplus
 
@@ -251,16 +251,16 @@ util_isNegZero (double d);
 
 
 /**
- * Function for freeing memory allocated by libSBML functions
+ * Function for freeing memory allocated by libLX functions
  *
  * @param element pointer to the object to be freed.  It must
- * be data that was originally allocated by a libSBML function.
+ * be data that was originally allocated by a libLX function.
  * 
  * This function was introduced to deal with a specific memory issue
- * arising on Windows OS when using libSBML compiled against a static MSVC
+ * arising on Windows OS when using libLX compiled against a static MSVC
  * runtime library.  In this situation, it was not possible to use the
  * standard <code>free()</code> function when freeing memory that was
- * actually allocated within the libSBML function call.  The following is
+ * actually allocated within the libLX function call.  The following is
  * an example of where the free function fails and needs to be replaced
  * with util_free().
  * @code
@@ -268,7 +268,7 @@ util_isNegZero (double d);
  *    free(formula);
  * @endcode
  *
- * @note This function is only necessary when using a version of libSBML
+ * @note This function is only necessary when using a version of libLX
  * compiled and linked against a static MSVC runtime library.
  */
 LIBTSB_EXTERN
@@ -276,17 +276,17 @@ void
 util_free (void * element);
 
 /**
- * Function for freeing memory allocated by libSBML functions
+ * Function for freeing memory allocated by libLX functions
  *
  * @param objects pointer to the array to be freed.  It must
- * be data that was originally allocated by a libSBML function.
+ * be data that was originally allocated by a libLX function.
  * @param length number of elements in the array to be freed.
  * 
  * This function was introduced to deal with a specific memory issue
- * arising on Windows OS when using libSBML compiled against a static MSVC
+ * arising on Windows OS when using libLX compiled against a static MSVC
  * runtime library.  In this situation, it was not possible to use the
  * standard <code>free()</code> function when freeing memory that was
- * actually allocated within the libSBML function call.  The following is
+ * actually allocated within the libLX function call.  The following is
  * an example of where the free function fails and needs to be replaced
  * with util_freeArray().
  * @code
@@ -295,7 +295,7 @@ util_free (void * element);
  *    free(supported);
  * @endcode
  *
- * @note This function is only necessary when using a version of libSBML
+ * @note This function is only necessary when using a version of libLX
  * compiled and linked against a static MSVC runtime library.
  */
 LIBTSB_EXTERN

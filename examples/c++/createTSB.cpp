@@ -24,7 +24,7 @@ int main(int argc,char** argv)
   comment->setPoint("This is irrelevant");
 
   // TODO: document has no printerrors function ... it should
-  //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)
+  //if (document->getNumErrors(LIBLX_SEV_ERROR) > 0)
   //  document->printErrors();
 
   writeTSBToFile(document,"tsb_example.xml");

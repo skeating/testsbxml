@@ -17,7 +17,7 @@ int main(int argc,char** argv)
   TSBDocument *document = readTSBFromFile("tsb_example.xml");
 
   // TODO: document has no printerrors function ... it should
-  //if (document->getNumErrors(LIBSBML_SEV_ERROR) > 0)
+  //if (document->getNumErrors(LIBLX_SEV_ERROR) > 0)
   //  document->printErrors();
 
   cout << "Document contains " << document->getNumComments() << " comments:\n";

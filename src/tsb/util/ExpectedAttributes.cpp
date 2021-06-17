@@ -38,7 +38,7 @@ ExpectedAttributes::ExpectedAttributes()
 
 #endif /* __cplusplus */
 /** @cond doxygenIgnored */
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 LIBTSB_EXTERN 
 ExpectedAttributes_t *
 ExpectedAttributes_create()

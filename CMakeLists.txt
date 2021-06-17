@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 project(libtsb)
 
 include (CMakeTestCCompiler)
@@ -59,7 +59,7 @@ include(InstallRequiredSystemLibraries)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An API library for reading/writing/manipulating TSB.")
 set(CPACK_PACKAGE_NAME "${PACKAGE_NAME}")
 set(CPACK_PACKAGE_VENDOR "The SBML Team")
-set(CPACK_PACKAGE_CONTACT "LibSBML Team <libsbml-team@caltech.edu>")
+set(CPACK_PACKAGE_CONTACT "The SBML Team <sbml-team@caltech.edu>")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_PACKAGE_VERSION_MAJOR "${LIBTSB_VERSION_MAJOR}")
@@ -218,37 +218,37 @@ endif(WITH_SWIG)
 
 ###############################################################################
 #
-# Locate liblx
+# Locate libLX
 #
-find_library(LIBSBML_LIBRARY
+find_library(LIBLX_LIBRARY
     NAMES liblx-static.a liblx.dylib liblx
     PATHS ${LIBTSB_DEPENDENCY_DIR}/src
     /usr/local/lib
           /usr/lib 
-    DOC "The file name of the liblx library."
+    DOC "The file name of the libLX library."
 )
 
-set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBSBML_LIBRARY})
+set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBLX_LIBRARY})
 
-find_path(LIBSBML_INCLUDE_DIR
+find_path(LIBLX_INCLUDE_DIR
     NAMES common/liblx-config.h
     PATHS ${LIBTSB_DEPENDENCY_DIR}/liblx/xml
     /usr/local/include
           /usr/include 
-    DOC "The directory containing the liblx include files."
+    DOC "The directory containing the libLX include files."
 )
 
-set(LIBSBML_STATIC OFF CACHE BOOL "is libsbml statically compiled")
+set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
 if (WIN32 AND NOT CYGWIN)
-  if (LIBSBML_LIBRARY AND LIBSBML_LIBRARY MATCHES ".*-static*$")
-    set(LIBSBML_STATIC ON CACHE BOOL "is libsbml statically compiled")
+  if (LIBLX_LIBRARY AND LIBLX_LIBRARY MATCHES ".*-static*$")
+    set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
   else()
-    option(LIBSBML_STATIC "The LibSBML library was statically compiled" ON)
+    option(LIBLX_STATIC "The libLX library was statically compiled" ON)
   endif()
 endif()
 
-if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/liblx/xml/common/liblx-config.h")
-    message(FATAL_ERROR "The include directory specified for liblx appears to be invalid.  It should contain the file common/liblx-config.h, but it does not. Please specify the INCLUDE_DIR variable.")
+if(NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/xml/common/liblx-config.h")
+    message(FATAL_ERROR "The include directory specified for libLX appears to be invalid.  It should contain the file common/liblx-config.h, but it does not. Please specify the INCLUDE_DIR variable.")
 endif()
 
 
@@ -382,6 +382,10 @@ endif(WITH_CHECK)
 # documentation to be installed in PREFIX/${MISC_PREFIX}.
 #
 
+if (APPLE)
+    set(CMAKE_MACOSX_RPATH ON)
+endif (APPLE)
+
 set( MISC_PREFIX )
 if(UNIX OR CYGWIN)
     set(PATH_SEP "/")
@@ -485,12 +489,12 @@ else(UNIX)
     add_definitions(-DWIN32)
     set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DWIN32")
 
-  if (LIBSBML_STATIC)
-      add_definitions(-DLIBSBML_STATIC -DLIBLAX_STATIC)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBSBML_STATIC -DLIBLAX_STATIC")
+  if (LIBLX_STATIC)
+      add_definitions(-DLIBLX_STATIC -DLIBLAX_STATIC)
+      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC -DLIBLAX_STATIC")
   else()
-      add_definitions(-DLIBSBML_EXPORTS -DLIBLAX_EXPORTS)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBSBML_EXPORTS -DLIBLAX_EXPORTS")
+      add_definitions(-DLIBLX_EXPORTS -DLIBLAX_EXPORTS)
+      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS -DLIBLAX_EXPORTS")
   endif()
 
   
@@ -724,9 +728,9 @@ libTSB version ${PACKAGE_VERSION}
      CXXFLAGS                      = ${CMAKE_CXX_FLAGS}
      LDFLAGS                       = ${CMAKE_EXE_LINKER_FLAGS}
 
-   SBML library configuration:
-     SBML library                  = ${LIBSBML_LIBRARY}
-     SBML include                  = -I${LIBSBML_INCLUDE_DIR}
+   libLX library configuration:
+     libLX library                  = ${LIBLX_LIBRARY}
+     libLX include                  = -I${LIBLX_INCLUDE_DIR}
 
 
   Other libTSB configuration settings:

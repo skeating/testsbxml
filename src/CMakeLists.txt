@@ -126,7 +126,7 @@ install(FILES ${additional_common} DESTINATION include/tsb/common)
 # specify include directories
 #
 
-include_directories(${LIBSBML_INCLUDE_DIR})
+include_directories(${LIBLX_INCLUDE_DIR})
 include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src/tsb)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})

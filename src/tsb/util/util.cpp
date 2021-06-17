@@ -33,7 +33,7 @@
 #define __DBL_EPSILON__ DBL_EPSILON
 #endif
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 LIBTSB_CPP_NAMESPACE_BEGIN
 
 LIBTSB_EXTERN

@@ -216,23 +216,24 @@ if(WITH_SWIG)
     set(SWIG_EXTRA_ARGS)
 endif(WITH_SWIG)
 
+
 ###############################################################################
 #
 # Locate libLX
 #
 find_library(LIBLX_LIBRARY
-    NAMES liblx-static.a liblx.dylib liblx
-    PATHS ${LIBTSB_DEPENDENCY_DIR}/src
+    NAMES liblx.lib liblx-static.lib
+    PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
     /usr/local/lib
-          /usr/lib 
+          /usr/lib
     DOC "The file name of the libLX library."
 )
 
 set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBLX_LIBRARY})
 
 find_path(LIBLX_INCLUDE_DIR
-    NAMES common/liblx-config.h
-    PATHS ${LIBTSB_DEPENDENCY_DIR}/liblx/xml
+    NAMES liblx/xml/common/liblx-version.h
+    PATHS ${LIBTSB_DEPENDENCY_DIR}/include
     /usr/local/include
           /usr/include 
     DOC "The directory containing the libLX include files."
@@ -247,8 +248,10 @@ if (WIN32 AND NOT CYGWIN)
   endif()
 endif()
 
-if(NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/xml/common/liblx-config.h")
-    message(FATAL_ERROR "The include directory specified for libLX appears to be invalid.  It should contain the file common/liblx-config.h, but it does not. Please specify the INCLUDE_DIR variable.")
+if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/xml/common/liblx-version.h")
+  message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
+  It should contain the file common/liblx-version.h, but it does not. 
+  Please specify the LIBLX_INCLUDE_DIR variable.")
 endif()
 
 

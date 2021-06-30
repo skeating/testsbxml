@@ -108,9 +108,9 @@ typedef enum
  */
 typedef enum
 {
-    LIBTSB_CAT_INTERNAL = LIBSBXML_CAT_INTERNAL,
-    LIBTSB_CAT_SYSTEM = LIBSBXML_CAT_SYSTEM,
-    LIBTSB_CAT_XML = LIBSBXML_CAT_XML,
+    LIBTSB_CAT_INTERNAL = LIBLX_CAT_INTERNAL,
+    LIBTSB_CAT_SYSTEM = LIBLX_CAT_SYSTEM,
+    LIBTSB_CAT_XML = LIBLX_CAT_XML,
 
     LIBTSB_CAT_TSB = (LIBTSB_CAT_XML + 1)
     /*!< General TSB error  not falling into another category below. */

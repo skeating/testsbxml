@@ -47,7 +47,7 @@ foreach(example
 
     if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLAX_STATIC=1;LIBTSB_STATIC=1")
+    set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
     endif(WIN32 AND NOT CYGWIN)
 
 

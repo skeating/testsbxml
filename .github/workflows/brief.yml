@@ -20,6 +20,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Install macOS dependencies
+      shell: bash
+      run: brew install check swig ccache
+      
     - name: Prepare Build for libLX
       shell: bash
       run: |

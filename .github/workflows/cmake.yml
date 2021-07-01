@@ -23,7 +23,7 @@ jobs:
     
     - name: Build libLX
       shell: bash
-      run: git clone git@github.com:sbmlteam/liblx.git
+      run: git clone https://github.com/sbmlteam/liblx.git
       
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/liblx-build

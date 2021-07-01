@@ -38,8 +38,8 @@ jobs:
         mkdir ${{runner.workspace}}/dependencies
         mkdir ${{runner.workspace}}/dependencies/include
         mkdir ${{runner.workspace}}/dependencies/lib
-        cp -r {{runner.workspace}}/liblx/src/liblx ${{runner.workspace}}/dependencies/include
-        cp ${{runner.workspace}}/liblx-build/src/liblx.dylib ${{runner.workspace}}/dependencies/lib
+        cp -r ${{runner.workspace}}/liblx/src/liblx ${{runner.workspace}}/dependencies/include
+        cp ${{runner.workspace}}/liblx-build/src/liblx.* ${{runner.workspace}}/dependencies/lib
         
     - name: Configure CMake
       run: |

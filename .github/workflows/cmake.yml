@@ -44,6 +44,8 @@ jobs:
     - name: Configure CMake
       run: |
         cmake -B ${{runner.workspace}}/build \
+          -DLIBLX_INCLUDE_DIR=${{runner.workspace}}/dependencies/include
+          -DLIBLX_LIBRARY=${{runner.workspace}}/dependencies/lib
           -DWITH_SWIG=False
           -DWITH_EXAMPLES=True
 

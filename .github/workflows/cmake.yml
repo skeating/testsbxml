@@ -28,7 +28,7 @@ jobs:
         mkdir ${{runner.workspace}}/liblx-build
     
     - name: Build libLX
-      working-directory: ${{github.workspace}}/liblx-build
+      working-directory: ${{runner.workspace}}/liblx-build
       run: |
         cmake ${{github.workspace}}/liblx
         cmake --build .

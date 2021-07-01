@@ -21,13 +21,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Build libLX
+    - name: Prepare Build Environment for libLX
       shell: bash
       run: |
         git clone https://github.com/sbmlteam/liblx.git
         cmake -E make_directory ${{runner.workspace}}/liblx-build
-        cmake ${{runner.workspace}}/liblx-build
-        cmake --build ${{runner.workspace}}/liblx-build
+    
+    - name: Build libLX
+      shell: bash
+      working-directory: ${{runner.workspace}}/liblx-build
+      run: |
+        cmake ${{runner.workspace}}/liblx
+        cmake --build .
       
         
     - name: Configure CMake

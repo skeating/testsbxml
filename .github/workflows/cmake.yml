@@ -25,21 +25,28 @@ jobs:
       shell: bash
       run: |
         git clone https://github.com/sbmlteam/liblx.git
-        cmake -E make_directory ${{runner.workspace}}/liblx-build
+        mkdir ${{runner.workspace}}/liblx-build
     
     - name: Build libLX
-      shell: bash
-      working-directory: ${{runner.workspace}}/liblx-build
+      working-directory: ${{github.workspace}}/liblx-build
       run: |
-        cmake $GITHUB_WORKSPACE/liblx
+        cmake ${{github.workspace}}/liblx
         cmake --build .
-      
+        
+    - name: Prepare Build Environment for testsbxml
+      shell: bash
+      run: |
+        mkdir ${{runner.workspace}}/dependency
+        mkdir ${{runner.workspace}}/dependency/include
+        mkdir ${{runner.workspace}}/dependency/lib
+        cp -r ${{github.workspace}}/liblx/src/liblx ${{runner.workspace}}/dependency/include
+        cp ${{github.workspace}}/liblx-build/src/liblx.dylib ${{runner.workspace}}/dependency/lib
         
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: |
+        cmake -B ${{runner.workspace}}/build \
+          -DWITH_SWIG=False
+          -DWITH_EXAMPLES=True
 
     - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build

@@ -31,9 +31,7 @@ jobs:
       shell: bash
       working-directory: ${{runner.workspace}}/liblx-build
       run: |
-        pwd
-        ls
-        cmake ${{runner.workspace}}/liblx
+        cmake $GITHUB_WORKSPACE/liblx
         cmake --build .
       
         

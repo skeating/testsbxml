@@ -23,7 +23,9 @@ jobs:
     
     - name: Prepare Build for libLX
       shell: bash
-      run: git clone https://github.com/sbmlteam/liblx.git
+      run: |
+        mkdir ${{runner.workspace}}/liblx
+        git clone https://github.com/sbmlteam/liblx.git ${{runner.workspace}}/liblx
     
     - name: Build libLX
       run: |

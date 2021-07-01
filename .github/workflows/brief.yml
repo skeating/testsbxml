@@ -50,7 +50,7 @@ jobs:
           -DLIBLX_INCLUDE_DIR=${{runner.workspace}}/dependencies/include \
           -DLIBLX_LIBRARY=${{runner.workspace}}/dependencies/lib/liblx.dylib \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+          -DWITH_CHECK=False
           
     - name: Build
       run: cmake --build ${{runner.workspace}}/build --config $BUILD_TYPE

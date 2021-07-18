@@ -12,48 +12,105 @@ env:
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    runs-on: macos-latest
-
+    # The matrix build if you need cross-platform coverage.
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        
     steps:
     - uses: actions/checkout@v2
     
-    - name: Install macOS dependencies
+    - name: Clone libLX
+      shell: bash
+      run: |
+        cmake -E make_directory "${{runner.workspace}}/liblx"
+        git clone https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
+        
+    - name: Install libLX Ubuntu dependencies
+      if: matrix.os == 'ubuntu-latest'
+      shell: bash
+      run: sudo apt-get install -y check ccache
+    
+    - name: Install libLX macOS dependencies
+      if: matrix.os == 'macos-latest'
       shell: bash
       run: brew install check swig ccache
       
-    - name: Prepare Build for libLX
+    - name: Install libLX Windows dependencies
+      if: matrix.os == 'windows-latest'
       shell: bash
       run: |
-        mkdir ${{runner.workspace}}/liblx
-        git clone https://github.com/sbmlteam/liblx.git ${{runner.workspace}}/liblx
+        curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
+        unzip dependencies.zip -d dependencies
+        cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
+        rm -r dependencies/libSBML*
+        mv dependencies "${{runner.workspace}}/liblx"
+        #
+        curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
+        unzip -o swig.zip -d swig
+        echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
     
     - name: Build libLX
-      run: |
-        cmake -B ${{runner.workspace}}/liblx-build -S ${{runner.workspace}}/liblx
-        cmake --build ${{runner.workspace}}/liblx-build --config $BUILD_TYPE
-        
-    - name: Prepare Build Environment for testsbxml
       shell: bash
       run: |
-        mkdir ${{runner.workspace}}/dependencies
-        mkdir ${{runner.workspace}}/dependencies/include
-        mkdir ${{runner.workspace}}/dependencies/lib
-        cp -r ${{runner.workspace}}/liblx/src/liblx ${{runner.workspace}}/dependencies/include
-        cp ${{runner.workspace}}/liblx-build/src/liblx.* ${{runner.workspace}}/dependencies/lib
+        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx"
+        cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
         
-    - name: Configure CMake
+    - name: Prepare Build Environment for testsbxml on non-Windows OS
+      if: matrix.os != 'windows-latest'
+      shell: bash
       run: |
-        cmake -B ${{runner.workspace}}/build \
-          -DLIBLX_INCLUDE_DIR=${{runner.workspace}}/dependencies/include \
-          -DLIBLX_LIBRARY=${{runner.workspace}}/dependencies/lib/liblx.dylib \
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+        
+    - name: Prepare Build Environment for testsbxml on Windows OS
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        
+    - name: Configure ubuntu CMake
+      if: matrix.os == 'ubuntu-latest'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.so" \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=False
           
-    - name: Build
-      run: cmake --build ${{runner.workspace}}/build --config $BUILD_TYPE
+    - name: Configure macOS CMake
+      if: matrix.os == 'macos-latest'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.dylib" \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=False
+          
+    - name: Configure Windows CMake
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=False
+          
+    - name: Build testsbxml
+      shell: bash
+      run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE
 
-    - name: Test
-      run: ctest -V -C $BUILD_TYPE ${{runner.workspace}}/build
+    - name: Test testsbxml
+      shell: bash
+      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"

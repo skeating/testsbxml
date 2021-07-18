@@ -1,0 +1,59 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ builds_with_liblx ]
+  pull_request:
+    branches: [ builds_with_liblx ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    # The CMake configure and build commands are platform agnostic and should work equally
+    # well on Windows or Mac.  You can convert this to a matrix build if you need
+    # cross-platform coverage.
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install macOS dependencies
+      shell: bash
+      run: brew install check swig ccache
+      
+    - name: Prepare Build for libLX
+      shell: bash
+      run: |
+        mkdir ${{runner.workspace}}/liblx
+        git clone https://github.com/sbmlteam/liblx.git ${{runner.workspace}}/liblx
+    
+    - name: Build libLX
+      run: |
+        cmake -B ${{runner.workspace}}/liblx-build -S ${{runner.workspace}}/liblx
+        cmake --build ${{runner.workspace}}/liblx-build --config $BUILD_TYPE
+        
+    - name: Prepare Build Environment for testsbxml
+      shell: bash
+      run: |
+        mkdir ${{runner.workspace}}/dependencies
+        mkdir ${{runner.workspace}}/dependencies/include
+        mkdir ${{runner.workspace}}/dependencies/lib
+        cp -r ${{runner.workspace}}/liblx/src/liblx ${{runner.workspace}}/dependencies/include
+        cp ${{runner.workspace}}/liblx-build/src/liblx.* ${{runner.workspace}}/dependencies/lib
+        
+    - name: Configure CMake
+      run: |
+        cmake -B ${{runner.workspace}}/build \
+          -DLIBLX_INCLUDE_DIR=${{runner.workspace}}/dependencies/include \
+          -DLIBLX_LIBRARY=${{runner.workspace}}/dependencies/lib/liblx.dylib \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=False
+          
+    - name: Build
+      run: cmake --build ${{runner.workspace}}/build --config $BUILD_TYPE
+
+    - name: Test
+      run: ctest -V -C $BUILD_TYPE ${{runner.workspace}}/build

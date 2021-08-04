@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(libtsb)
+if(POLICY CMP0054)
+    cmake_policy(SET CMP0054 NEW)
+endif()
+
+#if(POLICY CMP0058)
+#    cmake_policy(SET CMP0058 OLD)
+#endif()
+set(LIBTSB_ROOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH
+    "Path to the libLX root source directory")
+set(LIBTSB_ROOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE PATH
+    "Path to the libLX root build directory")
 
 include (CMakeTestCCompiler)
 include (CheckCSourceCompiles)
@@ -11,6 +22,7 @@ include (CheckCCompilerFlag)
 include (CheckCSourceRuns)
 include (CheckSymbolExists)
 include (CheckTypeSize)
+	include(GNUInstallDirs)
 
 ###############################################################################
 #
@@ -46,6 +58,7 @@ set(PACKAGE_NAME "libTSB")
 # add make dist and make check target as they are already familiar for
 # everyone using the gnumake build
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} test)
 
 ###############################################################################
 #
@@ -482,8 +495,36 @@ if(UNIX)
         set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLINUX")
     endif(APPLE)
 
-    add_definitions( -DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"  -DPACKAGE_NAME=\"${PROJECT_NAME}\")
-    set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"  -DPACKAGE_NAME=\"${PROJECT_NAME}\"")
+    if(WITH_CHECK)
+        if(CMAKE_VERSION VERSION_GREATER "3.0.0")
+            # https://cmake.org/cmake/help/v3.0/module/CheckCXXSourceCompiles.html
+            # CMAKE_REQUIRED_FLAGS = string of compile command line flags
+            # CMAKE_REQUIRED_DEFINITIONS = list of macros to define (-DFOO=bar)
+            # CMAKE_REQUIRED_INCLUDES = list of include directories
+            # CMAKE_REQUIRED_LIBRARIES = list of libraries to link
+            
+            # <code>       - source code to try to compile, must define 'main'
+            # <var>        - variable to store whether the source code compiled
+            # <fail-regex> - fail if test output matches this regex
+
+            # set(CMAKE_REQUIRED_LIBRARIES "${EXTRA_LIBS}")
+            # CHECK_CXX_SOURCE_COMPILES(<code> <var> [FAIL_REGEX <fail-regex>])
+
+            # set(CMAKE_REQUIRED_LIBRARIES "-lrt -lpthread -lsubunit")
+            # CHECK_CXX_SOURCE_COMPILES(<code> <var> [FAIL_REGEX <fail-regex>])
+
+            # set(CMAKE_REQUIRED_LIBRARIES "-lrt -lpthread")
+            # CHECK_CXX_SOURCE_COMPILES(<code> <var> [FAIL_REGEX <fail-regex>])
+        endif(CMAKE_VERSION VERSION_GREATER "3.0.0")
+        # plan A now extinct
+        #add_subdirectory(dev/utilities/linux-check-libs)
+        #target_link_libraries(${LIBLX_LIBRARY} ${LIBLX_LIBS} ${EXTRA_LIBS})
+    endif(WITH_CHECK)
+
+    
+    # not needing these defines, and they do cause warnings
+    # add_definitions( -DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"  -DPACKAGE_NAME=\"${PROJECT_NAME}\")
+    # set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"  -DPACKAGE_NAME=\"${PROJECT_NAME}\"")
 
 else(UNIX)
     add_definitions(-DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"  -DPACKAGE_NAME=\"${PROJECT_NAME}\")
@@ -517,6 +558,29 @@ else(UNIX)
           endforeach(flag_var)
       add_definitions( -D_MT)
       endif(WITH_STATIC_RUNTIME)
+        # on VS enable multiprocessor build
+        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+
+        # Provide an easy way to use Visual Leak Detector (https://vld.codeplex.com)
+    option(LIBLX_USE_VLD "When running debug builds with MSVC use Visual Leak Detector." OFF)
+    mark_as_advanced(LIBLX_USE_VLD)
+    if (LIBLX_USE_VLD)
+          find_path(VLD_INCLUDE_DIR
+            NAMES vld.h
+            PATHS ${LIBLX_DEPENDENCY_DIR}/include
+            "$ENV{PROGRAMFILES}/Visual Leak Detector/include"
+            "$ENV{ProgramW6432}/Visual Leak Detector/include"
+            DOC "Directory containing VLD files."
+          )
+          if (NOT VLD_INCLUDE_DIR)
+            message(WARNING "VLD is not found on your system, please ensure you installed it correctly.")
+      else()
+        include_directories(${VLD_INCLUDE_DIR})
+      endif()
+
+      add_definitions( -DLIBLX_USE_VLD)
+
+    endif (LIBLX_USE_VLD)
 
       # CMake no longer creates PDB files for static libraries after 2.8.11
       # so we store debug information in the object files instead
@@ -849,12 +913,6 @@ endif()
 message(STATUS "
 ----------------------------------------------------------------------")
 
-
-if(WITH_CHECK)
-
-    add_subdirectory(tests)
-
-endif(WITH_CHECK)
 
 
 ## To compile a test program simply comment out the lines below ...

@@ -1,4 +1,7 @@
 ###############################################################################
+if (${CMAKE_VERSION} VERSION_GREATER 2.8.7)
+include(CMakePackageConfigHelpers)
+endif()
 #
 # Initialize TSB sources
 #
@@ -158,29 +161,6 @@ macro(ADD_FUNCTION directory)
             ${CMAKE_CURRENT_BINARY_DIR}/src/${prefix}${directory}/*.h
             )
 
-
-    # Set the constraint files to be 'headers' as they don't have to be compiled
-    # since they don't contain symbols but rather are included directly.  Could
-    # remove them, but that keeps their content from being found in searches, etc.
-    # in IDEs such as VisualStudio.
-    foreach(tempFile ${temp})
-        if ("${directory}" STREQUAL "validator/constraints")
-            if ("${tempFile}" MATCHES ".*Constraints.cpp")
-              set_source_files_properties(
-                  ${tempFile}
-                  PROPERTIES HEADER_FILE_ONLY true
-                  )
-#              list(REMOVE_ITEM temp "${tempFile}")
-            endif()
-        endif()
-        if ("${tempFile}" MATCHES ".*.cxx")
-          set_source_files_properties(
-              ${tempFile}
-              PROPERTIES HEADER_FILE_ONLY true
-              )
-        endif()
-    endforeach()
-
     # create source group for IDEs
     source_group(${directory} FILES ${temp})
 
@@ -259,6 +239,11 @@ INSTALL(TARGETS ${LIBTSB_LIBRARY}-static
 )
 
 
+##############################################################################
+#
+# add native tests
+#
+add_subdirectory(tsb)
 ##############################################################################
 #
 # construct list of all header files to create dependency list for 

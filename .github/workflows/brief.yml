@@ -28,17 +28,17 @@ jobs:
         cmake -E make_directory "${{runner.workspace}}/libsbml"
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
         
-    - name: Install libLX Ubuntu dependencies
+    - name: Install libSBML Ubuntu dependencies
       if: matrix.os == 'ubuntu-latest'
       shell: bash
       run: sudo apt-get install -y check ccache
     
-    - name: Install libLX macOS dependencies
+    - name: Install libSBML macOS dependencies
       if: matrix.os == 'macos-latest'
       shell: bash
       run: brew install check swig ccache
       
-    - name: Install libLX Windows dependencies
+    - name: Install libSBML Windows dependencies
       if: matrix.os == 'windows-latest'
       shell: bash
       run: |
@@ -83,8 +83,8 @@ jobs:
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
-          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -93,8 +93,8 @@ jobs:
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
-          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -103,8 +103,8 @@ jobs:
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
-          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           

@@ -96,7 +96,7 @@ jobs:
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+          -DWITH_CHECK=False
           
     - name: Configure Windows CMake
       if: matrix.os == 'windows-latest'
@@ -106,7 +106,7 @@ jobs:
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+          -DWITH_CHECK=False
           
     - name: Build testsbxml
       shell: bash

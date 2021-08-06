@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]  #, macos-latest, windows-latest]
         
     steps:
     - uses: actions/checkout@v2
@@ -98,7 +98,7 @@ jobs:
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Configure Windows CMake
       if: matrix.os == 'windows-latest'

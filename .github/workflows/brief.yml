@@ -76,6 +76,7 @@ jobs:
         mkdir "${{runner.workspace}}/dependencies/include"
         mkdir "${{runner.workspace}}/dependencies/lib"
         cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Configure ubuntu CMake

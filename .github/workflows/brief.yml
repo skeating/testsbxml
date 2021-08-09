@@ -22,12 +22,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        sudo: false
-      timeout-minutes: 15
-
     - name: Add msbuild to PATH (Windows)
       if: matrix.platform == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1.6.0
@@ -48,6 +42,11 @@ jobs:
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
     
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      with:
+        sudo: false
+
     # - name: setup Windows environment
     #   if: matrix.platform == 'windows-latest'
     #   shell: bash

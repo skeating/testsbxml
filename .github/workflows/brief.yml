@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]  #, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         
     steps:
     - uses: actions/checkout@v2
@@ -70,12 +70,11 @@ jobs:
         cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Prepare Build Environment for testsbxml on Windows OS
+      # the dependencies dir needs to include the check library
       if: matrix.os == 'windows-latest'
       shell: bash
       run: |
-        mkdir "${{runner.workspace}}/dependencies"
-        mkdir "${{runner.workspace}}/dependencies/include"
-        mkdir "${{runner.workspace}}/dependencies/lib"
+        mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
         cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
         cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"

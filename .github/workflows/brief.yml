@@ -22,9 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-      - name: Add msbuild to PATH (Windows)
-        if: matrix.platform == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1.6.0
+    - name: Add msbuild to PATH (Windows)
+      if: matrix.platform == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1.6.0
 
     #### Build libSBML
 

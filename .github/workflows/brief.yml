@@ -33,7 +33,7 @@ jobs:
       run: |
         cmake -E make_directory "${{runner.workspace}}/libsbml"
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
-        echo ${{runner/workspace}}$
+        echo ${runner/workspace}$
 
         
     # - name: Install libSBML Windows dependencies

@@ -14,44 +14,51 @@ env:
 jobs:
   build:
     # The matrix build if you need cross-platform coverage.
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        os: [windows-latest]
+        platform: [windows-latest, macos-latest, ubuntu-16.04]
         
     steps:
     - uses: actions/checkout@v2
     
+      - name: Add msbuild to PATH (Windows)
+        if: matrix.platform == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1.6.0
+
+    #### Build libSBML
+
     - name: Clone libSBML
       shell: bash
       run: |
         cmake -E make_directory "${{runner.workspace}}/libsbml"
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
         
-    - name: Install libSBML Ubuntu dependencies
-      if: matrix.os == 'ubuntu-latest'
-      shell: bash
-      run: sudo apt-get install -y check ccache
-    
-    - name: Install libSBML macOS dependencies
-      if: matrix.os == 'macos-latest'
-      shell: bash
-      run: brew install check swig ccache
-      
     - name: Install libSBML Windows dependencies
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
         unzip dependencies.zip -d dependencies
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
-        mv dependencies "${{runner.workspace}}/libsbml"
-        #
-        curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
-        unzip -o swig.zip -d swig
-        echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
     
+    - name: setup Windows environment
+      if: matrix.platform == 'windows-latest'
+      shell: bash
+      run: |
+        echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+
+    - name: Install libSBML Ubuntu dependencies
+        if: matrix.platform == 'ubuntu-16.04'
+      shell: bash
+      run: sudo apt-get install -y check ccache
+    
+    - name: Install libSBML macOS dependencies
+      if: matrix.platform == 'macos-latest'
+      shell: bash
+      run: brew install check swig ccache
+      
     - name: Build libSBML
       shell: bash
       run: |
@@ -59,7 +66,7 @@ jobs:
         cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
         
     - name: Prepare Build Environment for testsbxml on non-Windows OS
-      if: matrix.os != 'windows-latest'
+      if: matrix.platform != 'windows-latest'
       shell: bash
       run: |
         mkdir "${{runner.workspace}}/dependencies"
@@ -71,7 +78,7 @@ jobs:
         
     - name: Prepare Build Environment for testsbxml on Windows OS
       # the dependencies dir needs to include the check library
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
@@ -80,7 +87,7 @@ jobs:
         cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Configure ubuntu CMake
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.platform == 'ubuntu-16.04'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
@@ -90,7 +97,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure macOS CMake
-      if: matrix.os == 'macos-latest'
+      if: matrix.platform == 'macos-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
@@ -100,7 +107,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure Windows CMake
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \

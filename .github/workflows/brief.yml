@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [ builds_with_libsbml ]
+    branches: [ play_with_actions ]
   pull_request:
     branches: [ builds_with_libsbml ]
   workflow_dispatch:
@@ -33,93 +33,95 @@ jobs:
       run: |
         cmake -E make_directory "${{runner.workspace}}/libsbml"
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
-        
-    - name: Install libSBML Windows dependencies
-      if: matrix.platform == 'windows-latest'
-      shell: bash
-      run: |
-        curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
-        unzip dependencies.zip -d dependencies
-        cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
-        rm -r dependencies/libSBML*
-    
-    - name: setup Windows environment
-      if: matrix.platform == 'windows-latest'
-      shell: bash
-      run: |
-        echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+        echo pwd
 
-    - name: Install libSBML Ubuntu dependencies
-        if: matrix.platform == 'ubuntu-16.04'
-      shell: bash
-      run: sudo apt-get install -y check ccache
+        
+    # - name: Install libSBML Windows dependencies
+    #   if: matrix.platform == 'windows-latest'
+    #   shell: bash
+    #   run: |
+    #     curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
+    #     unzip dependencies.zip -d dependencies
+    #     cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
+    #     rm -r dependencies/libSBML*
     
-    - name: Install libSBML macOS dependencies
-      if: matrix.platform == 'macos-latest'
-      shell: bash
-      run: brew install check swig ccache
+    # - name: setup Windows environment
+    #   if: matrix.platform == 'windows-latest'
+    #   shell: bash
+    #   run: |
+    #     echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+
+    # - name: Install libSBML Ubuntu dependencies
+    #   if: matrix.platform == 'ubuntu-16.04'
+    #   shell: bash
+    #   run: sudo apt-get install -y check ccache
+    
+    # - name: Install libSBML macOS dependencies
+    #   if: matrix.platform == 'macos-latest'
+    #   shell: bash
+    #   run: brew install check swig ccache
       
-    - name: Build libSBML
-      shell: bash
-      run: |
-        cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml"
-        cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
+    # - name: Build libSBML
+    #   shell: bash
+    #   run: |
+    #     cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml"
+    #     cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
         
-    - name: Prepare Build Environment for testsbxml on non-Windows OS
-      if: matrix.platform != 'windows-latest'
-      shell: bash
-      run: |
-        mkdir "${{runner.workspace}}/dependencies"
-        mkdir "${{runner.workspace}}/dependencies/include"
-        mkdir "${{runner.workspace}}/dependencies/lib"
-        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
-        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
-        cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+    # - name: Prepare Build Environment for testsbxml on non-Windows OS
+    #   if: matrix.platform != 'windows-latest'
+    #   shell: bash
+    #   run: |
+    #     mkdir "${{runner.workspace}}/dependencies"
+    #     mkdir "${{runner.workspace}}/dependencies/include"
+    #     mkdir "${{runner.workspace}}/dependencies/lib"
+    #     cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+    #     cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
+    #     cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
-    - name: Prepare Build Environment for testsbxml on Windows OS
-      # the dependencies dir needs to include the check library
-      if: matrix.platform == 'windows-latest'
-      shell: bash
-      run: |
-        mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
-        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
-        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
-        cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+    # - name: Prepare Build Environment for testsbxml on Windows OS
+    #   # the dependencies dir needs to include the check library
+    #   if: matrix.platform == 'windows-latest'
+    #   shell: bash
+    #   run: |
+    #     mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
+    #     cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+    #     cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
+    #     cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         
-    - name: Configure ubuntu CMake
-      if: matrix.platform == 'ubuntu-16.04'
-      shell: bash
-      run: |
-        cmake -B "${{runner.workspace}}/build" \
-          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
-          -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+    # - name: Configure ubuntu CMake
+    #   if: matrix.platform == 'ubuntu-16.04'
+    #   shell: bash
+    #   run: |
+    #     cmake -B "${{runner.workspace}}/build" \
+    #       -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+    #       -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
+    #       -DWITH_EXAMPLES=True \
+    #       -DWITH_CHECK=True
           
-    - name: Configure macOS CMake
-      if: matrix.platform == 'macos-latest'
-      shell: bash
-      run: |
-        cmake -B "${{runner.workspace}}/build" \
-          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
-          -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+    # - name: Configure macOS CMake
+    #   if: matrix.platform == 'macos-latest'
+    #   shell: bash
+    #   run: |
+    #     cmake -B "${{runner.workspace}}/build" \
+    #       -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+    #       -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
+    #       -DWITH_EXAMPLES=True \
+    #       -DWITH_CHECK=True
           
-    - name: Configure Windows CMake
-      if: matrix.platform == 'windows-latest'
-      shell: bash
-      run: |
-        cmake -B "${{runner.workspace}}/build" \
-          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
-          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
-          -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=True
+    # - name: Configure Windows CMake
+    #   if: matrix.platform == 'windows-latest'
+    #   shell: bash
+    #   run: |
+    #     cmake -B "${{runner.workspace}}/build" \
+    #       -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+    #       -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
+    #       -DWITH_EXAMPLES=True \
+    #       -DWITH_CHECK=True
           
-    - name: Build testsbxml
-      shell: bash
-      run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE
+    # - name: Build testsbxml
+    #   shell: bash
+    #   run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE
 
-    - name: Test testsbxml
-      shell: bash
-      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"
+    # - name: Test testsbxml
+    #   shell: bash
+    #   run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"

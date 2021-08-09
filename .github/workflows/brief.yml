@@ -26,7 +26,7 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       with:
         sudo:false
-To  
+  
     - name: Add msbuild to PATH (Windows)
       if: matrix.platform == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1.6.0

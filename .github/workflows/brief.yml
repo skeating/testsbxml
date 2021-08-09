@@ -36,7 +36,7 @@ jobs:
     - name: Clone libSBML
       shell: bash
       run: |
-        cmake -E make_directory "${{runner.workspace}}/libsbml"
+ #       cmake -E make_directory "${{runner.workspace}}/libsbml"
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
   
 

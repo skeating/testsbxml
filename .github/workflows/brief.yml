@@ -25,7 +25,7 @@ jobs:
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
       with:
-        sudo:false
+        sudo: false
   
     - name: Add msbuild to PATH (Windows)
       if: matrix.platform == 'windows-latest'

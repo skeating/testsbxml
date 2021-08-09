@@ -35,8 +35,8 @@ jobs:
 
     - name: Clone libSBML
       shell: bash
-      run: |
-        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml
+      run: | 
+        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
         
     - name: Install libSBML Windows dependencies
       if: matrix.platform == 'windows-latest'

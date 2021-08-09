@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [ play_with_actions ]
+    branches: [ play-with-actions ]
   pull_request:
     branches: [ builds_with_libsbml ]
   workflow_dispatch:

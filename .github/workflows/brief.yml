@@ -41,6 +41,7 @@ jobs:
         unzip dependencies.zip -d dependencies
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
+        cp -r dependencies ../libsbml/dependencies
     
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3

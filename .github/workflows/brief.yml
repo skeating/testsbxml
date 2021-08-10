@@ -127,4 +127,4 @@ jobs:
 
     - name: Test testsbxml
       shell: bash
-      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"
+      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build/testsbxml"

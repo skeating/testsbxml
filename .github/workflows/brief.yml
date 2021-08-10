@@ -121,10 +121,10 @@ jobs:
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        sudo: false
+    # - name: Setup tmate session
+    #   uses: mxschmitt/action-tmate@v3
+    #   with:
+    #     sudo: false
 
     - name: Build testsbxml
       shell: bash

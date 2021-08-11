@@ -98,6 +98,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
+          -DLIBSBML_STATIC=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -118,6 +119,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
+          -DLIBSBML_STATIC=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           

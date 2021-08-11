@@ -84,7 +84,7 @@ jobs:
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.so" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Configure macOS CMake
       if: matrix.os == 'macos-latest'
@@ -94,7 +94,7 @@ jobs:
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.dylib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Configure Windows CMake
       if: matrix.os == 'windows-latest'
@@ -104,7 +104,7 @@ jobs:
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Build testsbxml
       shell: bash

@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(libtsb)
+set(LIBTSB_ROOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH
+    "Path to the libLX root source directory")
+set(LIBTSB_ROOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE PATH
+    "Path to the libLX root build directory")
 
 include (CMakeTestCCompiler)
 include (CheckCSourceCompiles)
@@ -46,6 +50,7 @@ set(PACKAGE_NAME "libTSB")
 # add make dist and make check target as they are already familiar for
 # everyone using the gnumake build
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} test)
 
 ###############################################################################
 #
@@ -850,12 +855,6 @@ endif()
 message(STATUS "
 ----------------------------------------------------------------------")
 
-
-if(WITH_CHECK)
-
-    add_subdirectory(tests)
-
-endif(WITH_CHECK)
 
 
 ## To compile a test program simply comment out the lines below ...

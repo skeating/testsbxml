@@ -261,6 +261,11 @@ INSTALL(TARGETS ${LIBTSB_LIBRARY}-static
 
 ##############################################################################
 #
+# add native tests
+#
+add_subdirectory(tsb)
+##############################################################################
+#
 # construct list of all header files to create dependency list for 
 # language bindings
 #

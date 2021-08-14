@@ -48,7 +48,8 @@ if (EXTRA_INCLUDE_DIRS)
  include_directories(${EXTRA_INCLUDE_DIRS})
 endif(EXTRA_INCLUDE_DIRS)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
-include_directories(${LIBCHECK_INCLUDE_DIR})
+
 add_executable(test_tsb ${TEST_FILES})
-target_link_libraries(test_tsb ${LIBTSB_LIBRARY}-static ${LIBCHECK_LIBRARY})
+target_link_libraries(test_tsb ${LIBTSB_LIBRARY}-static)
+
 add_test(test_tsb_run ${CMAKE_CURRENT_BINARY_DIR}/test_tsb )

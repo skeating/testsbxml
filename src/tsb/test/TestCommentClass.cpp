@@ -33,46 +33,34 @@
  * in the file named "LICENSE.txt" included with this software distribution
  * and also available online as http://sbml.org/software/libsbml/license.html
  * ---------------------------------------------------------------------- -->*/
+#include <cstdlib>
+
+#include "catch.hpp"
 
 #include <tsb/common/common.h>
 #include <tsb/TSBComment.h>
 
 
-#include <check.h>
-LIBTSB_CPP_NAMESPACE_BEGIN
 
-START_TEST ( test_Comment_contributor )
+
+TEST_CASE("Comment contributor")
 {
+  std::cout << "in comment\n";
   TSBComment *c = new TSBComment(1, 1);
 
-  fail_unless(c->isSetContributor() == false);
-  fail_unless(c->getContributor() == "");
+  REQUIRE(c->isSetContributor() == false);
+  REQUIRE(c->getContributor() == "");
 
   c->setContributor("sarah");
 
-  fail_unless(c->isSetContributor() == true);
-  fail_unless(c->getContributor() == "sarah");
+  REQUIRE(c->isSetContributor() == true);
+  REQUIRE(c->getContributor() == "sarah");
 
-  fail_unless(c->unsetContributor() == LIBTSB_OPERATION_SUCCESS);
+  REQUIRE(c->unsetContributor() == LIBTSB_OPERATION_SUCCESS);
 
-  fail_unless(c->isSetContributor() == false);
-  fail_unless(c->getContributor() == "");
+  REQUIRE(c->isSetContributor() == false);
+  REQUIRE(c->getContributor() == "");
+  std::cout << "end comment \n";
 
   delete c;
 }
-END_TEST
-
-Suite *
-create_suite_CommentClass (void)
-{
-  Suite *suite = suite_create("CommentClass");
-  TCase *tcase = tcase_create("CommentClass");
-
-  tcase_add_test( tcase, test_Comment_contributor );
-
-  suite_add_tcase(suite, tcase);
-
-  return suite;
-}
-
-LIBTSB_CPP_NAMESPACE_END

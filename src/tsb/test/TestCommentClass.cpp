@@ -33,6 +33,7 @@
  * in the file named "LICENSE.txt" included with this software distribution
  * and also available online as http://sbml.org/software/libsbml/license.html
  * ---------------------------------------------------------------------- -->*/
+#include <cstdlib>
 
 #include "catch.hpp"
 
@@ -41,10 +42,10 @@
 
 
 
-LIBTSB_CPP_NAMESPACE_BEGIN
 
 TEST_CASE("Comment contributor")
 {
+  std::cout << "in comment\n";
   TSBComment *c = new TSBComment(1, 1);
 
   REQUIRE(c->isSetContributor() == false);
@@ -59,7 +60,7 @@ TEST_CASE("Comment contributor")
 
   REQUIRE(c->isSetContributor() == false);
   REQUIRE(c->getContributor() == "");
+  std::cout << "end comment \n";
 
   delete c;
 }
-LIBTSB_CPP_NAMESPACE_END

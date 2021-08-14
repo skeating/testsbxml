@@ -34,16 +34,18 @@
  * and also available online as http://sbml.org/software/libsbml/license.html
  * ---------------------------------------------------------------------- -->*/
 
+#include <iostream>
+
 #include "catch.hpp"
 
 #include <tsb/common/common.h>
 #include <tsb/TSBNamespaces.h>
 
 
-LIBTSB_CPP_NAMESPACE_BEGIN
 
 TEST_CASE("test_NS_copyConstructor")
 {
+  std::cout << "in NS copy \n";
   TSBNamespaces * ns = new TSBNamespaces(1,1);
 
   REQUIRE(ns);
@@ -125,4 +127,3 @@ TEST_CASE("test_NS_copyConstructor")
 //  return suite;
 //}
 //
-LIBTSB_CPP_NAMESPACE_END

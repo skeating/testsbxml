@@ -52,10 +52,10 @@ std::string getTestFile(const std::string& fileName)
   return fullName;
 }
 
-LIBTSB_CPP_NAMESPACE_BEGIN
 
 int main(int argc, char *argv[])
 {
+  std::cout << "starting tests \n";
   int result = Catch::Session().run(argc, argv);
 
   return result;

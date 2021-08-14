@@ -136,6 +136,7 @@ jobs:
       with:
         sudo: false
 
+    ls
     - name: Test testsbxml
       shell: bash
-      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build/src"
+      run: ctest -V -C $BUILD_TYPE --test-dir "${{runner.workspace}}/build"

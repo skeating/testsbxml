@@ -43,11 +43,6 @@ jobs:
         rm -r dependencies/libSBML*
         cp -r dependencies ../libsbml/dependencies
     
-    # - name: Setup tmate session
-    #   uses: mxschmitt/action-tmate@v3
-    #   with:
-    #     sudo: false
-
     - name: setup Windows environment
       if: matrix.platform == 'windows-latest'
       shell: bash
@@ -122,21 +117,10 @@ jobs:
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
-    #- name: Setup tmate session
-   #   uses: mxschmitt/action-tmate@v3
-    #  with:
-     #   sudo: false
-
     - name: Build testsbxml
       shell: bash
       run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE
 
-    #- name: Setup tmate session
-    #  uses: mxschmitt/action-tmate@v3
-    #  with:
-    #    sudo: false
-
-    ls
     - name: Test testsbxml
       shell: bash
       run: ctest -V -C $BUILD_TYPE --test-dir "${{runner.workspace}}/build"

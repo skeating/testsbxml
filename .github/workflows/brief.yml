@@ -82,7 +82,6 @@ jobs:
         cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Prepare Build Environment for testsbxml on Windows OS
-      # the dependencies dir needs to include the check library
       if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
@@ -139,4 +138,4 @@ jobs:
 
     - name: Test testsbxml
       shell: bash
-      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"
+      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build/src"

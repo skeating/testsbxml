@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-latest, ubuntu-16.04]
+        platform: [macos-latest, ubuntu-latest]
         
     steps:
     - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
         echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
 
     - name: Install libSBML Ubuntu dependencies
-      if: matrix.platform == 'ubuntu-16.04'
+      if: matrix.platform == 'ubuntu-latest'
       shell: bash
       run: sudo apt-get install -y check ccache
     
@@ -86,7 +86,7 @@ jobs:
         cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Configure ubuntu CMake
-      if: matrix.platform == 'ubuntu-16.04'
+      if: matrix.platform == 'ubuntu-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \

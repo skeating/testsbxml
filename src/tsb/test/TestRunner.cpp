@@ -1,29 +1,62 @@
+// BEGIN: Copyright 
+// Copyright (C) 2021 by Pedro Mendes, Rector and Visitors of the 
+// University of Virginia, University of Heidelberg, and University 
+// of Connecticut School of Medicine. 
+// All rights reserved 
+// END: Copyright 
+
+// BEGIN: License 
+// Licensed under the Artistic License 2.0 (the "License"); 
+// you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at 
+//   https://opensource.org/licenses/Artistic-2.0 
+// END: License 
+
 /**
- * \file    TestRunner.c
- * \brief   Runs all unit tests in the xml module
- * \author  Ben Bornstein and Michael Hucka
- * 
- * ---------------------------------------------------------------------- -->*/
+* Main Entry point for all tests (defines catch main, and only one
+* test file can do it). This file is there to include utility
+* functions used in all other test files.
+*/
+
+// now include catch
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
 
 #include <string.h>
-#include <check.h>
+#include <cstdlib>
 
+#include <tsb/common/libtsb-namespace.h>
 
-Suite *create_suite_CopyAndClone (void);
-Suite *create_suite_CommentClass (void);
+/**
+* Tries to find the test file in the srcdir environment variable.
+*
+* @param fileName the filename relative to this tests srcdir
+*        environment variable.
+*
+* If the filename cannot be found, the test from which this function
+* is called will fail.
+*
+* @return the full path to the test file
+*/
+std::string getTestFile(const std::string& fileName)
+{
+  std::stringstream str;
+  char* srcDir = getenv("srcdir");
 
-int
-main (int argc, char* argv[]) 
-{ 
-  int num_failed = 0;
-  SRunner *runner = srunner_create(create_suite_CopyAndClone());
-  srunner_add_suite(runner, create_suite_CommentClass());
+  if (srcDir != NULL) str << srcDir;
+  else str << ".";
 
-  srunner_run_all(runner, CK_NORMAL);
-  num_failed = srunner_ntests_failed(runner);
+  str << "/" << fileName;
+  std::string fullName = str.str();
 
-  srunner_free(runner);
-
-  return num_failed;
+  return fullName;
 }
 
+LIBTSB_CPP_NAMESPACE_BEGIN
+
+int main(int argc, char *argv[])
+{
+  int result = Catch::Session().run(argc, argv);
+
+  return result;
+}

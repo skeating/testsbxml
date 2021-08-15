@@ -17,18 +17,12 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-latest, ubuntu-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         
     steps:
     - uses: actions/checkout@v2
-
-    - name: Add msbuild to PATH (Windows)
-      if: matrix.platform == 'windows-latest'
-      uses: ilammy/msvc-dev-cmd@v1.6.0
-
-    #### Build libSBML
-
-    - name: Clone libSBML
+    
+    - name: Clone libLX
       shell: bash
       run: | 
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
@@ -42,6 +36,10 @@ jobs:
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
         cp -r dependencies ../libsbml/dependencies
+        #
+        curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
+        unzip -o swig.zip -d swig
+        echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
     
     - name: setup Windows environment
       if: matrix.platform == 'windows-latest'
@@ -52,12 +50,12 @@ jobs:
     - name: Install libSBML Ubuntu dependencies
       if: matrix.platform == 'ubuntu-latest'
       shell: bash
-      run: sudo apt-get install -y check ccache
+      run: sudo apt-get install -y ccache
     
     - name: Install libSBML macOS dependencies
       if: matrix.platform == 'macos-latest'
       shell: bash
-      run: brew install check swig ccache
+      run: brew install swig ccache
       
     - name: Build libSBML
       shell: bash
@@ -103,6 +101,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
+          -DLIBSBML_STATIC=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           

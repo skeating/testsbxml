@@ -352,34 +352,6 @@ endif(WITH_CSHARP)
 # or make test
 #
 
-if(WITH_CHECK)
-
-    # we do use tests, that require 2.8.4
-    cmake_minimum_required(VERSION 2.8.4)
-
-    enable_testing()
-
-    find_library(LIBCHECK_LIBRARY
-        NAMES check libcheck
-        PATHS /usr/lib /usr/local/lib ${LIBTSB_DEPENDENCY_DIR}/lib
-        DOC "The file name of the libcheck library."
-    )
-
-    find_path(LIBCHECK_INCLUDE_DIR
-        NAMES check.h
-        PATHS /usr/include /usr/local/include  ${LIBTSB_DEPENDENCY_DIR}/include
-        DOC "The directory containing the libcheck include files."
-              )
-
-    if(NOT EXISTS "${LIBCHECK_INCLUDE_DIR}/check.h")
-        message(FATAL_ERROR "The 'check' include directory appears to be invalid. It should contain the file check.h, but it does not.")
-    endif()
-
-    if(${CMAKE_GENERATOR} MATCHES "Visual Studio 6" OR ${CMAKE_GENERATOR} MATCHES "Visual Studio 7")
-        message(WARNING "Libcheck is not compatible with Visual Studio 2003 (or earlier versions).")
-    endif()
-
-endif(WITH_CHECK)
 
 
 ###############################################################################

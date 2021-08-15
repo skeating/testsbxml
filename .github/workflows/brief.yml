@@ -14,10 +14,10 @@ env:
 jobs:
   build:
     # The matrix build if you need cross-platform coverage.
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         
     steps:
     - uses: actions/checkout@v2
@@ -25,21 +25,10 @@ jobs:
     - name: Clone libLX
       shell: bash
       run: |
-        cmake -E make_directory "${{runner.workspace}}/liblx"
         git clone https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
         
-    - name: Install libLX Ubuntu dependencies
-      if: matrix.os == 'ubuntu-latest'
-      shell: bash
-      run: sudo apt-get install -y check ccache
-    
-    - name: Install libLX macOS dependencies
-      if: matrix.os == 'macos-latest'
-      shell: bash
-      run: brew install check swig ccache
-      
     - name: Install libLX Windows dependencies
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
@@ -51,6 +40,16 @@ jobs:
         curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
         unzip -o swig.zip -d swig
         echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
+    - name: Install libLX Ubuntu dependencies
+      if: matrix.platform == 'ubuntu-latest'
+      shell: bash
+      run: sudo apt-get install -y ccache
+    
+    - name: Install libLX macOS dependencies
+      if: matrix.platform == 'macos-latest'
+      shell: bash
+      run: brew install swig ccache
+      
     
     - name: Build libLX
       shell: bash
@@ -59,7 +58,7 @@ jobs:
         cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
         
     - name: Prepare Build Environment for testsbxml on non-Windows OS
-      if: matrix.os != 'windows-latest'
+      if: matrix.platform != 'windows-latest'
       shell: bash
       run: |
         mkdir "${{runner.workspace}}/dependencies"
@@ -69,7 +68,7 @@ jobs:
         cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Prepare Build Environment for testsbxml on Windows OS
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
@@ -77,7 +76,7 @@ jobs:
         cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Configure ubuntu CMake
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.platform == 'ubuntu-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
@@ -87,7 +86,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure macOS CMake
-      if: matrix.os == 'macos-latest'
+      if: matrix.platform == 'macos-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
@@ -97,7 +96,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure Windows CMake
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \

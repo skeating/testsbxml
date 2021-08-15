@@ -363,7 +363,13 @@ endif(WITH_CSHARP)
 # or make test
 #
 
+if(WITH_CHECK)
 
+# we do use tests, that require 2.8.4 
+    cmake_minimum_required(VERSION 2.8.4) 
+ 
+    enable_testing() 
+endif(WITH_CHECK)
 
 ###############################################################################
 #

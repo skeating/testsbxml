@@ -22,7 +22,11 @@ jobs:
        
     steps:
     - uses: actions/checkout@v2
-    
+
+    - name: Add msbuild to PATH (Windows)
+      if: matrix.platform == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1.6.0
+
     - name: Clone libSBML
       shell: bash
       run: | 
@@ -61,6 +65,7 @@ jobs:
     - name: Build libSBML
       shell: bash
       run: |
+        cmake -E make_directory ${{runner.workspace}}/libsbml-build
         cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml"
         cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
         
@@ -110,6 +115,7 @@ jobs:
       if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
+        cmake -E make_directory ${{runner.workspace}}/build
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \

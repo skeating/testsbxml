@@ -27,6 +27,8 @@
 
 #include <tsb/common/libtsb-namespace.h>
 
+LIBTSB_CPP_NAMESPACE_USE
+
 /**
 * Tries to find the test file in the srcdir environment variable.
 *

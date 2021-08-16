@@ -41,6 +41,7 @@
 #include <tsb/TSBComment.h>
 
 
+LIBTSB_CPP_NAMESPACE_USE
 
 
 TEST_CASE("Comment contributor")

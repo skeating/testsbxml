@@ -41,6 +41,7 @@
 #include <tsb/common/common.h>
 #include <tsb/TSBNamespaces.h>
 
+LIBTSB_CPP_NAMESPACE_USE
 
 
 TEST_CASE("test_NS_copyConstructor")

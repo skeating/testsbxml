@@ -130,7 +130,7 @@ jobs:
 
     - name: Add library to path 
       shell: bash
-      run: echo "${{runner.workspace}}/build/src/tsb/test/{{BUILD_TYPE}}" >>$GITHUB_PATH
+      run: echo "${{runner.workspace}}/build/src/tsb/test/$BUILD_TYPE" >>$GITHUB_PATH
 
     - name: Test testsbxml
       shell: bash

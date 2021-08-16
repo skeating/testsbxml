@@ -44,6 +44,6 @@ endif(EXTRA_INCLUDE_DIRS)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 add_executable(test_tsb ${TEST_FILES})
-target_link_libraries(test_tsb ${LIBTSB_LIBRARY}-static)
+target_link_libraries(test_tsb ${LIBTSB_LIBRARY}-static, ${LIBTSB_LIBS} ${EXTRA_LIBS})
 
 add_test(test_tsb_run ${CMAKE_CURRENT_BINARY_DIR}/test_tsb )

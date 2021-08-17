@@ -117,7 +117,6 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
-          -DLIBLX_STATIC=True \
           ${RUNTIME_LINKING_OPTION} \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True

@@ -14,97 +14,112 @@ env:
 jobs:
   build:
     # The matrix build if you need cross-platform coverage.
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         
     steps:
     - uses: actions/checkout@v2
     
+    - name: Add msbuild to PATH (Windows)
+      if: matrix.platform == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1.6.0
     - name: Clone libLX
       shell: bash
       run: |
-        cmake -E make_directory "${{runner.workspace}}/liblx"
         git clone https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
         
-    - name: Install libLX Ubuntu dependencies
-      if: matrix.os == 'ubuntu-latest'
-      shell: bash
-      run: sudo apt-get install -y check ccache
-    
-    - name: Install libLX macOS dependencies
-      if: matrix.os == 'macos-latest'
-      shell: bash
-      run: brew install check swig ccache
-      
     - name: Install libLX Windows dependencies
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
         unzip dependencies.zip -d dependencies
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
-        mv dependencies "${{runner.workspace}}/liblx"
+        cp -r dependencies ../liblx/dependencies
         #
         curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
         unzip -o swig.zip -d swig
         echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
+
+    - name: setup Windows environment
+      if: matrix.platform == 'windows-latest'
+      shell: bash
+      run: |
+        echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+
+    - name: Install libLX Ubuntu dependencies
+      if: matrix.platform == 'ubuntu-latest'
+      shell: bash
+      run: sudo apt-get install -y ccache
+    
+    - name: Install libLX macOS dependencies
+      if: matrix.platform == 'macos-latest'
+      shell: bash
+      run: brew install swig ccache
+      
     
     - name: Build libLX
       shell: bash
       run: |
-        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx"
+        # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
+        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx" ${RUNTIME_LINKING_OPTION}
         cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
         
     - name: Prepare Build Environment for testsbxml on non-Windows OS
-      if: matrix.os != 'windows-latest'
+      if: matrix.platform != 'windows-latest'
       shell: bash
       run: |
         mkdir "${{runner.workspace}}/dependencies"
         mkdir "${{runner.workspace}}/dependencies/include"
         mkdir "${{runner.workspace}}/dependencies/lib"
         cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Prepare Build Environment for testsbxml on Windows OS
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
         cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        # need to add liblx.dll directory to path, since we are linking dynamically
+        echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
         
     - name: Configure ubuntu CMake
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.platform == 'ubuntu-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.so" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Configure macOS CMake
-      if: matrix.os == 'macos-latest'
+      if: matrix.platform == 'macos-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.dylib" \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Configure Windows CMake
-      if: matrix.os == 'windows-latest'
+      if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
+          ${RUNTIME_LINKING_OPTION} \
           -DWITH_EXAMPLES=True \
-          -DWITH_CHECK=False
+          -DWITH_CHECK=True
           
     - name: Build testsbxml
       shell: bash
@@ -112,4 +127,4 @@ jobs:
 
     - name: Test testsbxml
       shell: bash
-      run: ctest -V -C $BUILD_TYPE "${{runner.workspace}}/build"
+      run: ctest -V -C $BUILD_TYPE --test-dir "${{runner.workspace}}/build"

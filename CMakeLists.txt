@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(libtsb)
+set(LIBTSB_ROOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH
+    "Path to the libLX root source directory")
+set(LIBTSB_ROOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE PATH
+    "Path to the libLX root build directory")
 
 include (CMakeTestCCompiler)
 include (CheckCSourceCompiles)
@@ -46,6 +50,7 @@ set(PACKAGE_NAME "libTSB")
 # add make dist and make check target as they are already familiar for
 # everyone using the gnumake build
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} test)
 
 ###############################################################################
 #
@@ -349,33 +354,11 @@ endif(WITH_CSHARP)
 
 if(WITH_CHECK)
 
-    # we do use tests, that require 2.8.4
-    cmake_minimum_required(VERSION 2.8.4)
-
-    enable_testing()
-
-    find_library(LIBCHECK_LIBRARY
-        NAMES check libcheck
-        PATHS /usr/lib /usr/local/lib ${LIBTSB_DEPENDENCY_DIR}/lib
-        DOC "The file name of the libcheck library."
-    )
-
-    find_path(LIBCHECK_INCLUDE_DIR
-        NAMES check.h
-        PATHS /usr/include /usr/local/include  ${LIBTSB_DEPENDENCY_DIR}/include
-        DOC "The directory containing the libcheck include files."
-              )
-
-    if(NOT EXISTS "${LIBCHECK_INCLUDE_DIR}/check.h")
-        message(FATAL_ERROR "The 'check' include directory appears to be invalid. It should contain the file check.h, but it does not.")
-    endif()
-
-    if(${CMAKE_GENERATOR} MATCHES "Visual Studio 6" OR ${CMAKE_GENERATOR} MATCHES "Visual Studio 7")
-        message(WARNING "Libcheck is not compatible with Visual Studio 2003 (or earlier versions).")
-    endif()
-
+# we do use tests, that require 2.8.4 
+    cmake_minimum_required(VERSION 2.8.4) 
+ 
+    enable_testing() 
 endif(WITH_CHECK)
-
 
 ###############################################################################
 #
@@ -494,10 +477,10 @@ else(UNIX)
 
   if (LIBLX_STATIC)
       add_definitions(-DLIBLX_STATIC -DLIBLAX_STATIC)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC -DLIBLAX_STATIC")
+      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC")
   else()
       add_definitions(-DLIBLX_EXPORTS -DLIBLAX_EXPORTS)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS -DLIBLAX_EXPORTS")
+      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS")
   endif()
 
   
@@ -850,12 +833,6 @@ endif()
 message(STATUS "
 ----------------------------------------------------------------------")
 
-
-if(WITH_CHECK)
-
-    add_subdirectory(tests)
-
-endif(WITH_CHECK)
 
 
 ## To compile a test program simply comment out the lines below ...

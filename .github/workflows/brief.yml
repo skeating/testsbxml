@@ -64,7 +64,6 @@ jobs:
     - name: Build libSBML
       shell: bash
       run: |
-        cmake -E make_directory ${{runner.workspace}}/libsbml-build
         # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
         cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml" ${RUNTIME_LINKING_OPTION}
         cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
@@ -98,7 +97,6 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
-          -DLIBSBML_STATIC=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -109,7 +107,6 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
-          -DLIBSBML_STATIC=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -117,7 +114,6 @@ jobs:
       if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
-        cmake -E make_directory ${{runner.workspace}}/build
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \

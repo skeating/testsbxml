@@ -34,18 +34,24 @@
  * and also available online as http://sbml.org/software/libsbml/license.html
  * ---------------------------------------------------------------------- -->*/
 
+#include <iostream>
+
+#include "catch.hpp"
+
 #include <tsb/common/common.h>
 #include <tsb/TSBNamespaces.h>
 
+LIBTSB_CPP_NAMESPACE_USE
 
-#include <check.h>
-LIBTSB_CPP_NAMESPACE_BEGIN
 
-START_TEST ( test_NS_copyConstructor )
+TEST_CASE("test_NS_copyConstructor")
 {
+  std::cout << "in NS copy \n";
   TSBNamespaces * ns = new TSBNamespaces(1,1);
+
+  REQUIRE(ns);
   
-  fail_unless( ns->getLevel() == 1 );
+  REQUIRE( ns->getLevel() == 1 );
   //fail_unless( ns->getVersion() == 0 );
 
   //XMLNamespaces * ns2 = new XMLNamespaces(*ns);
@@ -58,68 +64,67 @@ START_TEST ( test_NS_copyConstructor )
   //delete ns2;
   delete ns;
 }
-END_TEST
-
-//START_TEST ( test_NS_assignmentOperator )
+//
+//
+////START_TEST ( test_NS_assignmentOperator )
+////{
+////  XMLNamespaces * ns = new XMLNamespaces();
+////  ns->add("http://test1.org/", "test1");
+////  
+////  fail_unless( ns->getLength() == 1 );
+////  fail_unless( ns->isEmpty() == 0 );
+////  fail_unless(ns->getPrefix(0) == "test1");
+////  fail_unless(ns->getURI("test1") == "http://test1.org/");
+////
+////  XMLNamespaces * ns2 = new XMLNamespaces();
+////  (*ns2) = *ns;
+////
+////  fail_unless( ns2->getLength() == 1 );
+////  fail_unless( ns2->isEmpty() == 0 );
+////  fail_unless(ns2->getPrefix(0) == "test1");
+////  fail_unless(ns2->getURI("test1") == "http://test1.org/");
+////
+////  delete ns2;
+////  delete ns;
+////}
+////END_TEST
+////
+////
+////START_TEST ( test_NS_clone )
+////{
+////  XMLNamespaces * ns = new XMLNamespaces();
+////  ns->add("http://test1.org/", "test1");
+////  
+////  fail_unless( ns->getLength() == 1 );
+////  fail_unless( ns->isEmpty() == 0 );
+////  fail_unless(ns->getPrefix(0) == "test1");
+////  fail_unless(ns->getURI("test1") == "http://test1.org/");
+////
+////  XMLNamespaces * ns2 = static_cast<XMLNamespaces*>(ns->clone());
+////
+////  fail_unless( ns2->getLength() == 1 );
+////  fail_unless( ns2->isEmpty() == 0 );
+////  fail_unless(ns2->getPrefix(0) == "test1");
+////  fail_unless(ns2->getURI("test1") == "http://test1.org/");
+////
+////  delete ns2;
+////  delete ns;
+////}
+////END_TEST
+////
+////
+//Suite *
+//create_suite_CopyAndClone (void)
 //{
-//  XMLNamespaces * ns = new XMLNamespaces();
-//  ns->add("http://test1.org/", "test1");
-//  
-//  fail_unless( ns->getLength() == 1 );
-//  fail_unless( ns->isEmpty() == 0 );
-//  fail_unless(ns->getPrefix(0) == "test1");
-//  fail_unless(ns->getURI("test1") == "http://test1.org/");
+//  Suite *suite = suite_create("CopyAndClone");
+//  TCase *tcase = tcase_create("CopyAndClone");
 //
-//  XMLNamespaces * ns2 = new XMLNamespaces();
-//  (*ns2) = *ns;
+//  tcase_add_test( tcase, test_NS_copyConstructor );
+//  //tcase_add_test( tcase, test_NS_assignmentOperator );
+//  //tcase_add_test( tcase, test_NS_clone );
 //
-//  fail_unless( ns2->getLength() == 1 );
-//  fail_unless( ns2->isEmpty() == 0 );
-//  fail_unless(ns2->getPrefix(0) == "test1");
-//  fail_unless(ns2->getURI("test1") == "http://test1.org/");
+//  suite_add_tcase(suite, tcase);
 //
-//  delete ns2;
-//  delete ns;
+//  return suite;
 //}
-//END_TEST
 //
-//
-//START_TEST ( test_NS_clone )
-//{
-//  XMLNamespaces * ns = new XMLNamespaces();
-//  ns->add("http://test1.org/", "test1");
-//  
-//  fail_unless( ns->getLength() == 1 );
-//  fail_unless( ns->isEmpty() == 0 );
-//  fail_unless(ns->getPrefix(0) == "test1");
-//  fail_unless(ns->getURI("test1") == "http://test1.org/");
-//
-//  XMLNamespaces * ns2 = static_cast<XMLNamespaces*>(ns->clone());
-//
-//  fail_unless( ns2->getLength() == 1 );
-//  fail_unless( ns2->isEmpty() == 0 );
-//  fail_unless(ns2->getPrefix(0) == "test1");
-//  fail_unless(ns2->getURI("test1") == "http://test1.org/");
-//
-//  delete ns2;
-//  delete ns;
-//}
-//END_TEST
-//
-//
-Suite *
-create_suite_CopyAndClone (void)
-{
-  Suite *suite = suite_create("CopyAndClone");
-  TCase *tcase = tcase_create("CopyAndClone");
-
-  tcase_add_test( tcase, test_NS_copyConstructor );
-  //tcase_add_test( tcase, test_NS_assignmentOperator );
-  //tcase_add_test( tcase, test_NS_clone );
-
-  suite_add_tcase(suite, tcase);
-
-  return suite;
-}
-
-LIBTSB_CPP_NAMESPACE_END

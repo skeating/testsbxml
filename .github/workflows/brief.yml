@@ -22,6 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Add msbuild to PATH (Windows)
+      if: matrix.platform == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1.6.0
     - name: Clone libLX
       shell: bash
       run: |
@@ -40,6 +43,13 @@ jobs:
         curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
         unzip -o swig.zip -d swig
         echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
+
+    - name: setup Windows environment
+      if: matrix.platform == 'windows-latest'
+      shell: bash
+      run: |
+        echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+
     - name: Install libLX Ubuntu dependencies
       if: matrix.platform == 'ubuntu-latest'
       shell: bash
@@ -54,7 +64,8 @@ jobs:
     - name: Build libLX
       shell: bash
       run: |
-        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx"
+        # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
+        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx" ${RUNTIME_LINKING_OPTION}
         cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
         
     - name: Prepare Build Environment for testsbxml on non-Windows OS
@@ -65,6 +76,7 @@ jobs:
         mkdir "${{runner.workspace}}/dependencies/include"
         mkdir "${{runner.workspace}}/dependencies/lib"
         cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
         
     - name: Prepare Build Environment for testsbxml on Windows OS
@@ -73,6 +85,7 @@ jobs:
       run: |
         mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
         cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         # need to add liblx.dll directory to path, since we are linking dynamically
         echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
@@ -104,6 +117,8 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
+          -DLIBLX_STATIC=True \
+          ${RUNTIME_LINKING_OPTION} \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           

@@ -74,6 +74,8 @@ jobs:
         mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
         cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        # need to add liblx.dll directory to path, since we are linking dynamically
+        echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
         
     - name: Configure ubuntu CMake
       if: matrix.platform == 'ubuntu-latest'

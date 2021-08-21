@@ -2,9 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: [ builds_with_liblx ]
+    branches: [ build_new_lx_struct ]
   pull_request:
-    branches: [ builds_with_liblx ]
+    branches: [ builds_new_lx_struct ]
   workflow_dispatch:
   
 env:

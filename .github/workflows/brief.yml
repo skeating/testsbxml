@@ -28,7 +28,7 @@ jobs:
     - name: Clone libLX
       shell: bash
       run: |
-        git clone https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
+        git clone --single-branch --branch libsbml-src-structure https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
         
     - name: Install libLX Windows dependencies
       if: matrix.platform == 'windows-latest'

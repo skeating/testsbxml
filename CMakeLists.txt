@@ -285,7 +285,7 @@ following options: WITH_LIBSBML or WITH_LIBLX.")
 endif()
 
 if(WITH_LIBLX)
-    set(LINKED_LIBRARY $(LIBLX_LIBRARY))
+    set(LINKED_LIBRARY ${LIBLX_LIBRARY})
 endif()
 
 

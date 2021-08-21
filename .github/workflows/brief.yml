@@ -97,6 +97,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.so" \
+          -DWITH_LIBLX=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -107,6 +108,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.dylib" \
+          -DWITH_LIBLX=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
@@ -117,6 +119,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
+          -DWITH_LIBLX=True \
           ${RUNTIME_LINKING_OPTION} \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True

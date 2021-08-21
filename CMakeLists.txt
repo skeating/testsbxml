@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(libtsb)
+if(POLICY CMP0054)
+    cmake_policy(SET CMP0054 NEW)
+endif()
+
+#if(POLICY CMP0058)
+#    cmake_policy(SET CMP0058 OLD)
+#endif()
 set(LIBTSB_ROOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH
     "Path to the libLX root source directory")
 set(LIBTSB_ROOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE PATH
@@ -15,6 +22,7 @@ include (CheckCCompilerFlag)
 include (CheckCSourceRuns)
 include (CheckSymbolExists)
 include (CheckTypeSize)
+	include(GNUInstallDirs)
 
 ###############################################################################
 #
@@ -223,9 +231,12 @@ endif(WITH_SWIG)
 
 
 ###############################################################################
-#
-# Locate libLX
-#
+# Choose which library to link to.
+
+set(LINK_LIBLX_INITIAL_VALUE)
+set(LINK_LIBSBML_INITIAL_VALUE)
+
+# locate liblx
 find_library(LIBLX_LIBRARY
     NAMES liblx.lib liblx-static.lib
     PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
@@ -234,7 +245,51 @@ find_library(LIBLX_LIBRARY
     DOC "The file name of the libLX library."
 )
 
-set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBLX_LIBRARY})
+# Locate libsbml
+find_library(LIBSBML_LIBRARY
+    NAMES libsbml-static.lib sbml-static libsbml.lib sbml
+    PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
+    /usr/local/lib          
+          /usr/lib 
+    DOC "The file name of the sbml library."
+)
+
+if(EXISTS ${LIBLX_LIBRARY})
+    set(LINK_LIBLX_INITIAL_VALUE ON)
+    set(LINK_LIBSBML_INITIAL_VALUE OFF)
+elseif(EXISTS ${LIBSBML_LIBRARY})
+    set(LINK_LIBLX_INITIAL_VALUE OFF)
+    set(LINK_LIBSBML_INITIAL_VALUE ON)
+else()
+  message(FATAL_ERROR "The ${LIBTSB_LIBRARY} must be linked against either libLX or libSBML.
+  Neither can be found.")
+endif()
+
+
+option (WITH_LIBLX "Build the libtsb linked to libLX" LINK_LIBLX_INITIAL_VALUE)
+option (WITH_LIBSBML "Build the libtsb linked to libSBML" LINK_LIBSBML_INITIAL_VALUE)
+
+# ccheck only one option is selected
+set(LIBRARY_COUNT 0)
+if(WITH_LIBLX)
+    math(EXPR LIBRARY_COUNT "${LIBRARY_COUNT} + 1")
+endif()
+if(WITH_LIBSBML)
+    math(EXPR LIBRARY_COUNT "${LIBRARY_COUNT} + 1")
+endif()
+
+if(LIBRARY_COUNT GREATER 1)
+    message(FATAL_ERROR
+"Only one linked library should be chosen. Please select only one of the
+following options: WITH_LIBSBML or WITH_LIBLX.")
+endif()
+
+if(WITH_LIBLX)
+    set(LINKED_LIBRARY $(LIBLX_LIBRARY))
+endif()
+
+
+set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LINKED_LIBRARY})
 
 find_path(LIBLX_INCLUDE_DIR
     NAMES liblx/xml/common/liblx-version.h
@@ -246,7 +301,7 @@ find_path(LIBLX_INCLUDE_DIR
 
 set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
 if (WIN32 AND NOT CYGWIN)
-  if (LIBLX_LIBRARY AND LIBLX_LIBRARY MATCHES ".*-static*$")
+  if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
     set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
   else()
     option(LIBLX_STATIC "The libLX library was statically compiled" ON)
@@ -501,6 +556,8 @@ else(UNIX)
           endforeach(flag_var)
       add_definitions( -D_MT)
       endif(WITH_STATIC_RUNTIME)
+        # on VS enable multiprocessor build
+        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 
       # CMake no longer creates PDB files for static libraries after 2.8.11
       # so we store debug information in the object files instead
@@ -715,7 +772,7 @@ libTSB version ${PACKAGE_VERSION}
      LDFLAGS                       = ${CMAKE_EXE_LINKER_FLAGS}
 
    libLX library configuration:
-     libLX library                  = ${LIBLX_LIBRARY}
+     libLX library                  = ${LINKED_LIBRARY}
      libLX include                  = -I${LIBLX_INCLUDE_DIR}
 
 
@@ -755,14 +812,6 @@ endif()
 
 if(WITH_RUBY)
     message(STATUS "  Using Ruby                    = ${RUBY_EXECUTABLE}")
-endif()
-
-if(WITH_OCTAVE)
-    message(STATUS "  Using Octave                  = ${MKOCTFILE_EXECUTABLE}")
-endif()
-
-if(WITH_MATLAB)
-    message(STATUS "  Using Matlab                  = ${MATLAB_ROOT_PATH}")
 endif()
 
 if(WITH_CHECK)

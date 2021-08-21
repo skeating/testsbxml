@@ -253,7 +253,7 @@ if (WIN32 AND NOT CYGWIN)
   endif()
 endif()
 
-if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/xml/common/liblx-version.h")
+if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/common/liblx-version.h")
   message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
   It should contain the file common/liblx-version.h, but it does not. 
   Please specify the LIBLX_INCLUDE_DIR variable.")

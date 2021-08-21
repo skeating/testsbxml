@@ -22,6 +22,7 @@
 #include <tsb/util/util.h>
 #include <tsb/util/memory.h>
 
+#include <liblx/util/util.h>
 
 #include <math.h>
 
@@ -169,23 +170,23 @@ safe_strcat (const char *str1, const char *str2)
 }
 
 
-LIBTSB_EXTERN
-char *
-safe_strdup (const char* s)
-{
-  size_t  size;
-  char   *duplicate;
+// LIBTSB_EXTERN
+// char *
+// safe_strdup (const char* s)
+// {
+//   size_t  size;
+//   char   *duplicate;
   
-  if (s == NULL) return NULL;
+//   if (s == NULL) return NULL;
   
-  size      = strlen(s) + 1;
-  duplicate = (char *) safe_malloc(size * sizeof(char));
+//   size      = strlen(s) + 1;
+//   duplicate = (char *) safe_malloc(size * sizeof(char));
 
 
-  strncpy(duplicate, s, size);
+//   strncpy(duplicate, s, size);
 
-  return duplicate;
-}
+//   return duplicate;
+// }
 
 
 LIBTSB_EXTERN
@@ -203,17 +204,17 @@ strcmp_insensitive (const char *s1, const char *s2)
 }
 
 
-LIBTSB_EXTERN
-unsigned int
-streq (const char *s, const char *t)
-{
-  if (s == NULL)
-    return t == NULL;
-  else if (t == NULL)
-    return 0;
-  else
-    return !strcmp(s, t);
-}
+//LIBTSB_EXTERN
+//unsigned int
+//streq (const char *s, const char *t)
+//{
+//  if (s == NULL)
+//    return t == NULL;
+//  else if (t == NULL)
+//    return 0;
+//  else
+//    return !strcmp(s, t);
+//}
 
 
 LIBTSB_EXTERN

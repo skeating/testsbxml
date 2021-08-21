@@ -49,8 +49,8 @@
 #include <tsb/TSBDocument.h>
 #include <tsb/TSBWriter.h>
 
-#include <liblx/xml/compress/CompressCommon.h>
-#include <liblx/xml/compress/OutputCompressor.h>
+#include <liblx/compress/CompressCommon.h>
+#include <liblx/compress/OutputCompressor.h>
 
 /** @cond doxygenIgnored */
 

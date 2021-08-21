@@ -40,6 +40,7 @@
 #include <sstream>
 #include <tsb/common/common.h>
 #include <iostream>
+#include <liblx/util/util.h>
 
 /** @cond doxygenIgnored */
 

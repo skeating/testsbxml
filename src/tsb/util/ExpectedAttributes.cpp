@@ -12,6 +12,8 @@
 #include <tsb/common/TSBOperationReturnValues.h>
 #include <tsb/util/ExpectedAttributes.h>
 
+#include <liblx/util/util.h>
+
 LIBTSB_CPP_NAMESPACE_BEGIN
 #ifdef __cplusplus
 

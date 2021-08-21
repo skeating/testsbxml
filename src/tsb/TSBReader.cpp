@@ -46,8 +46,8 @@
 #include <tsb/TSBError.h>
 #include <tsb/TSBReader.h>
 
-#include <liblx/xml/compress/CompressCommon.h>
-#include <liblx/xml/compress/InputDecompressor.h>
+#include <liblx/compress/CompressCommon.h>
+#include <liblx/compress/InputDecompressor.h>
 
 /** @cond doxygenIgnored */
 

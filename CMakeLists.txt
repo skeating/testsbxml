@@ -227,13 +227,12 @@ if(WITH_SWIG)
     set(SWIG_EXTRA_ARGS)
 endif(WITH_SWIG)
 
+
 ###############################################################################
 # Choose which library to link to.
 
-set(LINK_LIBLX_INITIAL_VALUE ON)
-set(LINK_LIBSBML_INITIAL_VALUE OFF)
-option (WITH_LIBLX "Build the libtsb linked to libLX" LINK_LIBLX_INITIAL_VALUE)
-option (WITH_LIBSBML "Build the libtsb linked to libSBML" LINK_LIBSBML_INITIAL_VALUE)
+option (WITH_LIBLX "Build the libtsb linked to libLX" ON)
+option (WITH_LIBSBML "Build the libtsb linked to libSBML" OFF)
 
 if (WITH_LIBLX)
     # locate liblx
@@ -246,7 +245,7 @@ if (WITH_LIBLX)
     )
 
     find_path(LIBLX_INCLUDE_DIR
-        NAMES liblx/xml/common/liblx-version.h
+        NAMES liblx/common/liblx-version.h
         PATHS ${LIBTSB_DEPENDENCY_DIR}/include
         /usr/local/include
             /usr/include 
@@ -255,6 +254,7 @@ if (WITH_LIBLX)
 
     set(LINKED_LIBRARY ${LIBLX_LIBRARY})
     set (LINKED_INCLUDE_DIR ${LIBLX_INCLUDE_DIR})
+    set(LINKED_NAME "libLX")
 
     set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
     if (WIN32 AND NOT CYGWIN)
@@ -294,14 +294,15 @@ if (WITH_LIBSBML)
 
     set(LINKED_LIBRARY ${LIBSBML_LIBRARY})
     set (LINKED_INCLUDE_DIR ${LIBSBML_INCLUDE_DIR})
+    set(LINKED_NAME "libSBML")
 
     set(LIBSBML_STATIC OFF CACHE BOOL "is libsbml statically compiled")
     if (WIN32 AND NOT CYGWIN)
-    if (LIBSBML_LIBRARY AND LIBSBML_LIBRARY MATCHES ".*-static*$")
-        set(LIBSBML_STATIC ON CACHE BOOL "is libsbml statically compiled")
-    else()
-        option(LIBSBML_STATIC "The LibSBML library was statically compiled" ON)
-    endif()
+        if (LIBSBML_LIBRARY AND LIBSBML_LIBRARY MATCHES ".*-static*$")
+            set(LIBSBML_STATIC ON CACHE BOOL "is libsbml statically compiled")
+        else()
+            option(LIBSBML_STATIC "The LibSBML library was statically compiled" ON)
+        endif()
     endif()
 
     if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/sbml/SBase.h")
@@ -309,7 +310,8 @@ if (WITH_LIBSBML)
     "The include directory specified for sbml appears to be invalid.  It should contain the 
     file sbml/SBase.h, but it does not. Please specify the LIBSBML_INCLUDE_DIR variable."
     )
-#endif
+    endif()
+endif()
 
 # check only one option is selected
 set(LIBRARY_COUNT 0)
@@ -324,7 +326,7 @@ if(LIBRARY_COUNT GREATER 1)
     message(FATAL_ERROR
     "Only one linked library should be chosen. Please select only one of the
     following options: WITH_LIBSBML or WITH_LIBLX.")
-elseif(LIBRARY_COUNT EQUALS 0)
+elseif(LIBRARY_COUNT EQUAL 0)
     message(FATAL_ERROR "The ${LIBTSB_LIBRARY} must be linked against either libLX or libSBML.
     Neither can be found.")
 endif()
@@ -737,9 +739,9 @@ libTSB version ${PACKAGE_VERSION}
      CXXFLAGS                      = ${CMAKE_CXX_FLAGS}
      LDFLAGS                       = ${CMAKE_EXE_LINKER_FLAGS}
 
-   SBML library configuration:
-     SBML library                  = ${LIBSBML_LIBRARY}
-     SBML include                  = -I${LIBSBML_INCLUDE_DIR}
+   ${LINKED_NAME} library configuration:
+     ${LINKED_NAME} library                  = ${LINKED_LIBRARY}
+     ${LINKED_NAME} include                  = -I${LINKED_INCLUDE_DIR}
 
 
   Other libTSB configuration settings:

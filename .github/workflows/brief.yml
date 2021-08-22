@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [macos-latest] #, ubuntu-latest, windows-latest]
         linked_lib: [liblx, libsbml]
         
     steps:

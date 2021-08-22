@@ -231,10 +231,8 @@ endif(WITH_SWIG)
 ###############################################################################
 # Choose which library to link to.
 
-set(LINK_LIBLX_INITIAL_VALUE ON)
-set(LINK_LIBSBML_INITIAL_VALUE OFF)
-option (WITH_LIBLX "Build the libtsb linked to libLX" LINK_LIBLX_INITIAL_VALUE)
-option (WITH_LIBSBML "Build the libtsb linked to libSBML" LINK_LIBSBML_INITIAL_VALUE)
+option (WITH_LIBLX "Build the libtsb linked to libLX" ON)
+option (WITH_LIBSBML "Build the libtsb linked to libSBML" OFF)
 
 if (WITH_LIBLX)
     # locate liblx
@@ -247,12 +245,16 @@ if (WITH_LIBLX)
     )
 
     find_path(LIBLX_INCLUDE_DIR
-        NAMES liblx/xml/common/liblx-version.h
+        NAMES liblx/common/liblx-version.h
         PATHS ${LIBTSB_DEPENDENCY_DIR}/include
         /usr/local/include
             /usr/include 
         DOC "The directory containing the libLX include files."
     )
+
+    set(LINKED_LIBRARY ${LIBLX_LIBRARY})
+    set (LINKED_INCLUDE_DIR ${LIBLX_INCLUDE_DIR})
+    set(LINKED_NAME "libLX")
 
     set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
     if (WIN32 AND NOT CYGWIN)
@@ -269,8 +271,6 @@ if (WITH_LIBLX)
     Please specify the LIBLX_INCLUDE_DIR variable.")
     endif()
 
-    set(LINKED_LIBRARY ${LIBLX_LIBRARY})
-    set (LINKED_INCLUDE_DIR ${LIBLX_INCLUDE_DIR})
 endif()
 
 if (WITH_LIBSBML)
@@ -282,7 +282,36 @@ if (WITH_LIBSBML)
             /usr/lib 
         DOC "The file name of the sbml library."
     )
-#endif
+
+    find_path(LIBSBML_INCLUDE_DIR
+        NAMES sbml/SBase.h
+        PATHS 
+            ${LIBTSB_DEPENDENCY_DIR}/include
+        /usr/local/include
+            /usr/include 
+        DOC "The directory containing the sbml include files."
+    )
+
+    set(LINKED_LIBRARY ${LIBSBML_LIBRARY})
+    set (LINKED_INCLUDE_DIR ${LIBSBML_INCLUDE_DIR})
+    set(LINKED_NAME "libSBML")
+
+    set(LIBSBML_STATIC OFF CACHE BOOL "is libsbml statically compiled")
+    if (WIN32 AND NOT CYGWIN)
+        if (LIBSBML_LIBRARY AND LIBSBML_LIBRARY MATCHES ".*-static*$")
+            set(LIBSBML_STATIC ON CACHE BOOL "is libsbml statically compiled")
+        else()
+            option(LIBSBML_STATIC "The LibSBML library was statically compiled" ON)
+        endif()
+    endif()
+
+    if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/sbml/SBase.h")
+        message(FATAL_ERROR 
+    "The include directory specified for sbml appears to be invalid.  It should contain the 
+    file sbml/SBase.h, but it does not. Please specify the LIBSBML_INCLUDE_DIR variable."
+    )
+    endif()
+endif()
 
 # check only one option is selected
 set(LIBRARY_COUNT 0)
@@ -297,7 +326,7 @@ if(LIBRARY_COUNT GREATER 1)
     message(FATAL_ERROR
     "Only one linked library should be chosen. Please select only one of the
     following options: WITH_LIBSBML or WITH_LIBLX.")
-elseif(LIBRARY_COUNT EQUALS 0)
+elseif(LIBRARY_COUNT EQUAL 0)
     message(FATAL_ERROR "The ${LIBTSB_LIBRARY} must be linked against either libLX or libSBML.
     Neither can be found.")
 endif()
@@ -479,6 +508,15 @@ else(UNIX)
           set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS")
       endif()
     endif()
+    if(WITH_LIBSBML)
+        if (LIBSBML_STATIC)
+            add_definitions(-DLIBSBML_STATIC -DLIBLAX_STATIC)
+            set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBSBML_STATIC -DLIBLAX_STATIC")
+        else()
+            add_definitions(-DLIBSBML_EXPORTS -DLIBLAX_EXPORTS)
+            set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBSBML_EXPORTS -DLIBLAX_EXPORTS")
+        endif()
+    endif()
 
   
     if(MSVC OR USING_INTEL)
@@ -521,26 +559,14 @@ else(UNIX)
       INSTALL(FILES ${WIN32_BINARIES} DESTINATION bin)
       file(GLOB WIN32_DEPENDENCIES ${LIBTSB_DEPENDENCY_DIR}/lib/*.lib)
       install(FILES ${WIN32_DEPENDENCIES} DESTINATION lib)
-      if(WITH_LIBXML AND WITH_STATIC_RUNTIME)
+      if(WITH_STATIC_RUNTIME)
         if (EXTRA_LIBS STREQUAL "")
-        # populate EXTRA_LIBS variable
-            find_library(LIBICONV_LIBRARY
-                NAMES libiconv.lib iconv.lib iconv
-                PATHS /usr/lib /usr/local/lib
-                      ${LIBTSB_DEPENDENCY_DIR}/lib
-                DOC "The file name of the libiconv library."
-                )
-        set(EXTRA_LIBS "WS2_32.lib;${LIBICONV_LIBRARY};${LIBZ_LIBRARY};" CACHE STRING "List of additional libraries to link against." FORCE)
+            set(EXTRA_LIBS "WS2_32.lib" CACHE STRING "List of additional libraries to link against." FORCE)
         endif()
       endif()
     elseif(CYGWIN)
         add_definitions(-DCYGWIN)
         set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DCYGWIN")
-    elseif(MINGW)
-        if(WITH_LIBXML)
-            # this is necessary to build with libxml2 on mingw
-            add_definitions(-DLIBXML_STATIC)
-        endif(WITH_LIBXML)
     endif(MSVC OR USING_INTEL)
 
 endif(UNIX)
@@ -713,9 +739,9 @@ libTSB version ${PACKAGE_VERSION}
      CXXFLAGS                      = ${CMAKE_CXX_FLAGS}
      LDFLAGS                       = ${CMAKE_EXE_LINKER_FLAGS}
 
-   libLX library configuration:
-     libLX library                  = ${LINKED_LIBRARY}
-     libLX include                  = -I${LINKED_INCLUDE_DIR}
+   ${LINKED_NAME} library configuration:
+     ${LINKED_NAME} library                  = ${LINKED_LIBRARY}
+     ${LINKED_NAME} include                  = -I${LINKED_INCLUDE_DIR}
 
 
   Other libTSB configuration settings:

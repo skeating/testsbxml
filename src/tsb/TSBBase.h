@@ -50,7 +50,7 @@
 #include <tsb/TSBNamespaces.h>
 #include <tsb/TSBConstructorException.h>
 #include <tsb/util/ExpectedAttributes.h>
-#include <liblx/xml/XMLNode.h>
+#include <xml/XMLNode.h>
 
 #ifdef __cplusplus
 

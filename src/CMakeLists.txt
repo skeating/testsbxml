@@ -244,7 +244,7 @@ add_library (${LIBTSB_LIBRARY}-static STATIC ${LIBTSB_SOURCES} )
 
 if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    set_target_properties(${LIBTSB_LIBRARY}-static PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
+    set_target_properties(${LIBTSB_LIBRARY}-static PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;;LIBLAX_STAIC=1;LIBTSB_STATIC=1")
 endif(WIN32 AND NOT CYGWIN)
 
 target_link_libraries(${LIBTSB_LIBRARY}-static ${LIBTSB_LIBS} ${EXTRA_LIBS})

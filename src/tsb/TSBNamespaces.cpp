@@ -40,7 +40,6 @@
 #include <sstream>
 #include <tsb/common/common.h>
 #include <iostream>
-#include <liblx/util/util.h>
 
 /** @cond doxygenIgnored */
 
@@ -439,7 +438,7 @@ LIBTSB_EXTERN
 char *
 TSBNamespaces_getTSBNamespaceURI(unsigned int level, unsigned int version)
 {
-  return safe_strdup(TSBNamespaces::getTSBNamespaceURI(level, version).c_str());
+  return tsb_safe_strdup(TSBNamespaces::getTSBNamespaceURI(level, version).c_str());
 }
 
 

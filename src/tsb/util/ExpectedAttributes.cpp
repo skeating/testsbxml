@@ -12,7 +12,6 @@
 #include <tsb/common/TSBOperationReturnValues.h>
 #include <tsb/util/ExpectedAttributes.h>
 
-#include <liblx/util/util.h>
 
 LIBTSB_CPP_NAMESPACE_BEGIN
 #ifdef __cplusplus
@@ -70,7 +69,7 @@ char*
 ExpectedAttributes_get(ExpectedAttributes_t *attr, unsigned int index)
 {
   if (attr == NULL) return NULL;
-  return safe_strdup(attr->get(index).c_str());
+  return tsb_safe_strdup(attr->get(index).c_str());
 }
 
 LIBTSB_EXTERN 

@@ -22,7 +22,6 @@
 #include <tsb/util/util.h>
 #include <tsb/util/memory.h>
 
-#include <liblx/util/util.h>
 
 #include <math.h>
 
@@ -89,7 +88,7 @@ c_locale_vsnprintf (char *str, size_t size, const char *format, va_list ap)
   char *locale;
 
 
-  locale = safe_strdup(setlocale(LC_ALL, NULL));
+  locale = tsb_safe_strdup(setlocale(LC_ALL, NULL));
   setlocale(LC_ALL, "C");
 
   result = vsnprintf(str, size, format, ap);
@@ -108,7 +107,7 @@ c_locale_strtod (const char *nptr, char **endptr)
   char *locale;
 
 
-  locale = safe_strdup(setlocale(LC_ALL, NULL));
+  locale = tsb_safe_strdup(setlocale(LC_ALL, NULL));
   setlocale(LC_ALL, "C");
 
   result = strtod(nptr, endptr);
@@ -170,23 +169,23 @@ safe_strcat (const char *str1, const char *str2)
 }
 
 
-// LIBTSB_EXTERN
-// char *
-// safe_strdup (const char* s)
-// {
-//   size_t  size;
-//   char   *duplicate;
+ LIBTSB_EXTERN
+ char *
+ tsb_safe_strdup (const char* s)
+ {
+   size_t  size;
+   char   *duplicate;
   
-//   if (s == NULL) return NULL;
+   if (s == NULL) return NULL;
   
-//   size      = strlen(s) + 1;
-//   duplicate = (char *) safe_malloc(size * sizeof(char));
+   size      = strlen(s) + 1;
+   duplicate = (char *) safe_malloc(size * sizeof(char));
 
 
-//   strncpy(duplicate, s, size);
+   strncpy(duplicate, s, size);
 
-//   return duplicate;
-// }
+   return duplicate;
+ }
 
 
 LIBTSB_EXTERN
@@ -204,17 +203,17 @@ strcmp_insensitive (const char *s1, const char *s2)
 }
 
 
-//LIBTSB_EXTERN
-//unsigned int
-//streq (const char *s, const char *t)
-//{
-//  if (s == NULL)
-//    return t == NULL;
-//  else if (t == NULL)
-//    return 0;
-//  else
-//    return !strcmp(s, t);
-//}
+LIBTSB_EXTERN
+unsigned int
+tsb_streq (const char *s, const char *t)
+{
+  if (s == NULL)
+    return t == NULL;
+  else if (t == NULL)
+    return 0;
+  else
+    return !strcmp(s, t);
+}
 
 
 LIBTSB_EXTERN

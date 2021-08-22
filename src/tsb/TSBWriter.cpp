@@ -42,15 +42,15 @@
 #include <sstream>
 
 #include <tsb/common/common.h>
-#include <liblx/xml/XMLOutputStream.h>
+#include <xml/XMLOutputStream.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBDocument.h>
 #include <tsb/TSBWriter.h>
 
-#include <liblx/compress/CompressCommon.h>
-#include <liblx/compress/OutputCompressor.h>
+#include <compress/CompressCommon.h>
+#include <compress/OutputCompressor.h>
 
 /** @cond doxygenIgnored */
 
@@ -271,7 +271,7 @@ TSBWriter::writeToString (const TSBDocument* d)
   ostringstream stream;
   writeTSB(d, stream);
 
-  return safe_strdup( stream.str().c_str() );
+  return tsb_safe_strdup( stream.str().c_str() );
 }
 
 std::string 

@@ -36,7 +36,7 @@
  */
 #include <tsb/TSBComment.h>
 #include <tsb/TSBListOfComments.h>
-#include <liblx/xml/XMLInputStream.h>
+#include <xml/XMLInputStream.h>
 
 
 using namespace std;
@@ -884,7 +884,7 @@ TSBComment_getContributor(const TSBComment_t * tsbc)
   }
 
   return tsbc->getContributor().empty() ? NULL :
-    safe_strdup(tsbc->getContributor().c_str());
+    tsb_safe_strdup(tsbc->getContributor().c_str());
 }
 
 
@@ -912,7 +912,7 @@ TSBComment_getPoint(const TSBComment_t * tsbc)
   }
 
   return tsbc->getPoint().empty() ? NULL :
-    safe_strdup(tsbc->getPoint().c_str());
+    tsb_safe_strdup(tsbc->getPoint().c_str());
 }
 
 

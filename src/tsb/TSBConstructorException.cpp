@@ -39,8 +39,8 @@
 #include <tsb/TSBConstructorException.h>
 
 #include <tsb/TSBNamespaces.h>
-#include <liblx/xml/XMLNamespaces.h>
-#include <liblx/xml/XMLOutputStream.h>
+#include <xml/XMLNamespaces.h>
+#include <xml/XMLOutputStream.h>
 
 #include <string>
 #include <sstream>

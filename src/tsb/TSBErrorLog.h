@@ -44,8 +44,8 @@
 
 
 #include <tsb/common/extern.h>
-#include <liblx/xml/XMLError.h>
-#include <liblx/xml/XMLErrorLog.h>
+#include <xml/XMLError.h>
+#include <xml/XMLErrorLog.h>
 #include <tsb/TSBError.h>
 
 

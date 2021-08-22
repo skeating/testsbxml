@@ -40,7 +40,7 @@
 #define TSBError_h
 
 #include <tsb/common/extern.h>
-#include <liblx/xml/XMLError.h>
+#include <xml/XMLError.h>
 #include <tsb/TSBNamespaces.h>
 
 

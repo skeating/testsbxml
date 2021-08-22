@@ -44,9 +44,9 @@ BEGIN_C_DECLS
 /**
  * Easier-to-read and NULL-friendly string comparison.
  */
-//LIBTSB_EXTERN
-//unsigned int
-//streq (const char *s, const char *t);
+LIBTSB_EXTERN
+unsigned int
+tsb_streq (const char *s, const char *t);
 
 
 /**
@@ -103,9 +103,9 @@ safe_strcat (const char *str1, const char *str2);
  * Memory for the string is obtained with safe_malloc() and can be freed
  * with safe_free().
  */
-// LIBTSB_EXTERN
-// char *
-// safe_strdup (const char* s);
+ LIBTSB_EXTERN
+ char *
+ tsb_safe_strdup (const char* s);
 
 
 /**

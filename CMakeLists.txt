@@ -252,23 +252,29 @@ if (WITH_LIBLX)
         DOC "The directory containing the libLX include files."
     )
 
+    # to make seamless use of libsbml/liblx we want include dir to
+    # have sbml or liblax already included
+    set(XTRA_INC "${LIBLX_INCLUDE_DIR}/liblx")
+    set(LIBLX_INCLUDE_DIR "${LIBLX_INCLUDE_DIR}")
+
     set(LINKED_LIBRARY ${LIBLX_LIBRARY})
     set (LINKED_INCLUDE_DIR ${LIBLX_INCLUDE_DIR})
     set(LINKED_NAME "libLX")
 
     set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
     if (WIN32 AND NOT CYGWIN)
-    if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
-        set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
-    else()
-        option(LIBLX_STATIC "The libLX library was statically compiled" ON)
-    endif()
+        if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
+            set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
+        else()
+            option(LIBLX_STATIC "The libLX library was statically compiled" ON)
+        endif()
     endif()
 
+
     if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/common/liblx-version.h")
-    message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
-    It should contain the file common/liblx-version.h, but it does not. 
-    Please specify the LIBLX_INCLUDE_DIR variable.")
+        message(FATAL_ERROR "The include directory ${LIBLX_INCLUDE_DIR} specified for libLX appears to be invalid. 
+        It should contain the file common/liblx-version.h, but it does not. 
+        Please specify the LIBLX_INCLUDE_DIR variable.")
     endif()
 
 endif()
@@ -292,6 +298,11 @@ if (WITH_LIBSBML)
         DOC "The directory containing the sbml include files."
     )
 
+    # to make seamless use of libsbml/liblx we want include dir to
+    # have sbml or liblax already included
+    set(LIBSBML_INCLUDE_DIR "${LIBSBML_INCLUDE_DIR}")
+    set(XTRA_INC "${LIBLX_INCLUDE_DIR}/sbml")
+
     set(LINKED_LIBRARY ${LIBSBML_LIBRARY})
     set (LINKED_INCLUDE_DIR ${LIBSBML_INCLUDE_DIR})
     set(LINKED_NAME "libSBML")
@@ -307,7 +318,7 @@ if (WITH_LIBSBML)
 
     if(NOT EXISTS "${LIBSBML_INCLUDE_DIR}/sbml/SBase.h")
         message(FATAL_ERROR 
-    "The include directory specified for sbml appears to be invalid.  It should contain the 
+    "The include directory ${LIBSBML_INCLUDE_DIR} specified for sbml appears to be invalid.  It should contain the 
     file sbml/SBase.h, but it does not. Please specify the LIBSBML_INCLUDE_DIR variable."
     )
     endif()
@@ -340,7 +351,7 @@ set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LINKED_LIBRARY})
 #
 
 set(EXTRA_LIBS "" CACHE STRING "List of additional libraries to link against." )
-set(EXTRA_INCLUDE "" CACHE STRING "List of additional include directories to add." )
+set(EXTRA_INCLUDE_DIRS "${XTRA_INC}" CACHE STRING "List of additional include directories to add." FORCE)
 set(EXTRA_DEFS "" CACHE STRING "List of additional flag to add." )
 
 
@@ -502,10 +513,10 @@ else(UNIX)
     if(WITH_LIBLX)
       if (LIBLX_STATIC)
           add_definitions(-DLIBLX_STATIC -DLIBLAX_STATIC)
-          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC")
+          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC -DLIBLAX_STATIC")
       else()
           add_definitions(-DLIBLX_EXPORTS -DLIBLAX_EXPORTS)
-          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS")
+          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS -DLIBLAX_EXPORTS")
       endif()
     endif()
     if(WITH_LIBSBML)

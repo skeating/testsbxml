@@ -258,17 +258,17 @@ if (WITH_LIBLX)
 
     set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
     if (WIN32 AND NOT CYGWIN)
-    if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
-        set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
-    else()
-        option(LIBLX_STATIC "The libLX library was statically compiled" ON)
-    endif()
+        if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
+            set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
+        else()
+            option(LIBLX_STATIC "The libLX library was statically compiled" ON)
+        endif()
     endif()
 
     if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/common/liblx-version.h")
-    message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
-    It should contain the file common/liblx-version.h, but it does not. 
-    Please specify the LIBLX_INCLUDE_DIR variable.")
+        message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
+        It should contain the file common/liblx-version.h, but it does not. 
+        Please specify the LIBLX_INCLUDE_DIR variable.")
     endif()
 
 endif()

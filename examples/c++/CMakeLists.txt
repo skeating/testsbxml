@@ -29,7 +29,7 @@
 ## ------------------------------------------------------------------------ -->
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${LIBLX_INCLUDE_DIR})
+include_directories(${LINKED_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/../../src)
 
@@ -47,7 +47,9 @@ foreach(example
 
     if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
+    if(WITH_LIBLX)
+      set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
+    endif()
     endif(WIN32 AND NOT CYGWIN)
 
 

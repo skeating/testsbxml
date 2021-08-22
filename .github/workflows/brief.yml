@@ -13,11 +13,14 @@ env:
 
 jobs:
   build:
+    name: 
+      ${{ matrix.platform }} linked to ${{ matrix.linked_lib }}
     # The matrix build if you need cross-platform coverage.
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
+        linked_lib: [liblx, libsbml]
         
     steps:
     - uses: actions/checkout@v2
@@ -25,12 +28,19 @@ jobs:
     - name: Add msbuild to PATH (Windows)
       if: matrix.platform == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1.6.0
+
     - name: Clone libLX
+      if: matrix.linked_lib == 'liblx'
       shell: bash
       run: |
         git clone --single-branch --branch libsbml-src-structure https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
         
-    - name: Install libLX Windows dependencies
+    - name: Clone libSBML
+      if: matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: echo ${{matrix.linked_lib}}
+        
+    - name: Install Windows dependencies
       if: matrix.platform == 'windows-latest'
       shell: bash
       run: |
@@ -62,6 +72,7 @@ jobs:
       
     
     - name: Build libLX
+      if: matrix.linked_lib == 'liblx'
       shell: bash
       run: |
         # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml

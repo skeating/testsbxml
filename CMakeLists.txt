@@ -4,13 +4,10 @@ if(POLICY CMP0054)
     cmake_policy(SET CMP0054 NEW)
 endif()
 
-#if(POLICY CMP0058)
-#    cmake_policy(SET CMP0058 OLD)
-#endif()
 set(LIBTSB_ROOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH
-    "Path to the libLX root source directory")
+    "Path to the libTSB root source directory")
 set(LIBTSB_ROOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE PATH
-    "Path to the libLX root build directory")
+    "Path to the libTSB root build directory")
 
 include (CMakeTestCCompiler)
 include (CheckCSourceCompiles)
@@ -22,7 +19,7 @@ include (CheckCCompilerFlag)
 include (CheckCSourceRuns)
 include (CheckSymbolExists)
 include (CheckTypeSize)
-	include(GNUInstallDirs)
+include(GNUInstallDirs)
 
 ###############################################################################
 #
@@ -105,21 +102,18 @@ include(CPack)
 # Here we have the main configuration options for libtsb.
 #
 
-# Build static / shared library
-# option(BUILD_SHARED_LIBS  "Build shared library. (Set to OFF to build static libraries.)" OFF)
-
 # Whether to compile examples
 option(WITH_EXAMPLES "Compile the libTSB example programs."  OFF)
 
+##############
+## LATER TO DO
 # Which language bindings should be built
-option(WITH_CSHARP   "Generate C# language bindings."     OFF)
-option(WITH_JAVA     "Generate Java language bindings."   OFF)
-option(WITH_PYTHON   "Generate Python language bindings." OFF)
-option(WITH_PERL     "Generate Perl language bindings."   OFF)
-option(WITH_RUBY     "Generate Ruby language bindings"    OFF)
-option(WITH_R        "Generate R language bindings"       OFF)
-option(WITH_OCTAVE   "Generate Octave language bindings." OFF)
-option(WITH_MATLAB   "Generate MATLAB language bindings." OFF)
+#option(WITH_CSHARP   "Generate C# language bindings."     OFF)
+#option(WITH_JAVA     "Generate Java language bindings."   OFF)
+#option(WITH_PYTHON   "Generate Python language bindings." OFF)
+#option(WITH_PERL     "Generate Perl language bindings."   OFF)
+#option(WITH_RUBY     "Generate Ruby language bindings"    OFF)
+#option(WITH_R        "Generate R language bindings"       OFF)
 
 # Add an option to compile with all warnings shown
 option(WITH_WALL     "Compile with -Wall, so that the compiler will display all warnings." OFF)
@@ -161,15 +155,19 @@ endif()
 # Use C++ namespace.
 option(WITH_CPP_NAMESPACE "Use a C++ namespace for libTSB."   OFF)
 
+##############
+## LATER TO DO
 # Generate documentation.
-option(WITH_DOXYGEN  "Generate documentation for libTSB using Doxygen."  OFF )
+#option(WITH_DOXYGEN  "Generate documentation for libTSB using Doxygen."  OFF )
 # marks as advanced, so as to hide documentation generation
-mark_as_advanced(WITH_DOXYGEN)
+#mark_as_advanced(WITH_DOXYGEN)
 
+##############
+## LATER TO DO
 # Re-generate the swig bindings? This really should be on by default
 # otherwise one might have the wrong wrapper code without support for
 # the libtsb packages one wants.
-option(WITH_SWIG     "Regenerate SWIG-based language bindings."  ON )
+#option(WITH_SWIG     "Regenerate SWIG-based language bindings."  ON )
 
 # Set build type default.
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING
@@ -233,43 +231,60 @@ endif(WITH_SWIG)
 ###############################################################################
 # Choose which library to link to.
 
-set(LINK_LIBLX_INITIAL_VALUE)
-set(LINK_LIBSBML_INITIAL_VALUE)
-
-# locate liblx
-find_library(LIBLX_LIBRARY
-    NAMES liblx.lib liblx-static.lib
-    PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
-    /usr/local/lib
-          /usr/lib
-    DOC "The file name of the libLX library."
-)
-
-# Locate libsbml
-find_library(LIBSBML_LIBRARY
-    NAMES libsbml-static.lib sbml-static libsbml.lib sbml
-    PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
-    /usr/local/lib          
-          /usr/lib 
-    DOC "The file name of the sbml library."
-)
-
-if(EXISTS ${LIBLX_LIBRARY})
-    set(LINK_LIBLX_INITIAL_VALUE ON)
-    set(LINK_LIBSBML_INITIAL_VALUE OFF)
-elseif(EXISTS ${LIBSBML_LIBRARY})
-    set(LINK_LIBLX_INITIAL_VALUE OFF)
-    set(LINK_LIBSBML_INITIAL_VALUE ON)
-else()
-  message(FATAL_ERROR "The ${LIBTSB_LIBRARY} must be linked against either libLX or libSBML.
-  Neither can be found.")
-endif()
-
-
+set(LINK_LIBLX_INITIAL_VALUE ON)
+set(LINK_LIBSBML_INITIAL_VALUE OFF)
 option (WITH_LIBLX "Build the libtsb linked to libLX" LINK_LIBLX_INITIAL_VALUE)
 option (WITH_LIBSBML "Build the libtsb linked to libSBML" LINK_LIBSBML_INITIAL_VALUE)
 
-# ccheck only one option is selected
+if (WITH_LIBLX)
+    # locate liblx
+    find_library(LIBLX_LIBRARY
+        NAMES liblx.lib liblx-static.lib
+        PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
+        /usr/local/lib
+            /usr/lib
+        DOC "The file name of the libLX library."
+    )
+
+    find_path(LIBLX_INCLUDE_DIR
+        NAMES liblx/xml/common/liblx-version.h
+        PATHS ${LIBTSB_DEPENDENCY_DIR}/include
+        /usr/local/include
+            /usr/include 
+        DOC "The directory containing the libLX include files."
+    )
+
+    set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
+    if (WIN32 AND NOT CYGWIN)
+    if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
+        set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
+    else()
+        option(LIBLX_STATIC "The libLX library was statically compiled" ON)
+    endif()
+    endif()
+
+    if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/common/liblx-version.h")
+    message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
+    It should contain the file common/liblx-version.h, but it does not. 
+    Please specify the LIBLX_INCLUDE_DIR variable.")
+    endif()
+
+    set(LINKED_LIBRARY ${LIBLX_LIBRARY})
+    set (LINKED_INCLUDE_DIR ${LIBLX_INCLUDE_DIR})
+endif()
+
+if (WITH_LIBSBML)
+    # Locate libsbml
+    find_library(LIBSBML_LIBRARY
+        NAMES libsbml-static.lib sbml-static libsbml.lib sbml
+        PATHS ${LIBTSB_DEPENDENCY_DIR}/lib
+        /usr/local/lib          
+            /usr/lib 
+        DOC "The file name of the sbml library."
+    )
+#endif
+
+# check only one option is selected
 set(LIBRARY_COUNT 0)
 if(WITH_LIBLX)
     math(EXPR LIBRARY_COUNT "${LIBRARY_COUNT} + 1")
@@ -280,40 +295,15 @@ endif()
 
 if(LIBRARY_COUNT GREATER 1)
     message(FATAL_ERROR
-"Only one linked library should be chosen. Please select only one of the
-following options: WITH_LIBSBML or WITH_LIBLX.")
-endif()
-
-if(WITH_LIBLX)
-    set(LINKED_LIBRARY ${LIBLX_LIBRARY})
+    "Only one linked library should be chosen. Please select only one of the
+    following options: WITH_LIBSBML or WITH_LIBLX.")
+elseif(LIBRARY_COUNT EQUALS 0)
+    message(FATAL_ERROR "The ${LIBTSB_LIBRARY} must be linked against either libLX or libSBML.
+    Neither can be found.")
 endif()
 
 
 set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LINKED_LIBRARY})
-
-find_path(LIBLX_INCLUDE_DIR
-    NAMES liblx/xml/common/liblx-version.h
-    PATHS ${LIBTSB_DEPENDENCY_DIR}/include
-    /usr/local/include
-          /usr/include 
-    DOC "The directory containing the libLX include files."
-)
-
-set(LIBLX_STATIC OFF CACHE BOOL "is libLX statically compiled")
-if (WIN32 AND NOT CYGWIN)
-  if (LINKED_LIBRARY AND LINKED_LIBRARY MATCHES ".*-static*$")
-    set(LIBLX_STATIC ON CACHE BOOL "is libLX statically compiled")
-  else()
-    option(LIBLX_STATIC "The libLX library was statically compiled" ON)
-  endif()
-endif()
-
-if (NOT EXISTS "${LIBLX_INCLUDE_DIR}/liblx/common/liblx-version.h")
-  message(FATAL_ERROR "The include directory specified for libLX appears to be invalid. 
-  It should contain the file common/liblx-version.h, but it does not. 
-  Please specify the LIBLX_INCLUDE_DIR variable.")
-endif()
-
 
 ###############################################################################
 #
@@ -324,56 +314,6 @@ set(EXTRA_LIBS "" CACHE STRING "List of additional libraries to link against." )
 set(EXTRA_INCLUDE "" CACHE STRING "List of additional include directories to add." )
 set(EXTRA_DEFS "" CACHE STRING "List of additional flag to add." )
 
-
-###############################################################################
-#
-# Locate zlib
-#
-
-set(ZLIB_INITIAL_VALUE)
-find_library(LIBZ_LIBRARY
-    NAMES zdll.lib z zlib.lib
-    PATHS /usr/lib /usr/local/lib
-          ${LIBTSB_DEPENDENCY_DIR}/lib
-    DOC "The file name of the zip compression library."
-    )
-
-if(EXISTS ${LIBZ_LIBRARY})
-    set(ZLIB_INITIAL_VALUE ON)
-else()
-    set(ZLIB_INITIAL_VALUE OFF)
-endif()
-option(WITH_ZLIB     "Enable the use of zip compression."    ${ZLIB_INITIAL_VALUE} )
-
-if(WITH_ZLIB)
-
-    find_path(LIBZ_INCLUDE_DIR
-        NAMES zlib.h zlib/zlib.h
-        PATHS /usr/include /usr/local/include
-              ${LIBTSB_DEPENDENCY_DIR}/include
-        DOC "The directory containing the zlib include files."
-              )
-
-    add_definitions( -DUSE_ZLIB )
-
-    # make sure that we have a valid zip library
-    check_library_exists("${LIBZ_LIBRARY}" "gzopen" "" LIBZ_FOUND_SYMBOL)
-    if(NOT LIBZ_FOUND_SYMBOL)
-        # this is odd, but on windows this check always fails! must be a
-        # bug in the current cmake version so for now only issue this
-        # warning on linux
-        if(UNIX)
-            message(WARNING "The zlib library does not appear to be valid because it is missing certain required symbols. Please check that ${LIBZ_LIBRARY} is the zlib library. For details about the error, please see ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log")
-        endif()
-    endif()
-
-    if(NOT EXISTS "${LIBZ_INCLUDE_DIR}/zlib.h")
-        message(FATAL_ERROR "The zlib include directory does not appear to be valid. It should contain the file zlib.h, but it does not.")
-    endif()
-
-    set (LIBTSB_LIBS ${LIBTSB_LIBS} ${LIBZ_LIBRARY})
-
-endif(WITH_ZLIB)
 
 
 ###############################################################################
@@ -530,13 +470,15 @@ else(UNIX)
     add_definitions(-DWIN32)
     set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DWIN32")
 
-  if (LIBLX_STATIC)
-      add_definitions(-DLIBLX_STATIC -DLIBLAX_STATIC)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC")
-  else()
-      add_definitions(-DLIBLX_EXPORTS -DLIBLAX_EXPORTS)
-      set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS")
-  endif()
+    if(WITH_LIBLX)
+      if (LIBLX_STATIC)
+          add_definitions(-DLIBLX_STATIC -DLIBLAX_STATIC)
+          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_STATIC")
+      else()
+          add_definitions(-DLIBLX_EXPORTS -DLIBLAX_EXPORTS)
+          set(BUILD_DEFINITIONS "${BUILD_DEFINITIONS} -DLIBLX_EXPORTS")
+      endif()
+    endif()
 
   
     if(MSVC OR USING_INTEL)
@@ -773,7 +715,7 @@ libTSB version ${PACKAGE_VERSION}
 
    libLX library configuration:
      libLX library                  = ${LINKED_LIBRARY}
-     libLX include                  = -I${LIBLX_INCLUDE_DIR}
+     libLX include                  = -I${LINKED_INCLUDE_DIR}
 
 
   Other libTSB configuration settings:

@@ -94,7 +94,7 @@ jobs:
         cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
         
     - name: Build libSBML
-      if: matrix.linked_lib = 'libsbml'
+      if: matrix.linked_lib == 'libsbml'
       shell: bash
       run: |
         # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml

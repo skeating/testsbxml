@@ -15,13 +15,12 @@ jobs:
   build:
     name: 
       ${{ matrix.platform }} linked to ${{ matrix.linked_lib }}
-    # The matrix build if you need cross-platform coverage.
-    runs-on: ${{ matrix.platform }}
     strategy:
-      matrix:
+    matrix:
         platform: [macos-latest] #, ubuntu-latest, windows-latest]
-        linked_lib: [liblx, libsbml]
-        
+        linked_lib: [liblx, libsbml]  
+    runs-on: ${{ matrix.platform }}
+
     steps:
     - uses: actions/checkout@v2
     

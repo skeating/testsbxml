@@ -139,8 +139,8 @@ jobs:
       shell: bash
       run: |
         mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
-        cp -r "${{runner.workspace}}/libsbml/src/libsbml" "${{runner.workspace}}/dependencies/include"
-        cp -r "${{runner.workspace}}/libsbml-build/src/libsbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
         # need to add libsbml.dll directory to path, since we are linking dynamically
         echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH

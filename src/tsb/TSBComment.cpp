@@ -57,7 +57,7 @@ LIBTSB_CPP_NAMESPACE_BEGIN
 TSBComment::TSBComment(unsigned int level, unsigned int version)
   : TSBBase(level, version)
   , mContributor ("")
-  , mNumber (util_NaN())
+  , mNumber (tsb_util_NaN())
   , mIsSetNumber (false)
   , mPoint ("")
 {
@@ -71,7 +71,7 @@ TSBComment::TSBComment(unsigned int level, unsigned int version)
 TSBComment::TSBComment(TSBNamespaces *tsbns)
   : TSBBase(tsbns)
   , mContributor ("")
-  , mNumber (util_NaN())
+  , mNumber (tsb_util_NaN())
   , mIsSetNumber (false)
   , mPoint ("")
 {
@@ -249,7 +249,7 @@ TSBComment::unsetContributor()
 int
 TSBComment::unsetNumber()
 {
-  mNumber = util_NaN();
+  mNumber = tsb_util_NaN();
   mIsSetNumber = false;
 
   if (isSetNumber() == false)
@@ -895,7 +895,7 @@ LIBTSB_EXTERN
 double
 TSBComment_getNumber(const TSBComment_t * tsbc)
 {
-  return (tsbc != NULL) ? tsbc->getNumber() : util_NaN();
+  return (tsbc != NULL) ? tsbc->getNumber() : tsb_util_NaN();
 }
 
 

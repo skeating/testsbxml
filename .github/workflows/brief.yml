@@ -55,7 +55,7 @@ jobs:
         echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
 
     - name: Install Windows dependencies for libSBML
-      if: matrix.platform == 'windows-latest' && matrix.linkeed_lib == 'libsbml'
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
       shell: bash
       run: |
         curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip

@@ -301,7 +301,7 @@ if (WITH_LIBSBML)
     # to make seamless use of libsbml/liblx we want include dir to
     # have sbml or liblax already included
     set(LIBSBML_INCLUDE_DIR "${LIBSBML_INCLUDE_DIR}")
-    set(XTRA_INC "${LIBLX_INCLUDE_DIR}/sbml")
+    set(XTRA_INC "${LIBSBML_INCLUDE_DIR}/sbml")
 
     set(LINKED_LIBRARY ${LIBSBML_LIBRARY})
     set (LINKED_INCLUDE_DIR ${LIBSBML_INCLUDE_DIR})

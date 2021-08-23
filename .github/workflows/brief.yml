@@ -40,33 +40,45 @@ jobs:
       run: | 
         git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
         
-    - name: Install Windows dependencies for libLX
-      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
+    - name: Cache Windows dependencies and SWIG
+      # On Windows, the dependencies live inside the source folder, ie `.`.
+      # For the CI, we put SWIG there too, for simplicity.
+      if: matrix.platform == 'windows-latest'
+      id: cache-win-dependencies-static
+      uses: actions/cache@v2
+      with:
+        path: |
+          ./dependencies
+        key: ${{ runner.os }}-dependencies-static
+
+    - name: Download pre-built Windows dependencies and SWIG
+      # Windows dependencies have to be in a subfolder called `dependencies`, directly under the git repository root.
+      # also gets SWIG, completing the set of dependencies needed for windows
+      if:
+        matrix.platform == 'windows-latest' &&
+        steps.cache-win-dependencies-static.outputs.cache-hit != 'true'
       shell: bash
       run: |
         curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
         unzip dependencies.zip -d dependencies
         cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
         rm -r dependencies/libSBML*
-        cp -r dependencies ../liblx/dependencies
         #
         curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
         unzip -o swig.zip -d swig
         echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
 
+    - name: Install Windows dependencies for libLX
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        cp -r dependencies ../liblx/dependencies
+
     - name: Install Windows dependencies for libSBML
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
       shell: bash
       run: |
-        curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
-        unzip dependencies.zip -d dependencies
-        cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
-        rm -r dependencies/libSBML*
         cp -r dependencies ../libsbml/dependencies
-        #
-        curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
-        unzip -o swig.zip -d swig
-        echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
 
     - name: setup Windows environment
       if: matrix.platform == 'windows-latest'

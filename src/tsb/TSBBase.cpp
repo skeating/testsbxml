@@ -51,7 +51,6 @@
 #include <tsb/TSBDocument.h>
 #include <tsb/TSBListOf.h>
 #include <tsb/TSBBase.h>
-#include <tsb/util/util.h>
 
 
 /** @cond doxygenIgnored */

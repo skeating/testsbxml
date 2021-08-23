@@ -787,7 +787,7 @@ TSBDocument::addChildObject(const std::string& elementName,
     return addComment((const TSBComment*)(element));
   }
 
-  return LIBTSB_OPERATION_FAILED;
+  return LIBLX_OPERATION_FAILED;
 }
 
 /** @endcond */

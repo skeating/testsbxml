@@ -17,7 +17,7 @@ jobs:
       ${{ matrix.platform }} linked to ${{ matrix.linked_lib }}
     strategy:
       matrix:
-        platform: [macos-latest] #, ubuntu-latest, windows-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         linked_lib: [liblx, libsbml]  
     runs-on: ${{ matrix.platform }}
 
@@ -119,9 +119,9 @@ jobs:
         mkdir "${{runner.workspace}}/dependencies"
         mkdir "${{runner.workspace}}/dependencies/include"
         mkdir "${{runner.workspace}}/dependencies/lib"
-        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
-        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
-        cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/libbml" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
 
     - name: Prepare Build Environment for testsbxmlwith liblx on Windows OS
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
@@ -138,11 +138,11 @@ jobs:
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
       shell: bash
       run: |
-        mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
-        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
-        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
-        cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
-        # need to add liblx.dll directory to path, since we are linking dynamically
+        mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
+        cp -r "${{runner.workspace}}/libsbml/src/libsbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/libsbml" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        # need to add libsbml.dll directory to path, since we are linking dynamically
         echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
         
     - name: Create Build Environment

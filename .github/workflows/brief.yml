@@ -145,6 +145,9 @@ jobs:
         # need to add liblx.dll directory to path, since we are linking dynamically
         echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
         
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+    
     - name: Configure ubuntu CMake with liblx
       if: matrix.platform == 'ubuntu-latest' && matrix.linked_lib == 'liblx'
       shell: bash
@@ -169,7 +172,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure macOS CMake with liblx
-      if: matrix.platform == 'macos-latest' && matrix.platform == 'liblx'
+      if: matrix.platform == 'macos-latest' && matrix.linked_lib == 'liblx'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \
@@ -180,7 +183,7 @@ jobs:
           -DWITH_CHECK=True
           
     - name: Configure macOS CMake with libsbml
-      if: matrix.platform == 'macos-latest' && matrix.platform == 'libsbml'
+      if: matrix.platform == 'macos-latest' && matrix.linked_lib == 'libsbml'
       shell: bash
       run: |
         cmake -B "${{runner.workspace}}/build" \

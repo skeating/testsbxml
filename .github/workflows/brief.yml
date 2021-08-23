@@ -38,7 +38,8 @@ jobs:
     - name: Clone libSBML
       if: matrix.linked_lib == 'libsbml'
       shell: bash
-      run: echo ${{matrix.linked_lib}}
+      run: | 
+        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
         
     - name: Install Windows dependencies for libLX
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == "liblx"
@@ -163,6 +164,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
+          -DWITH_LIBLX=False \
           -DWITH_LIBSBML=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
@@ -185,6 +187,7 @@ jobs:
         cmake -B "${{runner.workspace}}/build" \
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
+          -DWITH_LIBLX=False \
           -DWITH_LIBSBML=True \
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
@@ -209,6 +212,7 @@ jobs:
           -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
           -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
           -DLIBSBML_STATIC=True \
+          -DWITH_LIBLX=False \
           -DWITH_LIBSBML=True \
           ${RUNTIME_LINKING_OPTION} \
           -DWITH_EXAMPLES=True \

@@ -753,6 +753,7 @@ libTSB version ${PACKAGE_VERSION}
    ${LINKED_NAME} library configuration:
      ${LINKED_NAME} library                  = ${LINKED_LIBRARY}
      ${LINKED_NAME} include                  = -I${LINKED_INCLUDE_DIR}
+     EXTRA INCLUDES                          = -I${EXTRA_INCLUDE_DIRS}
 
 
   Other libTSB configuration settings:
@@ -819,43 +820,6 @@ if(APPLE)
             message(STATUS "  Building universal binaries                 = yes (using ${CMAKE_OSX_ARCHITECTURES})")
         endif()
     endif()
-endif()
-
-
-# print selected packages if configured previously
-if(EXISTS ${CMAKE_BINARY_DIR}/CMakeCache.txt)
-
-    file(STRINGS  ${CMAKE_BINARY_DIR}/CMakeCache.txt cache)
-    set(last_line)
-    foreach(line ${cache})
-        string(LENGTH "${line}" length)
-        if(${length} GREATER 7)
-            string(SUBSTRING "${line}" 0 7 start)
-            if("${start}" STREQUAL  "ENABLE_")
-                if("${line}" MATCHES "^.*ON")
-                    message(STATUS "  ${last_line} = yes")
-                else()
-                    message(STATUS "  ${last_line} = no")
-                endif()
-            endif()
-
-            math(EXPR length_minus_two "${length} - 2")
-            if(${length_minus_two} GREATER 3)
-          math(EXPR length_minus_one "${length} - 1")
-                string(SUBSTRING "${line}" ${length_minus_one} 1 last_char)
-    if("x${last_char}" STREQUAL "x.")
-              math(EXPR length_minus_three "${length} - 3")
-                    string(SUBSTRING "${line}" 2 ${length_minus_three} last_line)
-                else()
-                    string(SUBSTRING "${line}" 2 ${length_minus_two} last_line)
-                endif()
-            endif()
-        else()
-            set(last_line "")
-            message("")
-        endif()
-    endforeach()
-
 endif()
 
 message(STATUS "

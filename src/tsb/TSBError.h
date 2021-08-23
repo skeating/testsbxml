@@ -108,9 +108,9 @@ typedef enum
  */
 typedef enum
 {
-    LIBTSB_CAT_INTERNAL = LIBLX_CAT_INTERNAL,
-    LIBTSB_CAT_SYSTEM = LIBLX_CAT_SYSTEM,
-    LIBTSB_CAT_XML = LIBLX_CAT_XML,
+    LIBTSB_CAT_INTERNAL = 0,
+    LIBTSB_CAT_SYSTEM,
+    LIBTSB_CAT_XML,
 
     LIBTSB_CAT_TSB = (LIBTSB_CAT_XML + 1)
     /*!< General TSB error  not falling into another category below. */
@@ -157,9 +157,9 @@ typedef enum
    * we only report one of the 4 XMLError_Severity values.  Translation
    * of the codes is done in TSBError.cpp.
    */
-    LIBTSB_SEV_WARNING = LIBLX_SEV_WARNING,
-    LIBTSB_SEV_ERROR = LIBLX_SEV_ERROR,
-    LIBTSB_SEV_FATAL = LIBLX_SEV_FATAL,
+    LIBTSB_SEV_WARNING = 1,
+    LIBTSB_SEV_ERROR = 2,
+    LIBTSB_SEV_FATAL = 3,
 
     LIBTSB_SEV_SCHEMA_ERROR    = (LIBTSB_SEV_FATAL + 1)
     /*!< The XML content does not conform to

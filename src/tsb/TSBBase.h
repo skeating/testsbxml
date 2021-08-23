@@ -62,8 +62,6 @@
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBVisitor.h>
 
-LIBLX_CPP_NAMESPACE_BEGIN
-
 class Model;
 
 class List;
@@ -74,7 +72,6 @@ class XMLNamespaces;
 class XMLOutputStream;
 class XMLToken;
 
-LIBLX_CPP_NAMESPACE_END
 
 LIBTSB_CPP_NAMESPACE_BEGIN
 

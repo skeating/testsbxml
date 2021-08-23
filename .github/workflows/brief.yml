@@ -16,7 +16,7 @@ jobs:
     name: 
       ${{ matrix.platform }} linked to ${{ matrix.linked_lib }}
     strategy:
-    matrix:
+      matrix:
         platform: [macos-latest] #, ubuntu-latest, windows-latest]
         linked_lib: [liblx, libsbml]  
     runs-on: ${{ matrix.platform }}

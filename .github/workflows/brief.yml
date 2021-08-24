@@ -71,14 +71,12 @@ jobs:
     - name: Install Windows dependencies for libLX
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
       shell: bash
-      run: |
-        cp -r dependencies ../liblx/dependencies
+      run: cp -r dependencies ../liblx/dependencies
 
     - name: Install Windows dependencies for libSBML
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
       shell: bash
-      run: |
-        cp -r dependencies ../libsbml/dependencies
+      run: cp -r dependencies ../libsbml/dependencies
 
     - name: setup Windows environment
       if: matrix.platform == 'windows-latest'

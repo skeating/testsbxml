@@ -28,6 +28,18 @@ jobs:
       if: matrix.platform == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1.6.0
 
+    - name: Clone libLX
+      if: matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        git clone --single-branch --branch libsbml-src-structure https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
+        
+    - name: Clone libSBML
+      if: matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: | 
+        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
+        
     - name: Cache Windows dependencies and SWIG
       # On Windows, the dependencies live inside the source folder, ie `.`.
       # For the CI, we put SWIG there too, for simplicity.

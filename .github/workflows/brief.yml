@@ -144,7 +144,7 @@ jobs:
       if: 
         matrix.platform != 'windows-latest' && 
         matrix.linked_lib == 'liblx' && 
-        steps.cache-${{matrix-platform}}-liblx.outputs.cache-hit != 'true'
+        steps.cache-${{matrix.platform}}-liblx.outputs.cache-hit != 'true'
       shell: bash
       run: |
         mkdir "${{runner.workspace}}/dependencies"
@@ -159,7 +159,7 @@ jobs:
       if: 
         matrix.platform != 'windows-latest' && 
         matrix.linked_lib == 'liblx' && 
-        steps.cache-${{matrix-platform}}-liblx.outputs.cache-hit == 'true'
+        steps.cache-${{matrix.platform}}-liblx.outputs.cache-hit == 'true'
       shell: bash
       run: |
         mkdir "${{runner.workspace}}/dependencies"

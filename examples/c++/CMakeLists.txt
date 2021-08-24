@@ -47,18 +47,16 @@ foreach(example
 
     if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    if(WITH_LIBLX)
-      set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
-    endif()
-    if(WITH_LIBSBML)
-      set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBSBML_STATIC=1;LIBTSB_STATIC=1")
-    endif()
+      if(WITH_LIBLX)
+        set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
+      endif()
+      if(WITH_LIBSBML)
+        set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBSBML_STATIC=1;LIBTSB_STATIC=1")
+      endif()
     endif(WIN32 AND NOT CYGWIN)
-
 
     set_target_properties(example_cpp_${example} PROPERTIES  OUTPUT_NAME ${example})
     target_link_libraries(example_cpp_${example} ${LIBTSB_LIBRARY}-static)
-
 
     if (WITH_ZLIB)
         target_link_libraries(example_cpp_${example} ${LIBZ_LIBRARY})

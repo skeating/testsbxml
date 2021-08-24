@@ -50,6 +50,9 @@ foreach(example
     if(WITH_LIBLX)
       set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
     endif()
+    if(WITH_LIBSBML)
+      set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBSBML_STATIC=1;LIBTSB_STATIC=1")
+    endif()
     endif(WIN32 AND NOT CYGWIN)
 
 

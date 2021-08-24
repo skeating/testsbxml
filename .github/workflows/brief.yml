@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [ build_new_lx_struct ]
+    branches: [ OrodRazeghi-patch-winBuildwithlibSBML ]
   pull_request:
     branches: [ builds_new_lx_struct ]
   workflow_dispatch:

@@ -232,8 +232,8 @@ jobs:
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+    #- name: Setup tmate session
+    #  uses: mxschmitt/action-tmate@v3
       
     - name: Build testsbxml
       shell: bash

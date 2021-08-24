@@ -152,8 +152,8 @@ jobs:
         mkdir "${{runner.workspace}}/dependencies/lib"
         cp -r ""${{runner.workspace}}/install-${{matrix.platform}}-liblx/include" "${{runner.workspace}}/dependencies/include"
         cp "${{runner.workspace}}/install-${{matrix.platform}}-liblx/lib"*.* "${{runner.workspace}}/dependencies/lib"
-        cp -r ""${{runner.workspace}}/install-${{matrix.platform}}-liblx/include" "install-${{matrix-platform}}-liblx/include"
-        cp "${{runner.workspace}}/install-${{matrix.platform}}-liblx/lib"*.* "install-${{matrix-platform}}-liblx/lib"
+        cp -r ""${{runner.workspace}}/install-${{matrix.platform}}-liblx/include" "install-${{matrix.platform}}-liblx/include"
+        cp "${{runner.workspace}}/install-${{matrix.platform}}-liblx/lib"*.* "install-${{matrix.platform}}-liblx/lib"
 
     - name: copy cached
       if: 
@@ -165,7 +165,7 @@ jobs:
         mkdir "${{runner.workspace}}/dependencies"
         mkdir "${{runner.workspace}}/dependencies/include"
         mkdir "${{runner.workspace}}/dependencies/lib"
-        cp -r "install-${{matrix-platform}}-liblx/include" "${{runner.workspace}}/dependencies/include"
+        cp -r "install-${{matrix.platform}}-liblx/include" "${{runner.workspace}}/dependencies/include"
         cp -"install-${{matrix.platform}}-liblx/lib"*.* "${{runner.workspace}}/dependencies/lib"
 
     - name: Build libSBML

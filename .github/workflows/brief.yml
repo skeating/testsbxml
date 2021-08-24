@@ -23,10 +23,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-    
+        
     - name: Add msbuild to PATH (Windows)
       if: matrix.platform == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1.6.0
@@ -235,6 +232,9 @@ jobs:
           -DWITH_EXAMPLES=True \
           -DWITH_CHECK=True
           
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      
     - name: Build testsbxml
       shell: bash
       run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE

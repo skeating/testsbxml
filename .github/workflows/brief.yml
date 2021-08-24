@@ -84,90 +84,15 @@ jobs:
       shell: bash
       run: brew install swig ccache
 
-    - name: Cache and clone libLX
-      if: matrix.linked_lib == 'liblx'
-      id: cache-liblx-clone
-      uses: actions/cache@v2
-      with:
-        path: |
-          ./clone/liblx
-        key: liblx-clone
     
-    - name: not cached so clone
-      if: 
-        matrix.linked_lib == 'liblx' &&         
-        steps.cache-liblx-clone.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        git clone --single-branch --branch libsbml-src-structure https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
-        mkdir "clone"
-        mkdir "clone/liblx"
-
-    - name: copy cached
-      if: 
-        matrix.linked_lib == 'liblx' &&         
-        steps.cache-liblx-clone.outputs.cache-hit == 'true'
-      shell: bash
-      run: |
-        mkdir "${{runner.workspace}}/liblx"
-        cp -r ./clone/liblx "${{runner.workspace}}/liblx"
-        
-    - name: Clone libSBML
-      if: matrix.linked_lib == 'libsbml'
-      shell: bash
-      run: | 
-        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
-        
-    - name: Create install_dir
-      run: cmake -E make_directory ${{runner.workspace}}/install-${{matrix.platform}}-${{matrix.linked_lib}}
-
-    - name: cache liblx build
-      id: cache-${{matrix.platform}}-liblx-build
-      uses: actions/cache@v2
-      with:
-        path: |
-          ./install-${{matrix.platform}}-liblx
-        key: ${{ matrix.platform }}-liblx
-  
     - name: Build libLX
-      if: 
-        matrix.linked_lib == 'liblx' &&
-        steps.cache-${{matrix.platform}}-liblx-build.outputs.cache-hit != 'true'
+      if: matrix.linked_lib == 'liblx'
       shell: bash
       run: |
         # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
         cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx" ${RUNTIME_LINKING_OPTION}
         cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
-        cmake --install "${{runner.workspace}}/install-${{matrix.platform}}-liblx"
         
-    - name: Prepare Build Environment for testsbxml with liblx on non-Windows OS
-      if: 
-        matrix.platform != 'windows-latest' && 
-        matrix.linked_lib == 'liblx' && 
-        steps.cache-${{matrix.platform}}-liblx-build.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        mkdir "${{runner.workspace}}/dependencies"
-        mkdir "${{runner.workspace}}/dependencies/include"
-        mkdir "${{runner.workspace}}/dependencies/lib"
-        cp -r ""${{runner.workspace}}/install-${{matrix.platform}}-liblx/include" "${{runner.workspace}}/dependencies/include"
-        cp "${{runner.workspace}}/install-${{matrix.platform}}-liblx/lib"*.* "${{runner.workspace}}/dependencies/lib"
-        cp -r ""${{runner.workspace}}/install-${{matrix.platform}}-liblx/include" "install-${{matrix.platform}}-liblx/include"
-        cp "${{runner.workspace}}/install-${{matrix.platform}}-liblx/lib"*.* "install-${{matrix.platform}}-liblx/lib"
-
-    - name: copy cached
-      if: 
-        matrix.platform != 'windows-latest' && 
-        matrix.linked_lib == 'liblx' && 
-        steps.cache-${{matrix.platform}}-liblx-build.outputs.cache-hit == 'true'
-      shell: bash
-      run: |
-        mkdir "${{runner.workspace}}/dependencies"
-        mkdir "${{runner.workspace}}/dependencies/include"
-        mkdir "${{runner.workspace}}/dependencies/lib"
-        cp -r "install-${{matrix.platform}}-liblx/include" "${{runner.workspace}}/dependencies/include"
-        cp -"install-${{matrix.platform}}-liblx/lib"*.* "${{runner.workspace}}/dependencies/lib"
-
     - name: Build libSBML
       if: matrix.linked_lib == 'libsbml'
       shell: bash
@@ -175,7 +100,29 @@ jobs:
         # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
         cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml" ${RUNTIME_LINKING_OPTION}
         cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
-               
+        
+    - name: Prepare Build Environment for testsbxml with liblx on non-Windows OS
+      if: matrix.platform != 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+        
+    - name: Prepare Build Environment for testsbxml with libsbml on non-Windows OS
+      if: matrix.platform != 'windows-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+
     - name: Prepare Build Environment for testsbxmlwith liblx on Windows OS
       if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
       shell: bash

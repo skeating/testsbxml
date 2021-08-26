@@ -20,7 +20,7 @@
 #include <algorithm>
 
 LIBTSB_CPP_NAMESPACE_BEGIN
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 #ifndef SWIG
 class LIBTSB_EXTERN ExpectedAttributes
 {
@@ -54,7 +54,7 @@ LIBTSB_CPP_NAMESPACE_BEGIN
 BEGIN_C_DECLS
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 LIBTSB_EXTERN 
 ExpectedAttributes_t *
 ExpectedAttributes_create();

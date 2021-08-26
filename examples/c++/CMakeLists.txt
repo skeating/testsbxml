@@ -3,8 +3,8 @@
 ## @author  Frank T. Bergmann
 ##
 ## <!--------------------------------------------------------------------------
-## This file is part of libSBML.  Please visit http://sbml.org for more
-## information about SBML, and the latest version of libSBML.
+## This file is part of SBML.  Please visit http://sbml.org for more
+## information about SBML.
 ##
 ## Copyright (C) 2013-2018 jointly by the following organizations:
 ##     1. California Institute of Technology, Pasadena, CA, USA
@@ -25,12 +25,11 @@
 ## This library is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU Lesser General Public License as published by
 ## the Free Software Foundation.  A copy of the license agreement is provided
-## in the file named "LICENSE.txt" included with this software distribution
-## and also available online as http://sbml.org/software/libsbml/license.html
+## in the file named "LICENSE.txt" included with this software distribution.
 ## ------------------------------------------------------------------------ -->
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${LIBSBML_INCLUDE_DIR})
+include_directories(${LINKED_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}/../../src)
 
@@ -48,13 +47,16 @@ foreach(example
 
     if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLAX_STATIC=1;LIBTSB_STATIC=1")
+      if(WITH_LIBLX)
+        set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;LIBTSB_STATIC=1")
+      endif()
+      if(WITH_LIBSBML)
+        set_target_properties(example_cpp_${example} PROPERTIES COMPILE_DEFINITIONS "LIBSBML_STATIC=1;LIBTSB_STATIC=1")
+      endif()
     endif(WIN32 AND NOT CYGWIN)
-
 
     set_target_properties(example_cpp_${example} PROPERTIES  OUTPUT_NAME ${example})
     target_link_libraries(example_cpp_${example} ${LIBTSB_LIBRARY}-static)
-
 
     if (WITH_ZLIB)
         target_link_libraries(example_cpp_${example} ${LIBZ_LIBRARY})

@@ -41,7 +41,7 @@ typedef int (*ListItemComparator) (const void *item1, const void *item2);
  */
 typedef int (*ListItemPredicate) (const void *item);
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 /**
  * A @sbmlconstant{ListDeleteItemFunc,} is a typedef for a pointer to a function that takes a List item and
  * deletes / frees it as apropriate. 
@@ -64,7 +64,7 @@ class ListIterator;
 
 
 /**
- * @cond doxygenLibsbmlInternal
+ * @cond doxygenlibLXInternal
  *
  * 
  * @class ListNode
@@ -266,7 +266,7 @@ public:
    */
   void transferFrom(List* list);
 
-  /** @cond doxygenLibsbmlInternal */
+  /** @cond doxygenlibLXInternal */
  /**
   * Delete all child elements of the given list, and then the list itself.
   *
@@ -279,7 +279,7 @@ public:
   /** @endcond */
 
 
-  /** @cond doxygenLibsbmlInternal */
+  /** @cond doxygenlibLXInternal */
 
   ListIterator begin();
   ListIterator end();
@@ -287,7 +287,7 @@ public:
   /** @endcond */
 
 protected:
-  /** @cond doxygenLibsbmlInternal */
+  /** @cond doxygenlibLXInternal */
   unsigned int size;
   ListNode*    head;
   ListNode*    tail;
@@ -365,7 +365,7 @@ List_create (void);
 
 
 /**
- * @cond doxygenLibsbmlInternal
+ * @cond doxygenlibLXInternal
  *
  * Creates a new ListNode_t (with @p item) and returns a pointer to the node.
  *
@@ -406,7 +406,7 @@ List_free (List_t *lst);
 
 
 /**
- * @cond doxygenLibsbmlInternal
+ * @cond doxygenlibLXInternal
  *
  * Frees the given ListNode_t.
  *
@@ -553,7 +553,7 @@ List_prepend (List_t *lst, void *item);
  * @param lst the List_t structure.
  * @param n the index of the item to remove.
  *
- * Unlike other 'remove' functions in libsbml, the caller does not own the 
+ * Unlike other 'remove' functions in libLX, the caller does not own the 
  * returned item: it continues to be owned by whoever owned it before being
  * put on the List_t.  It may be queried or changed by the caller, like other
  * elements of the List_t.

@@ -1,5 +1,5 @@
 /**
- * @cond doxygenLibsbmlInternal
+ * @cond doxygenlibLXInternal
  *
  * @file    memory.c
  * @brief   Safe (c|m)alloc(), free() and trace functions

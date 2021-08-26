@@ -36,7 +36,7 @@
  */
 #include <tsb/TSBComment.h>
 #include <tsb/TSBListOfComments.h>
-#include <sbml/xml/XMLInputStream.h>
+#include <xml/XMLInputStream.h>
 
 
 using namespace std;
@@ -57,7 +57,7 @@ LIBTSB_CPP_NAMESPACE_BEGIN
 TSBComment::TSBComment(unsigned int level, unsigned int version)
   : TSBBase(level, version)
   , mContributor ("")
-  , mNumber (util_NaN())
+  , mNumber (tsb_util_NaN())
   , mIsSetNumber (false)
   , mPoint ("")
 {
@@ -71,7 +71,7 @@ TSBComment::TSBComment(unsigned int level, unsigned int version)
 TSBComment::TSBComment(TSBNamespaces *tsbns)
   : TSBBase(tsbns)
   , mContributor ("")
-  , mNumber (util_NaN())
+  , mNumber (tsb_util_NaN())
   , mIsSetNumber (false)
   , mPoint ("")
 {
@@ -249,7 +249,7 @@ TSBComment::unsetContributor()
 int
 TSBComment::unsetNumber()
 {
-  mNumber = util_NaN();
+  mNumber = tsb_util_NaN();
   mIsSetNumber = false;
 
   if (isSetNumber() == false)
@@ -884,7 +884,7 @@ TSBComment_getContributor(const TSBComment_t * tsbc)
   }
 
   return tsbc->getContributor().empty() ? NULL :
-    safe_strdup(tsbc->getContributor().c_str());
+    tsb_safe_strdup(tsbc->getContributor().c_str());
 }
 
 
@@ -895,7 +895,7 @@ LIBTSB_EXTERN
 double
 TSBComment_getNumber(const TSBComment_t * tsbc)
 {
-  return (tsbc != NULL) ? tsbc->getNumber() : util_NaN();
+  return (tsbc != NULL) ? tsbc->getNumber() : tsb_util_NaN();
 }
 
 
@@ -912,7 +912,7 @@ TSBComment_getPoint(const TSBComment_t * tsbc)
   }
 
   return tsbc->getPoint().empty() ? NULL :
-    safe_strdup(tsbc->getPoint().c_str());
+    tsb_safe_strdup(tsbc->getPoint().c_str());
 }
 
 

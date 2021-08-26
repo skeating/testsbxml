@@ -4,8 +4,8 @@
  * @author  Ben Bornstein
  * 
  * <!--------------------------------------------------------------------------
- * This file is part of libSBML.  Please visit http://sbml.org for more
- * information about SBML, and the latest version of libSBML.
+ * This file is part of SBML.  Please visit http://sbml.org for more
+ * information about SBML.
  *
  * Copyright (C) 2020 jointly by the following organizations:
  *     1. California Institute of Technology, Pasadena, CA, USA
@@ -369,7 +369,7 @@ List::transferFrom(List* list)
 }
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 ListIterator 
 List::begin() 
 { 
@@ -378,7 +378,7 @@ List::begin()
 /** @endcond */
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 ListIterator 
 List::end() 
 { 
@@ -387,7 +387,7 @@ List::end()
 /** @endcond */
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 void 
 List::deleteListAndChildrenWith(List* list, ListDeleteItemFunc delteFunc)
 {
@@ -423,7 +423,7 @@ List_create (void)
 }
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 LIBTSB_EXTERN
 ListNode_t *
 ListNode_create (void *item)
@@ -447,7 +447,7 @@ List_free (List_t *lst)
 }
 
 
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 void
 ListNode_free (ListNode_t *node)
 {

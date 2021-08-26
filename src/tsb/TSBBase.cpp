@@ -39,12 +39,12 @@
 #include <sstream>
 #include <vector>
 
-#include <sbml/xml/XMLError.h>
-#include <sbml/xml/XMLErrorLog.h>
-#include <sbml/xml/XMLOutputStream.h>
-#include <sbml/xml/XMLInputStream.h>
-#include <sbml/xml/XMLToken.h>
-#include <sbml/xml/XMLNode.h>
+#include <xml/XMLError.h>
+#include <xml/XMLErrorLog.h>
+#include <xml/XMLOutputStream.h>
+#include <xml/XMLInputStream.h>
+#include <xml/XMLToken.h>
+#include <xml/XMLNode.h>
 
 #include <tsb/TSBError.h>
 #include <tsb/TSBErrorLog.h>
@@ -1904,7 +1904,7 @@ TSBBase::toTSB ()
 
   write(stream);
 
-  return safe_strdup( os.str().c_str() );
+  return tsb_safe_strdup( os.str().c_str() );
 }
 
 
@@ -3164,7 +3164,7 @@ char*
 TSBBase_getNotesString (TSBBase_t *sb)
 {
   return (sb != NULL && sb->isSetNotes()) ?
-    safe_strdup(sb->getNotesString().c_str()) : NULL;
+    tsb_safe_strdup(sb->getNotesString().c_str()) : NULL;
 }
 
 
@@ -3181,7 +3181,7 @@ char*
 TSBBase_getTestAnnotationString (TSBBase_t *sb)
 {
   return (sb != NULL && sb->isSetTestAnnotation()) ?
-    safe_strdup(sb->getTestAnnotationString().c_str()) : NULL;
+    tsb_safe_strdup(sb->getTestAnnotationString().c_str()) : NULL;
 }
 
 

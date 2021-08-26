@@ -50,7 +50,7 @@
 #include <tsb/TSBNamespaces.h>
 #include <tsb/TSBConstructorException.h>
 #include <tsb/util/ExpectedAttributes.h>
-#include <sbml/xml/XMLNode.h>
+#include <xml/XMLNode.h>
 
 #ifdef __cplusplus
 
@@ -62,8 +62,6 @@
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBVisitor.h>
 
-LIBSBML_CPP_NAMESPACE_BEGIN
-
 class Model;
 
 class List;
@@ -73,8 +71,6 @@ class XMLInputStream;
 class XMLNamespaces;
 class XMLOutputStream;
 class XMLToken;
-
-LIBSBML_CPP_NAMESPACE_END
 
 LIBTSB_CPP_NAMESPACE_BEGIN
 

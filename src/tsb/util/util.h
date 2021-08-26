@@ -3,39 +3,15 @@
  * @brief   Utility functions
  * ---------------------------------------------------------------------- -->*/
 
-#ifndef util_h
-#define util_h
+#ifndef tsb_util_h
+#define tsb_util_h
 
 #include <stdio.h>
 #include <stdarg.h>
 
 #include <tsb/common/extern.h>
 
-/** @cond doxygenLibsbmlInternal */
-
-#ifdef __cplusplus
-
-#include <string>
-
-LIBTSB_CPP_NAMESPACE_BEGIN
-
-/**
- * Utility function that replaces all occurences of 'from' to 'to' 
- * in the given string. 
- * 
- * @param str, the string to be modified.
- * @param from, the substring to be replaced.
- * @param to, the target substring to be used instead of 'from'.
- *
- * @return a reference to the string, so that the replace calls can be chained
- */
- std::string& replaceAllSubStrings(std::string& str, 
-              const std::string& from, const std::string& to);
-
-LIBTSB_CPP_NAMESPACE_END
-
-
-#endif // __cplusplus
+/** @cond doxygenlibLXInternal */
 
 LIBTSB_CPP_NAMESPACE_BEGIN
 
@@ -46,34 +22,7 @@ BEGIN_C_DECLS
  */
 LIBTSB_EXTERN
 unsigned int
-streq (const char *s, const char *t);
-
-
-/**
- * Identical to snprintf except printing always occurs according to the
- * "C" locale.  This function does not affect the locale of the calling
- * program.
- */
-int
-c_locale_snprintf (char *str, size_t size, const char *format, ...);
-
-
-/**
- * Identical to vsnprintf except printing always occurs according to the
- * "C" locale.  This function does not affect the locale of the calling
- * program.
- */
-int
-c_locale_vsnprintf (char *str, size_t size, const char *format, va_list ap);
-
-
-/**
- * Identical to strtod except conversion always occurs according to the
- * "C" locale.  This function does not affect the locale of the calling
- * program.
- */
-double
-c_locale_strtod (const char *nptr, char **endptr);
+tsb_streq (const char *s, const char *t);
 
 
 /**
@@ -83,19 +32,7 @@ c_locale_strtod (const char *nptr, char **endptr);
  */
 LIBTSB_EXTERN
 FILE *
-safe_fopen (const char *filename, const char *mode);
-
-
-/**
- * Returns a pointer to a new string which is the concatenation of the
- * strings str1 and str2.  Memory for the new string is obtained with
- * safe_malloc() and can be freed with safe_free().
- *
- * NOTE: This strcat behaves differently than standard library strcat().
- */
-LIBTSB_EXTERN
-char *
-safe_strcat (const char *str1, const char *str2);
+tsb_safe_reopen (const char *filename, const char *mode);
 
 
 /**
@@ -103,9 +40,9 @@ safe_strcat (const char *str1, const char *str2);
  * Memory for the string is obtained with safe_malloc() and can be freed
  * with safe_free().
  */
-LIBTSB_EXTERN
-char *
-safe_strdup (const char* s);
+ LIBTSB_EXTERN
+ char *
+ tsb_safe_strdup (const char* s);
 
 
 /**
@@ -116,22 +53,7 @@ safe_strdup (const char* s);
  */
 LIBTSB_EXTERN
 int
-strcmp_insensitive (const char *s1, const char *s2);
-
-
-/**
- * Peforms a binary search on the string table strings to find string s.
- *
- * All strings from strings[lo] to strings[hi] are searched.  The string
- * comparison function used is strcmp_insensitive().  Since the search is
- * binary, the strings table must be sorted, irrespecitve of case.
- *
- * @return the index of s in strings, if s was found, or stop + 1
- * otherwise.
- */
-LIBTSB_EXTERN
-int
-util_bsearchStringsI (const char **strings, const char *s, int lo, int hi);
+tsb_strcmp_insensitive (const char *s1, const char *s2);
 
 
 /**
@@ -139,34 +61,9 @@ util_bsearchStringsI (const char **strings, const char *s, int lo, int hi);
  */
 LIBTSB_EXTERN
 int
-util_file_exists (const char *filename);
+tsb_util_file_exists (const char *filename);
 
 
-/**
- * Removes leading and trailing whitespace from the string s.
- *
- * @return a pointer to a new string which is a duplicate of the string s,
- * with leading and trailing whitespace removed or @c NULL if s is @c NULL.
- *
- * Whitespace is determined by isspace().
- */
-LIBTSB_EXTERN
-char *
-util_trim (const char *s);
-
-
-/**
- * Removes leading and trailing whitespace from the string s.
- *
- * @return a pointer to the first non-whitespace character of the string s
- * (which may be the terminating NULL), or @c NULL if s is @c NULL.  The first
- * trailing whitespace character will be replaced with NULL.
- *
- * Whitespace is determined by isspace().
- */
-LIBTSB_EXTERN
-char *
-util_trim_in_place (char *s);
 /** @endcond */
 
 
@@ -177,142 +74,8 @@ util_trim_in_place (char *s);
  */
 LIBTSB_EXTERN
 double
-util_NaN (void);
+tsb_util_NaN (void);
 
-
-/**
- * Returns a representation of the IEEE-754 "Negative Infinity" value.
- * 
- * @return IEEE-754 Negative Infinity.
- */
-LIBTSB_EXTERN
-double
-util_NegInf (void);
-
-
-/**
- * Returns a representation of the IEEE-754 "Positive Infinity" value.
- * 
- * @return IEEE-754 Positive Infinity
- */
-LIBTSB_EXTERN
-double
-util_PosInf (void);
-
-
-/**
- * Returns a representation of the IEEE-754 "Negative Zero" value.
- * 
- * @return IEEE-754 Negative Zero.
- */
-LIBTSB_EXTERN
-double
-util_NegZero (void);
-
-
-/**
- * Function for testing whether a given value represents negative infinity.
- *
- * @param d the floating-point value to test.
- * 
- * @return @c -1 (for false) if @p d represents negative infinity, @c 1 (true) if
- * @p d represents positive infinity, and @c 0 (false) otherwise.
- */
-LIBTSB_EXTERN
-int
-util_isInf (double d);
-
-/**
- * @return 1 if the number is NaN and 0 otherwise.
- */
-LIBTSB_EXTERN
-int
-util_isNaN (double d);
-
-/**
- * @return 1 if the number is finite and 0 otherwise.
- */
-LIBTSB_EXTERN
-int
-util_isFinite (double d);
-
-
-/**
- * Function for testing whether a given value represents negative zero.
- *
- * @param d the floating-point value to test.
- * 
- * @return @c 1 (true) if @p d is an IEEE-754 negative zero,
- * @c 0 (false) otherwise.
- */
-LIBTSB_EXTERN
-int
-util_isNegZero (double d);
-
-
-/**
- * Function for freeing memory allocated by libSBML functions
- *
- * @param element pointer to the object to be freed.  It must
- * be data that was originally allocated by a libSBML function.
- * 
- * This function was introduced to deal with a specific memory issue
- * arising on Windows OS when using libSBML compiled against a static MSVC
- * runtime library.  In this situation, it was not possible to use the
- * standard <code>free()</code> function when freeing memory that was
- * actually allocated within the libSBML function call.  The following is
- * an example of where the free function fails and needs to be replaced
- * with util_free().
- * @code
- *    char * formula = SBML_formulaToString(astNode);
- *    free(formula);
- * @endcode
- *
- * @note This function is only necessary when using a version of libSBML
- * compiled and linked against a static MSVC runtime library.
- */
-LIBTSB_EXTERN
-void
-util_free (void * element);
-
-/**
- * Function for freeing memory allocated by libSBML functions
- *
- * @param objects pointer to the array to be freed.  It must
- * be data that was originally allocated by a libSBML function.
- * @param length number of elements in the array to be freed.
- * 
- * This function was introduced to deal with a specific memory issue
- * arising on Windows OS when using libSBML compiled against a static MSVC
- * runtime library.  In this situation, it was not possible to use the
- * standard <code>free()</code> function when freeing memory that was
- * actually allocated within the libSBML function call.  The following is
- * an example of where the free function fails and needs to be replaced
- * with util_freeArray().
- * @code
- *    int length;
- *    SBMLNamespaces_t** supported = SBMLNamespaces_getSupportedNamespaces(&length);
- *    free(supported);
- * @endcode
- *
- * @note This function is only necessary when using a version of libSBML
- * compiled and linked against a static MSVC runtime library.
- */
-LIBTSB_EXTERN
-void
-util_freeArray (void ** objects, int length);
-
-/**
- * @return the machine epsilon
- */
-LIBTSB_EXTERN 
-double util_epsilon();
-
-/**
- * @return 1 if the number are equal up to the machine epsilon and 0 otherwise.
- */
-LIBTSB_EXTERN
-int util_isEqual(double a, double b);
 
 END_C_DECLS
 LIBTSB_CPP_NAMESPACE_END

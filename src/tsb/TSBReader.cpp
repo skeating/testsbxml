@@ -36,9 +36,9 @@
  */
 
 
-#include <sbml/xml/XMLError.h>
-#include <sbml/xml/XMLErrorLog.h>
-#include <sbml/xml/XMLInputStream.h>
+#include <xml/XMLError.h>
+#include <xml/XMLErrorLog.h>
+#include <xml/XMLInputStream.h>
 
 #include <tsb/TSBErrorLog.h>
 #include <tsb/TSBVisitor.h>
@@ -46,8 +46,8 @@
 #include <tsb/TSBError.h>
 #include <tsb/TSBReader.h>
 
-#include <sbml/compress/CompressCommon.h>
-#include <sbml/compress/InputDecompressor.h>
+#include <compress/CompressCommon.h>
+#include <compress/InputDecompressor.h>
 
 /** @cond doxygenIgnored */
 
@@ -214,7 +214,7 @@ TSBReader::readInternal (const char* content, bool isFile)
 {
   TSBDocument* d = new TSBDocument();
 
-  if (isFile && content != NULL && (util_file_exists(content) == false))
+  if (isFile && content != NULL && (tsb_util_file_exists(content) == false))
   {
     d->getErrorLog()->logError(XMLFileUnreadable);
   }
@@ -266,7 +266,7 @@ TSBReader::readInternal (const char* content, bool isFile)
       {
         d->getErrorLog()->logError(MissingXMLEncoding);
       }
-      else if (strcmp_insensitive(stream.getEncoding().c_str(), "UTF-8") != 0)
+      else if (tsb_strcmp_insensitive(stream.getEncoding().c_str(), "UTF-8") != 0)
       {
         d->getErrorLog()->logError(TSBNotUTF8);
       }
@@ -275,7 +275,7 @@ TSBReader::readInternal (const char* content, bool isFile)
       {
         d->getErrorLog()->logError(BadXMLDecl);
       }
-      else if (strcmp_insensitive(stream.getVersion().c_str(), "1.0") != 0)
+      else if (tsb_strcmp_insensitive(stream.getVersion().c_str(), "1.0") != 0)
       {
         d->getErrorLog()->logError(BadXMLDecl);
       }

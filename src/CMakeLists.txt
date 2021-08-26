@@ -43,7 +43,6 @@ endmacro(copy_if_different_and_remove)
 # create libtsb-config-common.h
 #
 include(CheckIncludeFiles)
-check_include_files (check.h HAVE_CHECK_H)
 check_include_files (expat.h HAVE_EXPAT_H)
 check_include_files (errno.h HAVE_ERRNO_H)
 check_include_files (ieeefp.h HAVE_IEEEFP_H)
@@ -74,8 +73,6 @@ if (MSVC)
 endif()
 
 
-include(CheckLibraryExists)
-check_library_exists(m sqrt "" HAVE_LIBM)
 
 # generate configuration for this system
 configure_file(
@@ -126,7 +123,7 @@ install(FILES ${additional_common} DESTINATION include/tsb/common)
 # specify include directories
 #
 
-include_directories(${LIBSBML_INCLUDE_DIR})
+include_directories(${LINKED_INCLUDE_DIR})
 include_directories(BEFORE ${LIBTSB_ROOT_SOURCE_DIR}/src/tsb)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
@@ -247,7 +244,7 @@ add_library (${LIBTSB_LIBRARY}-static STATIC ${LIBTSB_SOURCES} )
 
 if (WIN32 AND NOT CYGWIN)
     # don't decorate static library 
-    set_target_properties(${LIBTSB_LIBRARY}-static PROPERTIES COMPILE_DEFINITIONS "LIBLAX_STATIC=1;LIBTSB_STATIC=1")
+    set_target_properties(${LIBTSB_LIBRARY}-static PROPERTIES COMPILE_DEFINITIONS "LIBLX_STATIC=1;;LIBLAX_STAIC=1;LIBTSB_STATIC=1")
 endif(WIN32 AND NOT CYGWIN)
 
 target_link_libraries(${LIBTSB_LIBRARY}-static ${LIBTSB_LIBS} ${EXTRA_LIBS})
@@ -259,6 +256,11 @@ INSTALL(TARGETS ${LIBTSB_LIBRARY}-static
 )
 
 
+##############################################################################
+#
+# add native tests
+#
+add_subdirectory(tsb)
 ##############################################################################
 #
 # construct list of all header files to create dependency list for 

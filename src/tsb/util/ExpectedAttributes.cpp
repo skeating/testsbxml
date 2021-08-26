@@ -12,6 +12,7 @@
 #include <tsb/common/TSBOperationReturnValues.h>
 #include <tsb/util/ExpectedAttributes.h>
 
+
 LIBTSB_CPP_NAMESPACE_BEGIN
 #ifdef __cplusplus
 
@@ -38,7 +39,7 @@ ExpectedAttributes::ExpectedAttributes()
 
 #endif /* __cplusplus */
 /** @cond doxygenIgnored */
-/** @cond doxygenLibsbmlInternal */
+/** @cond doxygenlibLXInternal */
 LIBTSB_EXTERN 
 ExpectedAttributes_t *
 ExpectedAttributes_create()
@@ -68,7 +69,7 @@ char*
 ExpectedAttributes_get(ExpectedAttributes_t *attr, unsigned int index)
 {
   if (attr == NULL) return NULL;
-  return safe_strdup(attr->get(index).c_str());
+  return tsb_safe_strdup(attr->get(index).c_str());
 }
 
 LIBTSB_EXTERN 

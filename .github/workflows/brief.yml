@@ -1,0 +1,238 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ build_new_lx_struct ]
+  pull_request:
+    branches: [ build_new_lx_struct ]
+  workflow_dispatch:
+  
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    name: 
+      ${{ matrix.platform }} linked to ${{ matrix.linked_lib }}
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        linked_lib: [liblx, libsbml]  
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+    - uses: actions/checkout@v2
+        
+    - name: Add msbuild to PATH (Windows)
+      if: matrix.platform == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1.6.0
+
+    - name: Clone libLX
+      if: matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        git clone --single-branch --branch libsbml-src-structure https://github.com/sbmlteam/liblx.git "${{runner.workspace}}/liblx"
+        
+    - name: Clone libSBML
+      if: matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: | 
+        git clone https://github.com/sbmlteam/libsbml.git "${{runner.workspace}}/libsbml"
+        
+    - name: Cache Windows dependencies and SWIG
+      # On Windows, the dependencies live inside the source folder, ie `.`.
+      # For the CI, we put SWIG there too, for simplicity.
+      if: matrix.platform == 'windows-latest'
+      id: cache-win-dependencies-static
+      uses: actions/cache@v2
+      with:
+        path: |
+          ./dependencies
+        key: ${{ runner.os }}-dependencies-static
+
+    - name: Download pre-built Windows dependencies and SWIG
+      # Windows dependencies have to be in a subfolder called `dependencies`, directly under the git repository root.
+      # also gets SWIG, completing the set of dependencies needed for windows
+      if:
+        matrix.platform == 'windows-latest' &&
+        steps.cache-win-dependencies-static.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        curl -L https://sourceforge.net/projects/sbml/files/libsbml/win-dependencies/libSBML_dependencies_vs15_release_x64_static.zip/download > dependencies.zip
+        unzip dependencies.zip -d dependencies
+        cp -r dependencies/libSBML\ Dependencies-1.0.0-b1-win64/* dependencies
+        rm -r dependencies/libSBML*
+        #
+        curl -L https://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip > swig.zip
+        unzip -o swig.zip -d swig
+        echo "${{runner.workspace}}/swig/swigwin-3.0.12" >> $GITHUB_PATH
+
+    - name: Install Windows dependencies for libLX
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: cp -r dependencies ../liblx/dependencies
+
+    - name: Install Windows dependencies for libSBML
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: cp -r dependencies ../libsbml/dependencies
+
+    - name: setup Windows environment
+      if: matrix.platform == 'windows-latest'
+      shell: bash
+      run: |
+        echo RUNTIME_LINKING_OPTION="-DWITH_STATIC_RUNTIME=ON" >> "${GITHUB_ENV}"
+
+    - name: Install Ubuntu dependencies
+      if: matrix.platform == 'ubuntu-latest'
+      shell: bash
+      run: sudo apt-get install -y ccache
+    
+    - name: Install macOS dependencies
+      if: matrix.platform == 'macos-latest'
+      shell: bash
+      run: brew install swig ccache
+
+    - name: Build libLX
+      if: matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
+        cmake -B "${{runner.workspace}}/liblx-build" -S "${{runner.workspace}}/liblx" ${RUNTIME_LINKING_OPTION}
+        cmake --build "${{runner.workspace}}/liblx-build" --config $BUILD_TYPE
+        
+    - name: Build libSBML
+      if: matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        # use RUNTIME_LINKING_OPTION, so static runtime will be selected when building libsbml
+        cmake -B "${{runner.workspace}}/libsbml-build" -S "${{runner.workspace}}/libsbml" ${RUNTIME_LINKING_OPTION}
+        cmake --build "${{runner.workspace}}/libsbml-build" --config $BUILD_TYPE
+        
+    - name: Prepare Build Environment for testsbxml with liblx on non-Windows OS
+      if: matrix.platform != 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/liblx-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+        
+    - name: Prepare Build Environment for testsbxml with libsbml on non-Windows OS
+      if: matrix.platform != 'windows-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        mkdir "${{runner.workspace}}/dependencies"
+        mkdir "${{runner.workspace}}/dependencies/include"
+        mkdir "${{runner.workspace}}/dependencies/lib"
+        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/libsbml-build/src/"*.* "${{runner.workspace}}/dependencies/lib"
+
+    - name: Prepare Build Environment for testsbxmlwith liblx on Windows OS
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        mv "${{runner.workspace}}/liblx/dependencies" "${{runner.workspace}}/dependencies"
+        cp -r "${{runner.workspace}}/liblx/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/liblx-build/src/liblx" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/liblx-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        # need to add liblx.dll directory to path, since we are linking dynamically
+        echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
+        
+    - name: Prepare Build Environment for testsbxmlwith libsbml on Windows OS
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        mv "${{runner.workspace}}/libsbml/dependencies" "${{runner.workspace}}/dependencies"
+        cp -r "${{runner.workspace}}/libsbml/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp -r "${{runner.workspace}}/libsbml-build/src/sbml" "${{runner.workspace}}/dependencies/include"
+        cp "${{runner.workspace}}/libsbml-build/src/Release/"*.* "${{runner.workspace}}/dependencies/lib"
+        # need to add libsbml.dll directory to path, since we are linking dynamically
+        echo "${{runner.workspace}}/dependencies/lib" >> $GITHUB_PATH
+        
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+    
+    - name: Configure ubuntu CMake with liblx
+      if: matrix.platform == 'ubuntu-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.so" \
+          -DWITH_LIBLX=True \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+          
+    - name: Configure ubuntu CMake with libsbml
+      if: matrix.platform == 'ubuntu-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.so" \
+          -DWITH_LIBLX=False \
+          -DWITH_LIBSBML=True \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+          
+    - name: Configure macOS CMake with liblx
+      if: matrix.platform == 'macos-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.dylib" \
+          -DWITH_LIBLX=True \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+          
+    - name: Configure macOS CMake with libsbml
+      if: matrix.platform == 'macos-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.dylib" \
+          -DWITH_LIBLX=False \
+          -DWITH_LIBSBML=True \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+          
+    - name: Configure Windows CMake with liblx
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'liblx'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBLX_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBLX_LIBRARY="${{runner.workspace}}/dependencies/lib/liblx.lib" \
+          -DWITH_LIBLX=True \
+          ${RUNTIME_LINKING_OPTION} \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+          
+    - name: Configure Windows CMake with libsbml
+      if: matrix.platform == 'windows-latest' && matrix.linked_lib == 'libsbml'
+      shell: bash
+      run: |
+        cmake -B "${{runner.workspace}}/build" \
+          -DLIBSBML_INCLUDE_DIR="${{runner.workspace}}/dependencies/include" \
+          -DLIBSBML_LIBRARY="${{runner.workspace}}/dependencies/lib/libsbml.lib" \
+          -DLIBSBML_STATIC=True \
+          -DWITH_LIBLX=False \
+          -DWITH_LIBSBML=True \
+          ${RUNTIME_LINKING_OPTION} \
+          -DWITH_EXAMPLES=True \
+          -DWITH_CHECK=True
+      
+    - name: Build testsbxml
+      shell: bash
+      run: cmake --build "${{runner.workspace}}/build" --config $BUILD_TYPE
+
+    - name: Test testsbxml
+      shell: bash
+      run: ctest -V -C $BUILD_TYPE --test-dir "${{runner.workspace}}/build"
